@@ -9,7 +9,7 @@ function App() {
     <>
       <Navbar />
       <Sidebar/>
-      <div className="ml-10">
+      <div className="ml-18">
       <Routes>
         <Route path="/" element ={ <Menu />}/>
 

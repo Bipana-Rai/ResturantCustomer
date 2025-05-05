@@ -10,7 +10,7 @@ interface Menu {
 function Card({ data }: { data: Menu }) {
   return (
     <>
-      <div className="h-[120px] flex flex-col border-2 justify-between w-[250px]  border-white bg-white py-1 rounded-xl px-2 hover:border-cyan-400 cursor-pointer ">
+      <div className="h-[120px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex flex-col border-2 justify-between w-[250px]  border-white bg-white py-1 rounded-xl px-2 hover:border-cyan-400 cursor-pointer ">
         <div className="flex">
         <div className=" bg-gray-200 h-17 w-16 items-center flex ">
           <img

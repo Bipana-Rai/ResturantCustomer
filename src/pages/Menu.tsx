@@ -23,8 +23,8 @@ function Menu() {
   return (
     <>
       <div className="grid lg:grid-cols-7 ">
-        <div className="col-span-5 ps-10 ">
-          <div className="sticky top-13 py-5 px-2 z-20  bg-[#f3f3f3] flex flex-wrap gap-4   overflow-y-auto">
+        <div className="col-span-5  ">
+          <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4   overflow-y-auto">
             {(showFull ? categoryDetail : categoryDetail.slice(0, 7))?.map(
               (e) => (
                 <Category data={e} />
@@ -34,7 +34,7 @@ function Menu() {
               {showFull ? "see less..." : "see more..."}
             </button>
           </div>
-          <div className=" pt-14">
+          <div className=" pt-14 ps-10">
           <p className="text-3xl font-semibold text-gray-600 py-3 ">Lunch Menu</p>
           <div className="flex flex-wrap gap-4  ">
             {itemDetail?.map((e) => (
