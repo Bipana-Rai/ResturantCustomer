@@ -26,7 +26,8 @@ export const getCategory = createAsyncThunk(
     }
   }
 );
-export  interface items {
+export  interface dishItem {
+  _id: string;
   dishName: string;
   dishPrice: number;
   dishCategory: string;
@@ -39,7 +40,7 @@ interface category{
 }
 interface CategoryState {
   loading: boolean;
-  itemDetail: items[];
+  itemDetail: dishItem[];
   error: string | null;
   categoryDetail:category[]
 }
@@ -61,7 +62,7 @@ const itemSlice = createSlice({
       })
       .addCase(getItems.fulfilled, (state, action) => {
         state.loading = false;
-        state.itemDetail = action.payload.data as items[];
+        state.itemDetail = action.payload.data as dishItem[];
       })
       .addCase(getItems.rejected, (state, action) => {
         state.loading = false;
