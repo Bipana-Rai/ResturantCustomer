@@ -1,15 +1,22 @@
 import URL from "../utils/Url";
-import { dishItem } from "../features/itemSlice";
+
 import { IoMdAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { TiDelete } from "react-icons/ti";
+interface cartItems{
+    _id:string
+    dishName:string,
+    dishCategory:string,
+    dishPrice:number,
+    dishImage?:string
+  }
 interface CartCardProps {
-  item: dishItem;
-  onPriceChange:(id:string,total:number)=>void
+  item: cartItems;
+  onPriceChange: (id: string, total: number) => void;
 }
 
-function CartCard({ item,onPriceChange }: CartCardProps) {
+function CartCard({ item, onPriceChange }: CartCardProps) {
   const [count, setCount] = useState(1);
  
 
@@ -22,10 +29,10 @@ function CartCard({ item,onPriceChange }: CartCardProps) {
     }
   };
   useEffect(() => {
-  const total = item.dishPrice * count; 
-  onPriceChange(item._id,total)
+    const total = item.dishPrice * count;
+    onPriceChange(item._id, total);
   }, [count]);
- 
+
   console.log("items", item);
   return (
     <>
@@ -76,9 +83,7 @@ function CartCard({ item,onPriceChange }: CartCardProps) {
           </button>
         </div>
       </div>
-      <div>
-     
-      </div>
+      <div></div>
     </>
   );
 }

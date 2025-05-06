@@ -4,18 +4,23 @@ import { AppDispatch, RootState } from "../store/store";
 import { useEffect, useRef, useState } from "react";
 import { getCategory, getItems } from "../features/itemSlice";
 import Category from "../components/Category";
-import { useCart } from "../customHook/useCart";
 
 import CartCard from "../components/CartCard";
+
+import axios from "axios";
+interface cartItems {
+  _id: string;
+  dishName: string;
+  dishCategory: string;
+  dishPrice: number;
+  dishImage?: string;
+}
 function Menu() {
   const dispatch = useDispatch<AppDispatch>();
+  const [cartData, setCartData] = useState<cartItems[]>([]);
   const [showFull, setShowFull] = useState<boolean>(false);
   const [itemTotals, setItemTotals] = useState<Record<string, number>>({});
-  const cart = useCart();
-  const cartContainerRef=useRef<HTMLDivElement>(null)
-
-  console.log(cart.items);
-
+  const cartContainerRef = useRef<HTMLDivElement>(null);
   const { itemDetail, categoryDetail } = useSelector(
     (state: RootState) => state.item
   );
@@ -32,16 +37,28 @@ function Menu() {
   const grandTotal = Object.values(itemTotals).reduce(
     (acc, curr) => acc + curr,
     0
- 
   );
-  useEffect(()=>{
-    if(cartContainerRef.current){
-      const lastItem=cartContainerRef.current.lastElementChild;
-      if(lastItem){
-        lastItem.scrollIntoView({behavior:"smooth",block:"end"})
+  useEffect(() => {
+    if (cartContainerRef.current) {
+      const lastItem = cartContainerRef.current.lastElementChild;
+      if (lastItem) {
+        lastItem.scrollIntoView({ behavior: "smooth", block: "end" });
       }
     }
-  },[cart.items])
+  }, [cartData]);
+  const getCartData = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/getCart");
+      // console.log(res.data)
+      setCartData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getCartData();
+  }, []);
+  console.log(cartData);
 
   return (
     <>
@@ -65,8 +82,6 @@ function Menu() {
               {itemDetail?.map((e, i) => (
                 <Card
                   key={i}
-                  setItems={cart.setItems}
-                  items={cart.items}
                   data={e}
                 />
               ))}
@@ -75,9 +90,12 @@ function Menu() {
         </div>
         <div className="col-span-2 sticky top-12 h-[93vh]  bg-gray-200 pt-3 px-2 ">
           <p className="font-bold text-lg text-center">Cart Item</p>
-          <div  ref={cartContainerRef}className=" h-[60vh] bg-white scrollbar-hidden px-2   overflow-y-auto  ">
-            {cart.items &&
-              cart.items.map((item) => (
+          <div
+            ref={cartContainerRef}
+            className=" h-[60vh] bg-white scrollbar-hidden px-2   overflow-y-auto  "
+          >
+            {cartData.length > 0 &&
+              cartData.map((item) => (
                 <CartCard item={item} onPriceChange={handlePriceChange} />
               ))}
           </div>

@@ -1,20 +1,19 @@
-import { useState } from "react";
 import { dishItem } from "../features/itemSlice";
 import URL from "../utils/Url";
+import axios from "axios";
 
 type CardProps = {
   data: dishItem;
-  setItems: (item: dishItem[]) => void;
-  items: dishItem[];
 };
 
-function Card({ data, setItems, items }: CardProps) {
-  const[added,setAdded]=useState<boolean>(false)
-  const handleClick = () => {
-    const exists = items?.some((item) => item.dishName === data.dishName);
-    if (!exists) {
-      setItems([...items, data]);
-      setAdded(!added)
+function Card({ data }: CardProps) {
+  const handleClick = async () => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/cart", data);
+
+      return res.data;
+    } catch (err) {
+      console.error("Error adding to cart:", err);
     }
   };
 
@@ -41,11 +40,12 @@ function Card({ data, setItems, items }: CardProps) {
           <p className="font-bold  text-xl">${data.dishPrice}</p>
 
           <div
-            className={`${added?"bg-green-600":"bg-cyan-600"} px-3 w-[100px] text-center py-1 text-gray-100 rounded-lg text-sm`}
+            className={`
+               bg-cyan-600
+            }px-3 w-[100px] text-center py-1 text-gray-100 rounded-lg text-sm`}
             onClick={handleClick}
           >
-            {added?"added":"add to cart"}
-            
+            <p>add to cart</p>
           </div>
         </div>
       </div>
