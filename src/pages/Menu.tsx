@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import Card from "../components/Card";
 import { AppDispatch, RootState } from "../store/store";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getCategory, getItems } from "../features/itemSlice";
 import Category from "../components/Category";
 import { useCart } from "../customHook/useCart";
@@ -10,7 +10,10 @@ import CartCard from "../components/CartCard";
 function Menu() {
   const dispatch = useDispatch<AppDispatch>();
   const [showFull, setShowFull] = useState<boolean>(false);
+  const [itemTotals, setItemTotals] = useState<Record<string, number>>({});
   const cart = useCart();
+  const cartContainerRef=useRef<HTMLDivElement>(null)
+
   console.log(cart.items);
 
   const { itemDetail, categoryDetail } = useSelector(
@@ -23,16 +26,28 @@ function Menu() {
     dispatch(getItems());
     dispatch(getCategory());
   }, [dispatch]);
+  const handlePriceChange = (id: string, total: number) => {
+    setItemTotals((prev) => ({ ...prev, [id]: total }));
+  };
+  const grandTotal = Object.values(itemTotals).reduce(
+    (acc, curr) => acc + curr,
+    0
+ 
+  );
+  useEffect(()=>{
+    if(cartContainerRef.current){
+      const lastItem=cartContainerRef.current.lastElementChild;
+      if(lastItem){
+        lastItem.scrollIntoView({behavior:"smooth",block:"end"})
+      }
+    }
+  },[cart.items])
 
   return (
     <>
-      {/* <div className="absolute top-15 right-10">
-      <button className="bg-cyan-600 px-4 py-1 text-gray-200">Add To Cart</button>
-
-    </div> */}
       <div className="grid lg:grid-cols-7 ">
         <div className="col-span-5  ">
-          <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4   overflow-y-auto">
+          <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4 bg   overflow-y-auto">
             {(showFull ? categoryDetail : categoryDetail.slice(0, 7))?.map(
               (e) => (
                 <Category data={e} />
@@ -47,19 +62,28 @@ function Menu() {
               Lunch Menu
             </p>
             <div className="flex flex-wrap gap-4  ">
-              {itemDetail?.map((e) => (
-                <Card setItems={cart.setItems} items={cart.items} data={e} />
+              {itemDetail?.map((e, i) => (
+                <Card
+                  key={i}
+                  setItems={cart.setItems}
+                  items={cart.items}
+                  data={e}
+                />
               ))}
             </div>
           </div>
         </div>
-        <div className="col-span-2 pt-20 pe-5">
-          <div className="flex flex-col gap-2">
-          {cart.items &&
-            cart.items.map((item) => (
-             <CartCard item={item}/>
-            ))}
-        </div>
+        <div className="col-span-2 sticky top-12 h-[93vh]  bg-gray-200 pt-3 px-2 ">
+          <p className="font-bold text-lg text-center">Cart Item</p>
+          <div  ref={cartContainerRef}className=" h-[60vh] bg-white scrollbar-hidden px-2   overflow-y-auto  ">
+            {cart.items &&
+              cart.items.map((item) => (
+                <CartCard item={item} onPriceChange={handlePriceChange} />
+              ))}
+          </div>
+          <div className="px-4 py-2 font-bold text-lg ">
+            Grand Total: ${grandTotal.toFixed(2)}
+          </div>
         </div>
       </div>
     </>
