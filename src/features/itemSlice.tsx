@@ -26,7 +26,7 @@ export const getCategory = createAsyncThunk(
     }
   }
 );
-interface items {
+export  interface items {
   dishName: string;
   dishPrice: number;
   dishCategory: string;
