@@ -1,15 +1,35 @@
 import { dishItem } from "../features/itemSlice";
 import URL from "../utils/Url";
 import axios from "axios";
+import { cartItems } from "../pages/Menu";
+import { useState } from "react";
 
 type CardProps = {
   data: dishItem;
+  cartData: cartItems[];
 };
 
-function Card({ data }: CardProps) {
+function Card({ data, cartData }: CardProps) {
+  const [added, setAdded] = useState(false);
+  const isAdded=cartData.some((cartItem)=>cartItem._id===data._id && cartItem.added)
   const handleClick = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/api/cart", data);
+      const exist = cartData.some(
+        (cartData) => cartData._id === data._id
+      );
+      if (exist) {
+        alert("Items already in a cart");
+
+        return;
+      }
+
+      const res = await axios.post("http://localhost:5000/api/cart", {
+        ...data,
+        added: true,
+      });
+      if (res.status === 200) {
+        setAdded(true);
+      }
 
       return res.data;
     } catch (err) {
@@ -40,12 +60,11 @@ function Card({ data }: CardProps) {
           <p className="font-bold  text-xl">${data.dishPrice}</p>
 
           <div
-            className={`
-               bg-cyan-600
-            }px-3 w-[100px] text-center py-1 text-gray-100 rounded-lg text-sm`}
+            className={`${isAdded ? "bg-green-700" : "bg-cyan-600"} 
+            px-3 w-[100px] text-center py-1 text-gray-100 rounded-lg text-sm`}
             onClick={handleClick}
           >
-            <p>add to cart</p>
+            <p>{`${isAdded?"added":"add to cart"}`}</p>
           </div>
         </div>
       </div>

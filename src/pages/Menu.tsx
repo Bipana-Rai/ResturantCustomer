@@ -8,12 +8,13 @@ import Category from "../components/Category";
 import CartCard from "../components/CartCard";
 
 import axios from "axios";
-interface cartItems {
+export interface cartItems {
   _id: string;
   dishName: string;
   dishCategory: string;
   dishPrice: number;
   dishImage?: string;
+  added: boolean;
 }
 function Menu() {
   const dispatch = useDispatch<AppDispatch>();
@@ -45,26 +46,26 @@ function Menu() {
         lastItem.scrollIntoView({ behavior: "smooth", block: "end" });
       }
     }
-  }, [cartData]);
-  const getCartData = async () => {
+  }, [cartData.length]);
+  const handleAddToCart = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/getCart");
       // console.log(res.data)
-      setCartData(res.data);
+      setCartData(res.data.data);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
-    getCartData();
-  }, []);
-  console.log(cartData);
+    handleAddToCart();
+  }, [cartData]);
+  console.log("cartData", cartData);
 
   return (
     <>
       <div className="grid lg:grid-cols-7 ">
         <div className="col-span-5  ">
-          <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4 bg   overflow-y-auto">
+          <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4 ">
             {(showFull ? categoryDetail : categoryDetail.slice(0, 7))?.map(
               (e) => (
                 <Category data={e} />
@@ -80,10 +81,7 @@ function Menu() {
             </p>
             <div className="flex flex-wrap gap-4  ">
               {itemDetail?.map((e, i) => (
-                <Card
-                  key={i}
-                  data={e}
-                />
+                <Card key={i} data={e} cartData={cartData} />
               ))}
             </div>
           </div>
@@ -94,10 +92,17 @@ function Menu() {
             ref={cartContainerRef}
             className=" h-[60vh] bg-white scrollbar-hidden px-2   overflow-y-auto  "
           >
-            {cartData.length > 0 &&
+            {cartData.length > 0 ? (
               cartData.map((item) => (
-                <CartCard item={item} onPriceChange={handlePriceChange} />
-              ))}
+                <CartCard
+                  item={item}
+                  onPriceChange={handlePriceChange}
+                  key={item._id}
+                />
+              ))
+            ) : (
+              <p className="text-center text-gray-500">No items in cart</p>
+            )}
           </div>
           <div className="px-4 py-2 font-bold text-lg ">
             Grand Total: ${grandTotal.toFixed(2)}
