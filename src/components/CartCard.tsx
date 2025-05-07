@@ -4,40 +4,69 @@ import { IoMdAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { TiDelete } from "react-icons/ti";
-interface cartItems{
-    _id:string
-    dishName:string,
-    dishCategory:string,
-    dishPrice:number,
-    dishImage?:string
-  }
+import axios from "axios";
+interface cartItems {
+  _id: string;
+  dishName: string;
+  dishCategory: string;
+  dishPrice: number;
+  dishImage?: string;
+  quantity:number
+}
 interface CartCardProps {
   item: cartItems;
   onPriceChange: (id: string, total: number) => void;
 }
 
 function CartCard({ item, onPriceChange }: CartCardProps) {
-  const [count, setCount] = useState(1);
- 
+  const [count, setCount] = useState(item.quantity || 1);
 
-  const handleIncreseCount = () => {
-    setCount((prev) => prev + 1);
+  const handleIncreseCount = async () => {
+    const newCount = count + 1;
+    setCount(newCount);
+    await updateCartQuantity(item._id, newCount);
   };
-  const handleDecreaseCount = () => {
+  const handleDecreaseCount = async () => {
     if (count > 1) {
-      setCount((prev) => prev - 1);
+      const newCount = count - 1;
+      setCount(newCount);
+      await updateCartQuantity(item._id, count - 1);
     }
   };
+  const updateCartQuantity = async (id: string, quantity: number) => {
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/updateQuantity/${id}`,
+        {
+          quantity: quantity,
+        }
+      );
+      if (res.status === 200) {
+        console.log("Quantity updated in backend:", res.data.data);
+      }
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
+  };
+  const deleteCartItem=async(id:string)=>{
+    try {
+      const res=await axios.delete(`http://localhost:5000/api/deleteCartItem/${id}`)
+      console.log(res.data)
+      setCount(0)
+      
+    } catch (error) {
+      console.error("Error deleting cart:", error);
+    }
+  }
   useEffect(() => {
     const total = item.dishPrice * count;
     onPriceChange(item._id, total);
-  }, [count]);
+  }, [count,item._id,item.dishPrice,onPriceChange,setCount]);
 
-  console.log("items", item);
   return (
     <>
       <div className="relative my-2 h-18 w-full bg-white rounded-md overflow-hidden shadow-[0_3px_10px_rgb(0,0,0,0.4)] ">
-        <div className="absolute top-0 right-1 text-amber-600 text-2xl cursor-pointer">
+        <div className="absolute top-0 right-1 text-amber-600 text-2xl cursor-pointer z-20" onClick={()=>deleteCartItem(item._id)}>
           <TiDelete />
         </div>
         <div className=" flex">
@@ -64,13 +93,16 @@ function CartCard({ item, onPriceChange }: CartCardProps) {
           <input
             type="text"
             value={count}
-            onChange={(e) => {
+            onChange={async (e) => {
               const value = e.target.value;
 
               if (value === "") {
                 setCount(1);
               } else if (/^\d+$/.test(value) && Number(value) >= 1) {
-                setCount(Number(value));
+                const newCount = Number(value);
+                setCount(newCount);
+                await updateCartQuantity(item._id, newCount);
+                
               }
             }}
             className="w-12 shadow-[0_3px_10px_rgb(0,0,0,0.2)]  text-center outline-0 "

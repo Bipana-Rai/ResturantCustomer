@@ -10,7 +10,7 @@ type CardProps = {
 };
 
 function Card({ data, cartData }: CardProps) {
-  const [added, setAdded] = useState(false);
+  const [added, setAdded] = useState<boolean>(false);
   const isAdded=cartData.some((cartItem)=>cartItem._id===data._id && cartItem.added)
   const handleClick = async () => {
     try {
@@ -19,10 +19,8 @@ function Card({ data, cartData }: CardProps) {
       );
       if (exist) {
         alert("Items already in a cart");
-
         return;
       }
-
       const res = await axios.post("http://localhost:5000/api/cart", {
         ...data,
         added: true,
@@ -30,12 +28,12 @@ function Card({ data, cartData }: CardProps) {
       if (res.status === 200) {
         setAdded(true);
       }
-
       return res.data;
     } catch (err) {
       console.error("Error adding to cart:", err);
     }
   };
+  console.log(added)
 
   return (
     <>

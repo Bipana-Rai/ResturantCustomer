@@ -15,6 +15,7 @@ export interface cartItems {
   dishPrice: number;
   dishImage?: string;
   added: boolean;
+  quantity:number
 }
 function Menu() {
   const dispatch = useDispatch<AppDispatch>();
