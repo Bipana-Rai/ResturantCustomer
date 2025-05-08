@@ -20,35 +20,96 @@ export const getCategory = createAsyncThunk(
     try {
       const res = await axios.get("http://localhost:5000/api/getCategory");
       return res.data;
+      
     } catch (error) {
       const err = error as AppAxiosError;
       return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
-export  interface dishItem {
+export const addedItemToCart = createAsyncThunk(
+  "addedItemToCart",
+  async (data: dishItem, { rejectWithValue }) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/cart", {
+        ...data,
+        added: true,
+        quantity:1,
+        
+      });
+
+      if (res.status === 200) {
+        return { ...data, added: true, quantity: 1 };
+      }
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+export const getCartItem = createAsyncThunk(
+  "getCartItem",
+  async (_, {rejectWithValue}) => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/getCart");
+      return res.data;
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+export const deleteItemFromcart = createAsyncThunk(
+  "deleteItemFromCart",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/deleteCartItem/${id}`
+      );
+      return res.data;
+      // setCount(0)
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+export interface cartItems {
+  _id: string;
+  dishName: string;
+  dishCategory: string;
+  dishPrice: number;
+  dishImage?: string;
+  added: boolean;
+  quantity:number
+}
+export interface dishItem {
   _id: string;
   dishName: string;
   dishPrice: number;
   dishCategory: string;
   dishImage: string;
-  dishDiscription:string
+  dishDiscription: string;
 }
-interface category{
-  category:string,
-  image?:string
+interface category {
+  _id: string;
+  category: string;
+  image?: string;
 }
 interface CategoryState {
   loading: boolean;
   itemDetail: dishItem[];
   error: string | null;
-  categoryDetail:category[]
+  categoryDetail: category[];
+  cartData: cartItems[];
 }
 const initialState: CategoryState = {
   loading: false,
   error: null,
   itemDetail: [],
-  categoryDetail:[]
+  categoryDetail: [],
+  cartData: [],
 };
 
 const itemSlice = createSlice({
@@ -76,6 +137,45 @@ const itemSlice = createSlice({
         state.categoryDetail = action.payload as category[];
       })
       .addCase(getCategory.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(addedItemToCart.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(addedItemToCart.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload) {
+          state.cartData.push(action.payload);
+        }
+      })
+      .addCase(addedItemToCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(getCartItem.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(getCartItem.fulfilled, (state, action) => {
+        state.loading = false;
+        if (action.payload) {
+          state.cartData = action.payload.data;
+        }
+      })
+      .addCase(getCartItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(deleteItemFromcart.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(deleteItemFromcart.fulfilled, (state, action) => {
+        state.loading = false;
+        state.cartData = state.cartData.filter(
+          (item) => item._id !== action.payload
+        );
+      })
+      .addCase(deleteItemFromcart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

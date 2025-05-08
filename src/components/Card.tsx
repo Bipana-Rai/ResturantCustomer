@@ -1,39 +1,22 @@
-import { dishItem } from "../features/itemSlice";
+import { addedItemToCart, dishItem } from "../features/itemSlice";
 import URL from "../utils/Url";
-import axios from "axios";
-import { cartItems } from "../pages/Menu";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../store/store";
 
 type CardProps = {
   data: dishItem;
-  cartData: cartItems[];
 };
 
-function Card({ data, cartData }: CardProps) {
-  const [added, setAdded] = useState<boolean>(false);
-  const isAdded=cartData.some((cartItem)=>cartItem._id===data._id && cartItem.added)
-  const handleClick = async () => {
-    try {
-      const exist = cartData.some(
-        (cartData) => cartData._id === data._id
-      );
-      if (exist) {
-        alert("Items already in a cart");
-        return;
-      }
-      const res = await axios.post("http://localhost:5000/api/cart", {
-        ...data,
-        added: true,
-      });
-      if (res.status === 200) {
-        setAdded(true);
-      }
-      return res.data;
-    } catch (err) {
-      console.error("Error adding to cart:", err);
-    }
+function Card({ data }: CardProps) {
+  const dispatch = useDispatch<AppDispatch>();
+  const { cartData } = useSelector((state: RootState) => state.item);
+
+  const isAdded = cartData?.some(
+    (cartItem) => cartItem._id === data._id && cartItem.added
+  );
+  const handleClick = () => {
+    dispatch(addedItemToCart(data));
   };
-  console.log(added)
 
   return (
     <>
@@ -62,7 +45,7 @@ function Card({ data, cartData }: CardProps) {
             px-3 w-[100px] text-center py-1 text-gray-100 rounded-lg text-sm`}
             onClick={handleClick}
           >
-            <p>{`${isAdded?"added":"add to cart"}`}</p>
+            <p>{`${isAdded ? "added" : "add to cart"}`}</p>
           </div>
         </div>
       </div>

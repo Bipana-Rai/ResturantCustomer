@@ -1,10 +1,12 @@
 import URL from "../utils/Url";
-
 import { IoMdAddCircle } from "react-icons/io";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { TiDelete } from "react-icons/ti";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
+import { deleteItemFromcart } from "../features/itemSlice";
 interface cartItems {
   _id: string;
   dishName: string;
@@ -19,6 +21,7 @@ interface CartCardProps {
 }
 
 function CartCard({ item, onPriceChange }: CartCardProps) {
+  const dispatch=useDispatch<AppDispatch>()
   const [count, setCount] = useState(item.quantity || 1);
 
   const handleIncreseCount = async () => {
@@ -48,20 +51,14 @@ function CartCard({ item, onPriceChange }: CartCardProps) {
       console.error("Error updating quantity:", error);
     }
   };
-  const deleteCartItem=async(id:string)=>{
-    try {
-      const res=await axios.delete(`http://localhost:5000/api/deleteCartItem/${id}`)
-      console.log(res.data)
-      setCount(0)
-      
-    } catch (error) {
-      console.error("Error deleting cart:", error);
-    }
+  const deleteCartItem=(id:string)=>{
+   dispatch(deleteItemFromcart(id))
+   setCount(0)
   }
   useEffect(() => {
     const total = item.dishPrice * count;
     onPriceChange(item._id, total);
-  }, [count,item._id,item.dishPrice,onPriceChange,setCount]);
+  }, [count,setCount]);
 
   return (
     <>

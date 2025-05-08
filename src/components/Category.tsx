@@ -1,12 +1,20 @@
+
+
 interface category {
   category: string;
   image?: string;
 }
+interface categoryProps{
+  data:category,
+  setCategory:(category:string)=>void
+}
 
-function Category({ data }: { data: category }) {
+function Category({ data,setCategory }: categoryProps) {
+
+
   return (
     <>
-      <div className="h-14 flex w-[180px] rounded-sm gap-1 items-center px-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]  bg-white ">
+      <div className="h-14 flex w-[180px] rounded-sm gap-1 items-center px-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]  bg-white " onClick={()=>setCategory(data.category)}>
         <div className="h-full flex  rounded-md items-center w-14 ">
           <img src={`http://localhost:5000/uploads/${data.image}`} alt="" />
         </div>

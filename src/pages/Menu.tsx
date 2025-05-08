@@ -2,30 +2,19 @@ import { useDispatch, useSelector } from "react-redux";
 import Card from "../components/Card";
 import { AppDispatch, RootState } from "../store/store";
 import { useEffect, useRef, useState } from "react";
-import { getCategory, getItems } from "../features/itemSlice";
+import { getCartItem, getCategory, getItems } from "../features/itemSlice";
 import Category from "../components/Category";
-
 import CartCard from "../components/CartCard";
-
-import axios from "axios";
-export interface cartItems {
-  _id: string;
-  dishName: string;
-  dishCategory: string;
-  dishPrice: number;
-  dishImage?: string;
-  added: boolean;
-  quantity:number
-}
 function Menu() {
-  const dispatch = useDispatch<AppDispatch>();
-  const [cartData, setCartData] = useState<cartItems[]>([]);
+  const dispatch= useDispatch<AppDispatch>();
   const [showFull, setShowFull] = useState<boolean>(false);
   const [itemTotals, setItemTotals] = useState<Record<string, number>>({});
   const cartContainerRef = useRef<HTMLDivElement>(null);
-  const { itemDetail, categoryDetail } = useSelector(
+  const [category,setCategory]=useState('')
+  const { itemDetail, categoryDetail,cartData } = useSelector(
     (state: RootState) => state.item
   );
+  const filterCartData=itemDetail?.filter((item)=>item.dishCategory===category)
   const handleClick = () => {
     setShowFull(!showFull);
   };
@@ -33,6 +22,8 @@ function Menu() {
     dispatch(getItems());
     dispatch(getCategory());
   }, [dispatch]);
+
+
   const handlePriceChange = (id: string, total: number) => {
     setItemTotals((prev) => ({ ...prev, [id]: total }));
   };
@@ -48,19 +39,15 @@ function Menu() {
       }
     }
   }, [cartData.length]);
-  const handleAddToCart = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/getCart");
-      // console.log(res.data)
-      setCartData(res.data.data);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleAddToCart =  () => {
+  dispatch(getCartItem())
   };
   useEffect(() => {
     handleAddToCart();
   }, [cartData]);
-  console.log("cartData", cartData);
+ 
+  
+
 
   return (
     <>
@@ -69,7 +56,7 @@ function Menu() {
           <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4 ">
             {(showFull ? categoryDetail : categoryDetail.slice(0, 7))?.map(
               (e) => (
-                <Category data={e} />
+                <Category data={e} key={e._id} setCategory={setCategory}/>
               )
             )}
             <button className="cursor-pointer" onClick={handleClick}>
@@ -81,8 +68,8 @@ function Menu() {
               Lunch Menu
             </p>
             <div className="flex flex-wrap gap-4  ">
-              {itemDetail?.map((e, i) => (
-                <Card key={i} data={e} cartData={cartData} />
+              {filterCartData?.map((e, i) => (
+                <Card key={i} data={e}  />
               ))}
             </div>
           </div>
@@ -99,6 +86,7 @@ function Menu() {
                   item={item}
                   onPriceChange={handlePriceChange}
                   key={item._id}
+                 
                 />
               ))
             ) : (
