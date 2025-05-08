@@ -6,23 +6,33 @@ import { getCartItem, getCategory, getItems } from "../features/itemSlice";
 import Category from "../components/Category";
 import CartCard from "../components/CartCard";
 function Menu() {
-  const dispatch= useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
   const [showFull, setShowFull] = useState<boolean>(false);
   const [itemTotals, setItemTotals] = useState<Record<string, number>>({});
   const cartContainerRef = useRef<HTMLDivElement>(null);
-  const [category,setCategory]=useState('')
-  const { itemDetail, categoryDetail,cartData } = useSelector(
+  const [category, setCategory] = useState("all");
+  const { itemDetail, categoryDetail, cartData } = useSelector(
     (state: RootState) => state.item
   );
-  const filterCartData=itemDetail?.filter((item)=>item.dishCategory===category)
+  const categoryCount = itemDetail?.reduce(
+    (acc: Record<string, number>, item) => {
+      acc[item.dishCategory] = (acc[item.dishCategory] || 0) + 1;
+      return acc;
+    },
+    {}
+  );
+  const filterCartData = itemDetail?.filter(
+    (item) => item.dishCategory === category
+  );
+  const finalFilterData = category === "all" ? itemDetail : filterCartData;
   const handleClick = () => {
     setShowFull(!showFull);
   };
+
   useEffect(() => {
     dispatch(getItems());
     dispatch(getCategory());
   }, [dispatch]);
-
 
   const handlePriceChange = (id: string, total: number) => {
     setItemTotals((prev) => ({ ...prev, [id]: total }));
@@ -39,24 +49,40 @@ function Menu() {
       }
     }
   }, [cartData.length]);
-  const handleAddToCart =  () => {
-  dispatch(getCartItem())
+  const handleAddToCart = () => {
+    dispatch(getCartItem());
   };
   useEffect(() => {
     handleAddToCart();
   }, [cartData]);
- 
-  
-
 
   return (
     <>
       <div className="grid lg:grid-cols-7 ">
         <div className="col-span-5  ">
           <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4 ">
-            {(showFull ? categoryDetail : categoryDetail.slice(0, 7))?.map(
+            <div
+              className="h-14 cursor-pointer flex w-[180px] rounded-sm gap-1 items-center px-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]  bg-white "
+              onClick={() => setCategory("all")}
+            >
+              <div className="h-12 flex  rounded-md items-center w-12 ">
+                <img src="./food.png" alt="" />
+              </div>
+              <div className="text-sm">
+                <p className="font-semibold">all</p>
+                <p className="text-[12px] text-gray-400">
+                  {itemDetail.length} menu in stock
+                </p>
+              </div>
+            </div>
+            {(showFull ? categoryDetail : categoryDetail.slice(0, 6))?.map(
               (e) => (
-                <Category data={e} key={e._id} setCategory={setCategory}/>
+                <Category
+                  data={e}
+                  key={e._id}
+                  setCategory={setCategory}
+                  categoryCount={categoryCount?.[e.category]||0}
+                />
               )
             )}
             <button className="cursor-pointer" onClick={handleClick}>
@@ -68,17 +94,18 @@ function Menu() {
               Lunch Menu
             </p>
             <div className="flex flex-wrap gap-4  ">
-              {filterCartData?.map((e, i) => (
-                <Card key={i} data={e}  />
+              {finalFilterData?.map((e, i) => (
+                <Card key={i} data={e} />
               ))}
             </div>
           </div>
         </div>
-        <div className="col-span-2 sticky top-12 h-[93vh]  bg-gray-200 pt-3 px-2 ">
-          <p className="font-bold text-lg text-center">Cart Item</p>
+        {/* second */}
+        <div className="col-span-2 sticky top-14 mt-10 h-[93vh]  bg-gray-200 pt-3  px-2 w-full  ">
+          <p className="font-bold text-lg text-center my-2">Cart Item</p>
           <div
-            ref={cartContainerRef}
-            className=" h-[60vh] bg-white scrollbar-hidden px-2   overflow-y-auto  "
+            // ref={cartContainerRef}
+            className=" h-[69vh] bg-white scrollbar-hidden px-2   overflow-y-auto  "
           >
             {cartData.length > 0 ? (
               cartData.map((item) => (
@@ -86,7 +113,6 @@ function Menu() {
                   item={item}
                   onPriceChange={handlePriceChange}
                   key={item._id}
-                 
                 />
               ))
             ) : (

@@ -1,4 +1,8 @@
-import { addedItemToCart, dishItem } from "../features/itemSlice";
+import {
+  addedItemToCart,
+  deleteItemFromcart,
+  dishItem,
+} from "../features/itemSlice";
 import URL from "../utils/Url";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
@@ -15,7 +19,11 @@ function Card({ data }: CardProps) {
     (cartItem) => cartItem._id === data._id && cartItem.added
   );
   const handleClick = () => {
-    dispatch(addedItemToCart(data));
+    if (isAdded) {
+      dispatch(deleteItemFromcart(data._id));
+    } else {
+      dispatch(addedItemToCart(data));
+    }
   };
 
   return (
