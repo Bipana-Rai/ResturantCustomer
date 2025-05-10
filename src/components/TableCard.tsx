@@ -1,5 +1,6 @@
 import { LiaChairSolid } from "react-icons/lia";
 import { TableData } from "../features/itemSlice";
+import BookingForm from "./BookingForm";
 interface tableprops {
   data: TableData;
 }
@@ -23,6 +24,9 @@ function TableCard({ data }: tableprops) {
 
   return (
     <>
+      <div className="fixed top-0 h-[100vh] w-[100vw] bg-amber-300 z-30 flex items-center justify-center">
+        <BookingForm number={data.tableNum} location={data.tableLocation} />
+      </div>
       <div
         className={` relative h-[200px] rounded-2xl w-[270px]  px-15 shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white`}
       >
@@ -33,7 +37,19 @@ function TableCard({ data }: tableprops) {
               : "bg-[#ff3f3f81]"
           }`}
         >
-          table {data.tableNum}
+          <div>
+            <p className="text-center">table - {data.tableNum}</p>
+            <p
+              className={`text-center font-semibold  ${
+                data.tableStatus === "available"
+                  ? "text-blue-950 "
+                  : "text-red-800"
+              }`}
+            >
+              {" "}
+              {data.tableLocation}
+            </p>
+          </div>
         </div>
         {/* top chars */}
         <div
