@@ -3,13 +3,16 @@ import { TbBrandBooking } from "react-icons/tb";
 import { MdPermContactCalendar } from "react-icons/md";
 const sidebarContent=[{
     icon:<BiSolidFoodMenu />,
-    title:"menu"
+    title:"menu",
+    path:"/"
 },{
     icon:<TbBrandBooking />,
-    title:"Booking"
+    title:"Booking",
+    path:"/booking"
 },
 {
     icon:<MdPermContactCalendar />,
-    title:"Contact Us"
+    title:"Contact Us",
+    path:"/contact"
 }]
 export default sidebarContent

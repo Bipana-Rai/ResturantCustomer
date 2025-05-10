@@ -75,6 +75,19 @@ export const deleteItemFromcart = createAsyncThunk(
     }
   }
 );
+export const getTable = createAsyncThunk(
+  "getTable",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/getTable");
+      return res.data;
+      
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
 export interface cartItems {
   _id: string;
   dishName: string;
@@ -92,17 +105,27 @@ export interface dishItem {
   dishImage: string;
   dishDiscription: string;
 }
+export interface TableData {
+  _id: string;
+  tableNum: string;
+  tableCapacity: number;
+  tableLocation?: string;
+  tableStatus: string;
+}
+
 interface category {
   _id: string;
   category: string;
   image?: string;
 }
+
 interface CategoryState {
   loading: boolean;
   itemDetail: dishItem[];
   error: string | null;
   categoryDetail: category[];
   cartData: cartItems[];
+  tableDetail:TableData[]
 }
 const initialState: CategoryState = {
   loading: false,
@@ -110,6 +133,7 @@ const initialState: CategoryState = {
   itemDetail: [],
   categoryDetail: [],
   cartData: [],
+  tableDetail:[],
 };
 
 const itemSlice = createSlice({
@@ -178,7 +202,18 @@ const itemSlice = createSlice({
       .addCase(deleteItemFromcart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+      .addCase(getTable.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(getTable.fulfilled, (state, action) => {
+        state.loading = false;
+        state.tableDetail = action.payload.data as TableData[];
+      })
+      .addCase(getTable.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
   },
 });
 export default itemSlice.reducer;
