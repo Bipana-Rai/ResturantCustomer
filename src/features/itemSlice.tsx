@@ -20,7 +20,6 @@ export const getCategory = createAsyncThunk(
     try {
       const res = await axios.get("http://localhost:5000/api/getCategory");
       return res.data;
-      
     } catch (error) {
       const err = error as AppAxiosError;
       return rejectWithValue(err.response?.data || err.message);
@@ -34,8 +33,7 @@ export const addedItemToCart = createAsyncThunk(
       const res = await axios.post("http://localhost:5000/api/cart", {
         ...data,
         added: true,
-        quantity:1,
-        
+        quantity: 1,
       });
 
       if (res.status === 200) {
@@ -49,7 +47,7 @@ export const addedItemToCart = createAsyncThunk(
 );
 export const getCartItem = createAsyncThunk(
   "getCartItem",
-  async (_, {rejectWithValue}) => {
+  async (_, { rejectWithValue }) => {
     try {
       const res = await axios.get("http://localhost:5000/api/getCart");
       return res.data;
@@ -81,7 +79,6 @@ export const getTable = createAsyncThunk(
     try {
       const res = await axios.get("http://localhost:5000/api/getTable");
       return res.data;
-      
     } catch (error) {
       const err = error as AppAxiosError;
       return rejectWithValue(err.response?.data || err.message);
@@ -95,7 +92,7 @@ export interface cartItems {
   dishPrice: number;
   dishImage?: string;
   added: boolean;
-  quantity:number
+  quantity: number;
 }
 export interface dishItem {
   _id: string;
@@ -125,7 +122,7 @@ interface CategoryState {
   error: string | null;
   categoryDetail: category[];
   cartData: cartItems[];
-  tableDetail:TableData[]
+  tableDetail: TableData[];
 }
 const initialState: CategoryState = {
   loading: false,
@@ -133,7 +130,7 @@ const initialState: CategoryState = {
   itemDetail: [],
   categoryDetail: [],
   cartData: [],
-  tableDetail:[],
+  tableDetail: [],
 };
 
 const itemSlice = createSlice({
@@ -208,12 +205,12 @@ const itemSlice = createSlice({
       })
       .addCase(getTable.fulfilled, (state, action) => {
         state.loading = false;
-        state.tableDetail = action.payload.data as TableData[];
+        state.tableDetail = action.payload as TableData[];
       })
       .addCase(getTable.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      })
+      });
   },
 });
 export default itemSlice.reducer;
