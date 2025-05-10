@@ -1,10 +1,11 @@
+import TableCard from "../components/TableCard"
 
 
 function Booking() {
   return (
 <>
 <div className='pt-15'>
-    <p>h</p>
+    <TableCard/>
 
 </div>
 </>
