@@ -85,6 +85,24 @@ export const getTable = createAsyncThunk(
     }
   }
 );
+export const addBookingData = createAsyncThunk(
+  "addBookingData",
+  async (data: BookedData, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/addBookingDetail",
+        {
+          ...data,
+        }
+      );
+
+      return res.data;
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
 export interface cartItems {
   _id: string;
   dishName: string;
@@ -109,7 +127,16 @@ export interface TableData {
   tableLocation?: string;
   tableStatus: string;
 }
-
+export interface BookedData {
+  bookingDate: string;
+  bookingTime: string;
+  email: string;
+  fullName: string;
+  location: string;
+  members: number;
+  phNo: string;
+  tableNumber: number;
+}
 interface category {
   _id: string;
   category: string;

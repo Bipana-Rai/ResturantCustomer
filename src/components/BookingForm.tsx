@@ -1,5 +1,8 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { addBookingData, BookedData } from "../features/itemSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
 
 interface TableCardProps {
   number: string;
@@ -7,16 +10,21 @@ interface TableCardProps {
   setShowBookingForm: (showBookingForm: boolean) => void;
 }
 function BookingForm({ number, location, setShowBookingForm }: TableCardProps) {
+  const dispatch=useDispatch<AppDispatch>()
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<BookedData>();
   useEffect(() => {
-    reset({ tableNumber: number, location: location });
+    reset({ tableNumber: Number(number), location: location });
   }, [number, location, reset]);
-  const onSubmit = () => {};
+  const onSubmit = (data: BookedData) => {
+    const transformedData = { ...data };
+    dispatch(addBookingData(transformedData))
+    console.log(transformedData);
+  };
   return (
     <div className="anime  w-[500px] rounded-xl bg-white px-5 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
       <p className="text-2xl text-cyan-700 font-bold text-center">Booking</p>
@@ -56,15 +64,19 @@ function BookingForm({ number, location, setShowBookingForm }: TableCardProps) {
         <div className="flex flex-col  pb-1">
           <label htmlFor="">Phone No </label>
           <input
-            type="text"
+            type="tel"
             className="border-1 border-gray-500 rounded-md px-2 text-sm py-1"
             placeholder="Enter phone no"
-            {...register("phNo", { required: true })}
+            {...register("phNo", {
+              required: "Phone number is required",
+              pattern: {
+                value: /^\d{10}$/,
+                message: "Invalid phone number",
+              },
+            })}
           />
-          {errors.phNo && errors.phNo.type === "required" && (
-            <span className="text-sm text-red-500">
-              Please enter number of people
-            </span>
+          {errors.phNo && (
+            <span className="text-sm text-red-500">{errors.phNo.message}</span>
           )}
         </div>
         <div className="flex flex-col pb-1">
@@ -73,25 +85,33 @@ function BookingForm({ number, location, setShowBookingForm }: TableCardProps) {
             type="text"
             className="border-1 border-gray-500 rounded-md px-2 text-sm py-1"
             placeholder="Enter email"
-            {...register("email", { required: true })}
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: "Invalid email format",
+              },
+            })}
           />
-          {errors.email && errors.email.type === "required" && (
-            <span className="text-sm text-red-500">
-              Please enter number of people
-            </span>
+          {errors.email && (
+            <span className="text-sm text-red-500">{errors.email.message}</span>
           )}
         </div>
         <div className="flex flex-col  pb-1">
           <label htmlFor="">Number of people </label>
           <input
-            type="text"
+            type="number"
             className="border-1 border-gray-500 rounded-md px-2 text-sm py-1"
             placeholder="Enter Number of people"
-            {...register("members", { required: true })}
+            {...register("members", {
+              required: "Number of people is required",
+              min: { value: 1, message: "Must be at least 1" },
+              max: { value: 10, message: "Maximum 10 people" },
+            })}
           />
-          {errors.members && errors.members.type === "required" && (
+          {errors.members && (
             <span className="text-sm text-red-500">
-              Please enter number of people
+              {errors.members.message}
             </span>
           )}
         </div>

@@ -34,7 +34,7 @@ function TableCard({ data }: tableprops) {
   return (
     <>
       {showBookingForm && (
-        <div className="fixed top-0 z-30 left-18 backdrop-blur-[1px] h-[100vh] w-[100vw] bg-[#6b626260] flex items-center justify-center">
+        <div className="fixed top-5 z-30 left-18 backdrop-blur-[1px] h-[100vh] w-[100vw] bg-[#6b626260] flex items-center justify-center">
           <BookingForm setShowBookingForm={setShowBookingForm} number={data.tableNum} location={data.tableLocation} />
         </div>
       )}
