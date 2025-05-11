@@ -12,7 +12,7 @@ body{
 }
 
 .anime {
-  animation: popup 0.3s linear;
+  animation: popup 0.4s linear;
 }
 @keyframes popup {
   from {

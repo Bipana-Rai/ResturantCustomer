@@ -1,16 +1,26 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { addBookingData, BookedData } from "../features/itemSlice";
+import {
+  addBookingData,
+  BookedData,
+  editTableStatus,
+} from "../features/itemSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 
 interface TableCardProps {
   number: string;
   location?: string;
+  id: string;
   setShowBookingForm: (showBookingForm: boolean) => void;
 }
-function BookingForm({ number, location, setShowBookingForm }: TableCardProps) {
-  const dispatch=useDispatch<AppDispatch>()
+function BookingForm({
+  number,
+  id,
+  location,
+  setShowBookingForm,
+}: TableCardProps) {
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
@@ -22,7 +32,9 @@ function BookingForm({ number, location, setShowBookingForm }: TableCardProps) {
   }, [number, location, reset]);
   const onSubmit = (data: BookedData) => {
     const transformedData = { ...data };
-    dispatch(addBookingData(transformedData))
+    dispatch(addBookingData(transformedData));
+    dispatch(editTableStatus({ id, data: "booked" }));
+    setShowBookingForm(false)
     console.log(transformedData);
   };
   return (

@@ -103,6 +103,22 @@ export const addBookingData = createAsyncThunk(
     }
   }
 );
+export const editTableStatus = createAsyncThunk(
+  "editTableStatus",
+  async ({ id, data }: { id: string; data: string }, { rejectWithValue }) => {
+    console.log("status", id, data);
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/api/updateStatus/${id}`,
+        { tableStatus: data }
+      );
+      return { id, data: response.data };
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
 export interface cartItems {
   _id: string;
   dishName: string;
@@ -235,6 +251,20 @@ const itemSlice = createSlice({
         state.tableDetail = action.payload as TableData[];
       })
       .addCase(getTable.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(editTableStatus.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(editTableStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id, data } = action.payload;
+        state.tableDetail = state.tableDetail.filter((e) =>
+          e._id === id ? { ...e, ...data } : e
+        );
+      })
+      .addCase(editTableStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
