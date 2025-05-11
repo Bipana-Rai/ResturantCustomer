@@ -10,3 +10,17 @@ body{
   -ms-overflow-style: none;  /* For Internet Explorer 10+ */
   scrollbar-width: none;  /* For Firefox */
 }
+
+.anime {
+  animation: popup 0.3s linear;
+}
+@keyframes popup {
+  from {
+    scale: 0.5;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}

@@ -1,10 +1,12 @@
 import { LiaChairSolid } from "react-icons/lia";
 import { TableData } from "../features/itemSlice";
 import BookingForm from "./BookingForm";
+import { useState } from "react";
 interface tableprops {
   data: TableData;
 }
 function TableCard({ data }: tableprops) {
+  const [showBookingForm, setShowBookingForm] = useState<boolean>(false);
   const rendeChairs = (count: number) => {
     return Array.from({ length: count }).map((_, index) => (
       <LiaChairSolid key={index} className="text-4xl" />
@@ -22,13 +24,21 @@ function TableCard({ data }: tableprops) {
   const leftSideChairs = Math.ceil(sideChairs / 2);
   const rightSideChairs = Math.floor(sideChairs / 2);
 
+  const handleShow=()=>{
+    
+  }
+
   return (
     <>
-      <div className="fixed top-0 h-[100vh] w-[100vw] bg-amber-300 z-30 flex items-center justify-center">
-        <BookingForm number={data.tableNum} location={data.tableLocation} />
-      </div>
+      {showBookingForm && (
+        <div className="fixed top-12 z-30 left-18 backdrop-blur-[1px] h-[100vh] w-[100vw] bg-[#6b626260] flex items-center justify-center">
+          <BookingForm setShowBookingForm={setShowBookingForm} number={data.tableNum} location={data.tableLocation} />
+        </div>
+      )}
+
       <div
-        className={` relative h-[200px] rounded-2xl w-[270px]  px-15 shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white`}
+        className={` relative h-[200px] rounded-2xl w-[270px]  px-15 shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white cursor-pointer `}
+        onClick={handleShow}
       >
         <div
           className={`h-[90px] w-[180px]  absolute top-13 left-12 rounded-2xl flex items-center  text-gray-100 justify-center ${
