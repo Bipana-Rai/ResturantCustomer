@@ -103,6 +103,18 @@ export const addBookingData = createAsyncThunk(
     }
   }
 );
+export const getBookingDetail = createAsyncThunk(
+  "getBookingDetail",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/getBookingDetail");
+      return res.data;
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
 export const editTableStatus = createAsyncThunk(
   "editTableStatus",
   async ({ id, data }: { id: string; data: string }, { rejectWithValue }) => {
@@ -119,6 +131,7 @@ export const editTableStatus = createAsyncThunk(
     }
   }
 );
+
 export interface cartItems {
   _id: string;
   dishName: string;
@@ -166,6 +179,7 @@ interface CategoryState {
   categoryDetail: category[];
   cartData: cartItems[];
   tableDetail: TableData[];
+  bookingDetail:BookedData[];
 }
 const initialState: CategoryState = {
   loading: false,
@@ -174,6 +188,7 @@ const initialState: CategoryState = {
   categoryDetail: [],
   cartData: [],
   tableDetail: [],
+  bookingDetail:[],
 };
 
 const itemSlice = createSlice({
@@ -267,7 +282,18 @@ const itemSlice = createSlice({
       .addCase(editTableStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+        .addCase(getBookingDetail.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(getBookingDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.bookingDetail = action.payload as BookedData[];
+      })
+      .addCase(getBookingDetail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
   },
 });
 export default itemSlice.reducer;

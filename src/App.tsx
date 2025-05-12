@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 import Menu from "./pages/Menu";
 import Booking from "./pages/Booking";
+import MyBooking from "./components/MyBooking";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Menu />} />
           <Route path="/booking" element={<Booking />} />
+          <Route path="/myBooking" element={<MyBooking/>} />
         </Routes>
       </div>
     </>
