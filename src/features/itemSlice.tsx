@@ -157,6 +157,7 @@ export interface TableData {
   tableStatus: string;
 }
 export interface BookedData {
+  _id:string;
   bookingDate: string;
   bookingTime: string;
   email: string;

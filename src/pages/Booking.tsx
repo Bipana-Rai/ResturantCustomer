@@ -53,7 +53,7 @@ function Booking() {
             ))}
           </div>
           <div
-            className="px-5  flex items-center justify-center text-gray-200 py-1 rounded-md bg-cyan-800 cursor-pointer"
+            className="px-5  flex items-center justify-center text-gray-200 py-1 rounded-md bg-cyan-500 cursor-pointer"
             onClick={()=>navigate("/myBooking")}
           >
             My Booking
