@@ -133,7 +133,10 @@ export const editTableStatus = createAsyncThunk(
 );
 export const editBookingDetail = createAsyncThunk(
   "editBookingDetail",
-  async ({id,data}: {id:string,data:BookedData}, { rejectWithValue }) => {
+  async (
+    { id, data }: { id: string; data: BookedData },
+    { rejectWithValue }
+  ) => {
     try {
       const res = await axios.put(
         `http://localhost:5000/api/editBookingDetail/${id}`,
@@ -142,7 +145,7 @@ export const editBookingDetail = createAsyncThunk(
         }
       );
 
-      return res.data;
+      return { id, data: res.data };
     } catch (error) {
       const err = error as AppAxiosError;
       return rejectWithValue(err.response?.data || err.message);
@@ -175,7 +178,7 @@ export interface TableData {
   tableStatus: string;
 }
 export interface BookedData {
-  _id:string;
+  _id: string;
   bookingDate: string;
   bookingTime: string;
   email: string;
@@ -184,7 +187,7 @@ export interface BookedData {
   members: number;
   phNo: string;
   tableNumber: number;
-  createdAt:string
+  createdAt: string;
 }
 interface category {
   _id: string;
@@ -199,7 +202,7 @@ interface CategoryState {
   categoryDetail: category[];
   cartData: cartItems[];
   tableDetail: TableData[];
-  bookingDetail:BookedData[];
+  bookingDetail: BookedData[];
 }
 const initialState: CategoryState = {
   loading: false,
@@ -208,7 +211,7 @@ const initialState: CategoryState = {
   categoryDetail: [],
   cartData: [],
   tableDetail: [],
-  bookingDetail:[],
+  bookingDetail: [],
 };
 
 const itemSlice = createSlice({
@@ -295,7 +298,7 @@ const itemSlice = createSlice({
       .addCase(editTableStatus.fulfilled, (state, action) => {
         state.loading = false;
         const { id, data } = action.payload;
-        state.tableDetail = state.tableDetail.filter((e) =>
+        state.tableDetail = state.tableDetail.map((e) =>
           e._id === id ? { ...e, ...data } : e
         );
       })
@@ -303,7 +306,7 @@ const itemSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-        .addCase(getBookingDetail.pending, (state) => {
+      .addCase(getBookingDetail.pending, (state) => {
         state.loading = false;
       })
       .addCase(getBookingDetail.fulfilled, (state, action) => {
@@ -314,6 +317,20 @@ const itemSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      .addCase(editBookingDetail.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(editBookingDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id, data } = action.payload;
+        state.bookingDetail = state.bookingDetail.map((e) =>
+          e._id === id ? { ...e, ...data } : e
+        );
+      })
+      .addCase(editBookingDetail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 export default itemSlice.reducer;

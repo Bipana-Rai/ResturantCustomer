@@ -18,7 +18,7 @@ function MyBooking() {
   const { bookingDetail } = useSelector((state: RootState) => state.item);
   useEffect(() => {
     dispatch(getBookingDetail());
-  }, [dispatch]);
+  }, [dispatch,setShowEditBookingForm,showEditBookingForm]);
   const handleEdit=(id:string)=>{
     setId(id)
 setShowEditBookingForm(true)

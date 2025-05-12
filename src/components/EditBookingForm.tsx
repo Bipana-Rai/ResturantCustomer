@@ -28,10 +28,11 @@ function EditBookingForm({ setShowEditBookingForm, id }: TableCardProps) {
     console.log(transformedData)
     dispatch(editBookingDetail({id,data:transformedData}))
     setShowEditBookingForm(false);
+
   };
   useEffect(() => {
     dispatch(getBookingDetail());
-  }, [dispatch,setShowEditBookingForm]);
+  }, [dispatch]);
   return (
     <div className="anime  w-[500px] rounded-xl bg-white px-5 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
       <p className="text-2xl text-cyan-700 font-bold text-center">Booking</p>
