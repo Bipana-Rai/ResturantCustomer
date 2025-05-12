@@ -98,7 +98,6 @@ function BookingForm({
             className="border-1 border-gray-500 rounded-md px-2 text-sm py-1"
             placeholder="Enter email"
             {...register("email", {
-              required: "Email is required",
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 message: "Invalid email format",

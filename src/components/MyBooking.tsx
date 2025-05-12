@@ -86,10 +86,11 @@ function MyBooking() {
                     <FaPhoneAlt />
                     <span>{e.phNo}</span>
                   </div>
-                  <div className="flex gap-2 items-center">
+                  {e.email&&<div className="flex gap-2 items-center">
                     <MdOutlineMail />
                     <span>{e.email}</span>
-                  </div>
+                  </div>}
+                  
                 </div>
               </div>
               <div className="flex py-3 md:px-7 md:justify-end gap-8">

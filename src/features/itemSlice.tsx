@@ -117,14 +117,14 @@ export const getBookingDetail = createAsyncThunk(
 );
 export const editTableStatus = createAsyncThunk(
   "editTableStatus",
-  async ({ id, data }: { id: string; data: string }, { rejectWithValue }) => {
+  async ({ id, data }: { id: string; data: string} , { rejectWithValue }) => {
     console.log("status", id, data);
     try {
       const response = await axios.put(
         `http://localhost:5000/api/updateStatus/${id}`,
         { tableStatus: data }
       );
-      return { id, data: response.data };
+      return { id, tableStatus: data , data:response.data };
     } catch (error) {
       const err = error as AppAxiosError;
       return rejectWithValue(err.response?.data || err.message);
@@ -311,10 +311,10 @@ const itemSlice = createSlice({
       })
       .addCase(editTableStatus.fulfilled, (state, action) => {
         state.loading = false;
-        const { id, data } = action.payload;
+        const { id,tableStatus } = action.payload;
         state.tableDetail = state.tableDetail.map((e) =>
-          e._id === id ? { ...e, ...data } : e
-        );
+          e._id === id ? { ...e, tableStatus} : e
+        );console.log(state.tableDetail)
       })
       .addCase(editTableStatus.rejected, (state, action) => {
         state.loading = false;
