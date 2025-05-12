@@ -152,6 +152,20 @@ export const editBookingDetail = createAsyncThunk(
     }
   }
 );
+export const deleteBooking = createAsyncThunk(
+  "deleteBooking",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/deleteBooking/${id}`
+      );
+      return {id,data:res.data};
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
 
 export interface cartItems {
   _id: string;
@@ -330,7 +344,20 @@ const itemSlice = createSlice({
       .addCase(editBookingDetail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+       .addCase(deleteBooking.pending, (state) => {
+        state.loading = false;
+      })
+      .addCase(deleteBooking.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id } = action.payload;
+        state.bookingDetail = state.bookingDetail.filter((e)=>e._id !==id)
+      })
+      .addCase(deleteBooking.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
       });
+      
   },
 });
 export default itemSlice.reducer;

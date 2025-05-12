@@ -3,7 +3,7 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { useEffect, useState } from "react";
-import { getBookingDetail } from "../features/itemSlice";
+import { deleteBooking, editTableStatus, getBookingDetail } from "../features/itemSlice";
 import { MdDateRange } from "react-icons/md";
 import { IoMdTime } from "react-icons/io";
 import { MdOutlineMail } from "react-icons/md";
@@ -13,26 +13,35 @@ import EditBookingForm from "./EditBookingForm";
 
 function MyBooking() {
   const dispatch = useDispatch<AppDispatch>();
-  const[id,setId]=useState<string>("")
-  const[showEditBookingForm,setShowEditBookingForm]=useState(false)
+  const [id, setId] = useState<string>("");
+  const [showEditBookingForm, setShowEditBookingForm] = useState(false);
   const { bookingDetail } = useSelector((state: RootState) => state.item);
   useEffect(() => {
     dispatch(getBookingDetail());
-  }, [dispatch,setShowEditBookingForm,showEditBookingForm]);
-  const handleEdit=(id:string)=>{
-    setId(id)
-setShowEditBookingForm(true)
+  }, [dispatch, setShowEditBookingForm, showEditBookingForm]);
+  const handleEdit = (id: string) => {
+    setId(id);
+    setShowEditBookingForm(true);
+  };
+  const handleCancel=(e:string)=>{
+    dispatch(deleteBooking(e))
+    dispatch(editTableStatus({id:e,data:"available"}))
   }
   return (
-  
-    <> {showEditBookingForm && (
+    <>
+      {" "}
+      {showEditBookingForm && (
         <div className="fixed top-5 z-30 left-18 backdrop-blur-[1px] h-[100vh] w-[100vw] bg-[#6b626260] flex items-center justify-center">
-          <EditBookingForm setShowEditBookingForm={setShowEditBookingForm} id={id}  />
+          <EditBookingForm
+            setShowEditBookingForm={setShowEditBookingForm}
+            id={id}
+          />
         </div>
       )}
-
       <div className="pt-14  ">
-        <p className="text-2xl font-bold text-cyan-600 text-center py-5">Booked Table Details</p>
+        <p className="text-2xl font-bold text-cyan-600 text-center py-5">
+          Booked Table Details
+        </p>
         <div className="flex flex-col justify-center items-center gap-5 ">
           {bookingDetail?.map((e, i) => (
             <div
@@ -47,7 +56,7 @@ setShowEditBookingForm(true)
                   <button className="border-1 px-5 rounded-md border-gray-300">
                     {e.location}
                   </button>
-                   <button className="border-1 px-5 rounded-md border-gray-300">
+                  <button className="border-1 px-5 rounded-md border-gray-300">
                     {e.members} members
                   </button>
                 </div>
@@ -84,14 +93,20 @@ setShowEditBookingForm(true)
                 </div>
               </div>
               <div className="flex py-3 md:px-7 md:justify-end gap-8">
-                <div className="flex justify-center items-center gap-1 w-30 bg-cyan-200 text-blue-600 py-1 rounded-lg cursor-pointer  " onClick={()=>handleEdit(e._id)}>
+                <div
+                  className="flex justify-center items-center gap-1 w-30 bg-cyan-200 text-blue-600 py-1 rounded-lg cursor-pointer  "
+                  onClick={() => handleEdit(e._id)}
+                >
                   <div>
                     {" "}
                     <MdEdit />
                   </div>
                   <p className="font-semibold">Edit</p>
                 </div>
-                <div className="flex justify-center items-center gap-2 w-45 py-1 rounded-lg  bg-red-200 text-red-500">
+                <div
+                  className="flex justify-center cursor-pointer items-center gap-2 w-45 py-1 rounded-lg  bg-red-200 text-red-500"
+                  onClick={() => handleCancel(e._id)}
+                >
                   <div>
                     <MdDelete />
                   </div>
