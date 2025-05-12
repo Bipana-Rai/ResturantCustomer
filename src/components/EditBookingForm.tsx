@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { BookedData, getBookingDetail } from "../features/itemSlice";
+import { BookedData, editBookingDetail, getBookingDetail } from "../features/itemSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 
@@ -25,12 +25,13 @@ function EditBookingForm({ setShowEditBookingForm, id }: TableCardProps) {
 
   const onSubmit = (data: BookedData) => {
     const transformedData = { ...data };
+    console.log(transformedData)
+    dispatch(editBookingDetail({id,data:transformedData}))
     setShowEditBookingForm(false);
-    console.log(transformedData);
   };
   useEffect(() => {
     dispatch(getBookingDetail());
-  }, [dispatch]);
+  }, [dispatch,setShowEditBookingForm]);
   return (
     <div className="anime  w-[500px] rounded-xl bg-white px-5 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
       <p className="text-2xl text-cyan-700 font-bold text-center">Booking</p>

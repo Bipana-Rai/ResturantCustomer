@@ -131,6 +131,24 @@ export const editTableStatus = createAsyncThunk(
     }
   }
 );
+export const editBookingDetail = createAsyncThunk(
+  "editBookingDetail",
+  async ({id,data}: {id:string,data:BookedData}, { rejectWithValue }) => {
+    try {
+      const res = await axios.put(
+        `http://localhost:5000/api/editBookingDetail/${id}`,
+        {
+          ...data,
+        }
+      );
+
+      return res.data;
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
 
 export interface cartItems {
   _id: string;
