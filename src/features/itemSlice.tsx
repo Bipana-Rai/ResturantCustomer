@@ -117,7 +117,7 @@ export const getBookingDetail = createAsyncThunk(
 );
 export const editTableStatus = createAsyncThunk(
   "editTableStatus",
-  async ({ id, data }: { id: string; data: string} , { rejectWithValue }) => {
+  async ({ id, data }: { id?:string; data: string} , { rejectWithValue }) => {
     console.log("status", id, data);
     try {
       const response = await axios.put(
@@ -200,7 +200,7 @@ export interface BookedData {
   location: string;
   members: number;
   phNo: string;
-  tableNumber: number;
+  tableNumber: string;
   createdAt: string;
 }
 interface category {

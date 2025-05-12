@@ -28,7 +28,7 @@ function BookingForm({
     formState: { errors },
   } = useForm<BookedData>();
   useEffect(() => {
-    reset({ tableNumber: Number(number), location: location });
+    reset({ tableNumber: number, location: location });
   }, [number, location, reset]);
   const onSubmit = (data: BookedData) => {
     const transformedData = { ...data };

@@ -3,29 +3,33 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { useEffect, useState } from "react";
-import { deleteBooking, editTableStatus, getBookingDetail } from "../features/itemSlice";
+import { deleteBooking, editTableStatus, getBookingDetail, getTable } from "../features/itemSlice";
 import { MdDateRange } from "react-icons/md";
 import { IoMdTime } from "react-icons/io";
 import { MdOutlineMail } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
+import { BookedData } from "../features/itemSlice";
 import EditBookingForm from "./EditBookingForm";
 
 function MyBooking() {
   const dispatch = useDispatch<AppDispatch>();
   const [id, setId] = useState<string>("");
   const [showEditBookingForm, setShowEditBookingForm] = useState(false);
-  const { bookingDetail } = useSelector((state: RootState) => state.item);
+  const { bookingDetail ,tableDetail} = useSelector((state: RootState) => state.item);
   useEffect(() => {
     dispatch(getBookingDetail());
+    dispatch(getTable())
   }, [dispatch, setShowEditBookingForm, showEditBookingForm]);
   const handleEdit = (id: string) => {
     setId(id);
     setShowEditBookingForm(true);
   };
-  const handleCancel=(e:string)=>{
-    dispatch(deleteBooking(e))
-    dispatch(editTableStatus({id:e,data:"available"}))
+  const handleCancel=(e:BookedData)=>{
+    const tableNumber=e.tableNumber
+    dispatch(deleteBooking(e._id))
+    const filterTable=tableDetail.find((e)=>e.tableNum === tableNumber)
+     dispatch(editTableStatus({id:filterTable?._id,data:"available"}))
   }
   return (
     <>
@@ -106,7 +110,7 @@ function MyBooking() {
                 </div>
                 <div
                   className="flex justify-center cursor-pointer items-center gap-2 w-45 py-1 rounded-lg  bg-red-200 text-red-500"
-                  onClick={() => handleCancel(e._id)}
+                  onClick={() => handleCancel(e)}
                 >
                   <div>
                     <MdDelete />
