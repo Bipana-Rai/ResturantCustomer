@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
+
+import { Button } from "@/components/ui/button";
 import {
   addBookingData,
   BookedData,
@@ -9,6 +9,7 @@ import {
 } from "../features/itemSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
+import { showToast } from "@/utils/toastUril";
 
 interface TableCardProps {
   number: string;
@@ -37,10 +38,13 @@ function BookingForm({
     dispatch(addBookingData(transformedData));
     dispatch(editTableStatus({ id, data: "booked" }));
     setShowBookingForm(false);
-    console.log(transformedData);
+      showToast("Booking Confirmed", "success", `Table ${data.tableNumber} reserved for ${data.fullName}`);
+
   };
+   
+     
   return (
-    <div className="anime  w-[500px] rounded-xl bg-white px-5 shadow-[0_3px_10px_rgb(0,0,0,0.1)]">
+    <div className="anime  w-[500px] rounded-xl bg-white px-5 shadow-[0_3px_10px_rgb(0,0,0,0.1)] py-2">
       <p className="text-2xl text-cyan-700 font-bold text-center">Booking</p>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col leading-1">
@@ -152,32 +156,14 @@ function BookingForm({
         </div>
         <div className="flex justify-between py-2 px-10">
           <button
-            className="px-8 text-sm bg-red-500 text-gray-200 py-1 rounded-md cursor-pointer"
+            className="px-8 text-sm border-1 font-semibold border-red-600 text-red-600  py-1 rounded-md cursor-pointer"
             onClick={() => setShowBookingForm(false)}
           >
             {" "}
             Cancel
           </button>
-          {/* <button
-            type="submit"
-            className="px-8 text-sm cursor-pointer bg-cyan-700 text-gray-200 py-1 rounded-md"
-          >
-            {" "}
+          <Button variant="outline" type="submit">
             Booked
-          </button> */}
-          <Button
-            variant="outline"
-            onClick={() =>
-              toast("Event has been created", {
-                description: "Sunday, December 03, 2023 at 9:00 AM",
-                action: {
-                  label: "Undo",
-                  onClick: () => console.log("Undo"),
-                },
-              })
-            }
-          >
-            Show Toast
           </Button>
         </div>
       </form>
