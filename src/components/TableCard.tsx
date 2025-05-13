@@ -24,18 +24,23 @@ function TableCard({ data }: tableprops) {
   const leftSideChairs = Math.ceil(sideChairs / 2);
   const rightSideChairs = Math.floor(sideChairs / 2);
 
-  const handleShow=()=>{
-    if(data.tableStatus==="booked"){
-      return alert("sorry,this table is already booked.")
+  const handleShow = () => {
+    if (data.tableStatus === "booked") {
+      return alert("sorry,this table is already booked.");
     }
-    setShowBookingForm(true)
-  }
+    setShowBookingForm(true);
+  };
 
   return (
     <>
       {showBookingForm && (
         <div className="fixed top-5 z-30 left-18 backdrop-blur-[1px] h-[100vh] w-[100vw] bg-[#6b626260] flex items-center justify-center">
-          <BookingForm setShowBookingForm={setShowBookingForm} number={data.tableNum} location={data.tableLocation} id={data._id} />
+          <BookingForm
+            setShowBookingForm={setShowBookingForm}
+            number={data.tableNum}
+            location={data.tableLocation}
+            id={data._id}
+          />
         </div>
       )}
 

@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
 import {
   addBookingData,
   BookedData,
@@ -34,7 +36,7 @@ function BookingForm({
     const transformedData = { ...data };
     dispatch(addBookingData(transformedData));
     dispatch(editTableStatus({ id, data: "booked" }));
-    setShowBookingForm(false)
+    setShowBookingForm(false);
     console.log(transformedData);
   };
   return (
@@ -156,13 +158,27 @@ function BookingForm({
             {" "}
             Cancel
           </button>
-          <button
+          {/* <button
             type="submit"
             className="px-8 text-sm cursor-pointer bg-cyan-700 text-gray-200 py-1 rounded-md"
           >
             {" "}
             Booked
-          </button>
+          </button> */}
+          <Button
+            variant="outline"
+            onClick={() =>
+              toast("Event has been created", {
+                description: "Sunday, December 03, 2023 at 9:00 AM",
+                action: {
+                  label: "Undo",
+                  onClick: () => console.log("Undo"),
+                },
+              })
+            }
+          >
+            Show Toast
+          </Button>
         </div>
       </form>
     </div>
