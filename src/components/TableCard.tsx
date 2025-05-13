@@ -2,6 +2,7 @@ import { LiaChairSolid } from "react-icons/lia";
 import { TableData } from "../features/itemSlice";
 import BookingForm from "./BookingForm";
 import { useState } from "react";
+import { showToast } from "@/utils/toastUril";
 interface tableprops {
   data: TableData;
 }
@@ -26,7 +27,7 @@ function TableCard({ data }: tableprops) {
 
   const handleShow = () => {
     if (data.tableStatus === "booked") {
-      return alert("sorry,this table is already booked.");
+      return showToast("Aready booked","error","Please ,select another table")
     }
     setShowBookingForm(true);
   };
