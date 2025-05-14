@@ -87,12 +87,13 @@ export const getTable = createAsyncThunk(
 );
 export const addBookingData = createAsyncThunk(
   "addBookingData",
-  async (data: BookedData, { rejectWithValue }) => {
+  async ({data,status }:{data:BookedData,status:string}, { rejectWithValue }) => {
     try {
       const res = await axios.post(
         "http://localhost:5000/api/addBookingDetail",
         {
           ...data,
+          status:status
         }
       );
 
@@ -134,14 +135,16 @@ export const editTableStatus = createAsyncThunk(
 export const editBookingDetail = createAsyncThunk(
   "editBookingDetail",
   async (
-    { id, data }: { id: string; data: BookedData },
+    { id, data,status }: { id: string; data: BookedData ,status:string},
     { rejectWithValue }
   ) => {
+    console.log(id,data,status)
     try {
       const res = await axios.put(
         `http://localhost:5000/api/editBookingDetail/${id}`,
         {
           ...data,
+          status:status
         }
       );
 
@@ -202,6 +205,7 @@ export interface BookedData {
   phNo: string;
   tableNumber: string;
   createdAt: string;
+  status:string,
 }
 interface category {
   _id: string;

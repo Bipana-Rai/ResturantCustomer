@@ -10,6 +10,7 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { showToast } from "@/utils/toastUril";
+import { useNavigate } from "react-router-dom";
 
 interface TableCardProps {
   number: string;
@@ -24,6 +25,7 @@ function BookingForm({
   setShowBookingForm,
 }: TableCardProps) {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate=useNavigate()
   const {
     register,
     handleSubmit,
@@ -35,10 +37,11 @@ function BookingForm({
   }, [number, location, reset]);
   const onSubmit = (data: BookedData) => {
     const transformedData = { ...data };
-    dispatch(addBookingData(transformedData));
+    dispatch(addBookingData({data:transformedData,status:"booked"}));
     dispatch(editTableStatus({ id, data: "booked" }));
     setShowBookingForm(false);
       showToast("Booking Confirmed", "success", `Table ${data.tableNumber} reserved for ${data.fullName}`);
+      navigate("/myBooking")
 
   };
    

@@ -3,7 +3,11 @@ import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 import { useEffect, useState } from "react";
-import { deleteBooking, editTableStatus, getBookingDetail, getTable } from "../features/itemSlice";
+import {
+  editBookingDetail,
+  getBookingDetail,
+  getTable,
+} from "../features/itemSlice";
 import { MdDateRange } from "react-icons/md";
 import { IoMdTime } from "react-icons/io";
 import { MdOutlineMail } from "react-icons/md";
@@ -16,21 +20,20 @@ function MyBooking() {
   const dispatch = useDispatch<AppDispatch>();
   const [id, setId] = useState<string>("");
   const [showEditBookingForm, setShowEditBookingForm] = useState(false);
-  const { bookingDetail ,tableDetail} = useSelector((state: RootState) => state.item);
+  const { bookingDetail } = useSelector((state: RootState) => state.item);
   useEffect(() => {
     dispatch(getBookingDetail());
-    dispatch(getTable())
+    dispatch(getTable());
   }, [dispatch, setShowEditBookingForm, showEditBookingForm]);
   const handleEdit = (id: string) => {
     setId(id);
     setShowEditBookingForm(true);
   };
-  const handleCancel=(e:BookedData)=>{
-    const tableNumber=e.tableNumber
-    dispatch(deleteBooking(e._id))
-    const filterTable=tableDetail.find((e)=>e.tableNum === tableNumber)
-     dispatch(editTableStatus({id:filterTable?._id,data:"available"}))
-  }
+  const handleCancel = (e: BookedData) => {
+    // dispatch(deleteBooking(e._id))
+
+    dispatch(editBookingDetail({ data: e, status: "cancelled", id: e._id }));
+  };
   return (
     <>
       {" "}
@@ -90,11 +93,12 @@ function MyBooking() {
                     <FaPhoneAlt />
                     <span>{e.phNo}</span>
                   </div>
-                  {e.email&&<div className="flex gap-2 items-center">
-                    <MdOutlineMail />
-                    <span>{e.email}</span>
-                  </div>}
-                  
+                  {e.email && (
+                    <div className="flex gap-2 items-center">
+                      <MdOutlineMail />
+                      <span>{e.email}</span>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex py-3 md:px-7 md:justify-end gap-8">

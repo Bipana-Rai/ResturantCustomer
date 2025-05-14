@@ -4,6 +4,7 @@ import { AppDispatch, RootState } from "../store/store";
 import { useEffect, useRef, useState } from "react";
 import { getCartItem, getCategory, getItems } from "../features/itemSlice";
 import Category from "../components/Category";
+import { GiConfirmed } from "react-icons/gi";
 import CartCard from "../components/CartCard";
 function Menu() {
   const dispatch = useDispatch<AppDispatch>();
@@ -81,7 +82,7 @@ function Menu() {
                   data={e}
                   key={e._id}
                   setCategory={setCategory}
-                  categoryCount={categoryCount?.[e.category]||0}
+                  categoryCount={categoryCount?.[e.category] || 0}
                 />
               )
             )}
@@ -119,8 +120,14 @@ function Menu() {
               <p className="text-center text-gray-500">No items in cart</p>
             )}
           </div>
-          <div className="px-4 py-2 font-bold text-lg ">
-            Grand Total: ${grandTotal.toFixed(2)}
+          <div className="flex justify-between items-center pe-3">
+            <p className="px-4 py-2 font-bold text-lg ">
+              Grand Total: ${grandTotal.toFixed(2)}
+            </p>
+            <button className="flex items-center gap-2 text-md px-5 py-1 rounded-md  border-1 border-black  ">
+              Order
+              <GiConfirmed />
+            </button>
           </div>
         </div>
       </div>
