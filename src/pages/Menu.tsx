@@ -134,7 +134,7 @@ function Menu() {
             <p className="px-4 py-2 font-bold text-lg ">
               Grand Total: ${grandTotal.toFixed(2)}
             </p>
-            <PopoverDemo setShowOrder={setShowOrder}   />
+            <PopoverDemo setShowOrder={setShowOrder} setShowTakeAwayOrder={setShowTakeAwayOrder}  />
           </div>
         </div>
       </div>

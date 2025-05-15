@@ -4,14 +4,29 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-interface menuProps{
-  setShowOrder:(showOrder:boolean)=>void
+import { useState } from "react";
+interface menuProps {
+  setShowOrder: (showOrder: boolean) => void;
+  setShowTakeAwayOrder: (showTakeAwayOrder: boolean) => void;
 }
-function PopoverDemo({setShowOrder}:menuProps) {
+function PopoverDemo({ setShowOrder, setShowTakeAwayOrder }: menuProps) {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const handleDineIn = () => {
+    setShowOrder(true);
+
+    setIsPopoverOpen(false);
+  }; // Close Popover
+  const handleTakeAway = () => {
+    setShowTakeAwayOrder(true);
+    setIsPopoverOpen(false); // Close Popover
+  };
+
   return (
-    <Popover>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" >Place Order</Button>
+        <Button variant="outline" className="cursor-pointer">
+          Place Order
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-83 h-30 flex flex-col justify-between ">
         <h4 className="font-medium text-center leading-5">
@@ -19,11 +34,14 @@ function PopoverDemo({setShowOrder}:menuProps) {
         </h4>
 
         <div className="flex justify-around">
-          <Button className="border-2 border-gray-500 bg-white text-black" onClick={()=>setShowOrder(true)}>
+          <Button
+            className="border-2 border-gray-500 bg-white text-black"
+            onClick={handleDineIn}
+          >
             Dine In
           </Button>
 
-          <Button>Take Away</Button>
+          <Button onClick={handleTakeAway}>Take Away</Button>
         </div>
       </PopoverContent>
     </Popover>
