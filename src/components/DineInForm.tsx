@@ -38,11 +38,12 @@ function DineInForm({setShowOrder}:menuProps) {
       ),
     };
     console.log(orderData)
+    setShowOrder(false)
   };
   return (
     <>
-      <div className="fixed flex items-center justify-center h-[100vh] w-[100vw] backdrop-blur-sm bg-[#00000070] z-30 top-0 left-0">
-        <div className=" px-5 rounded-md bg-white w-[400px]  ">
+      <div className="fixed flex items-center justify-center h-[100vh] w-[100vw] backdrop-blur-[2px] bg-[#00000070] z-30 top-0 left-0">
+        <div className="anime px-5 rounded-md bg-white w-[400px]  ">
           <p className="text-xl py-3 font-semibold px-5">Ordered Items</p>
           <div className=" flex flex-col gap-2">
             {cartData?.map((item) => (

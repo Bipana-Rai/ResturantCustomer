@@ -184,6 +184,11 @@ export interface orderData{
     cartItems:cartItems,
     totalAmount:number
 }
+export interface orderTakeAwayData{
+    cartItem:cartItems,
+        name:string,
+        number:string
+}
 export interface dishItem {
   _id: string;
   dishName: string;

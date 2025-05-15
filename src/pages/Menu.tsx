@@ -7,6 +7,7 @@ import Category from "../components/Category";
 import { getCartItem, getCategory, getItems } from "../features/itemSlice";
 import { AppDispatch, RootState } from "../store/store";
 import DineInForm from "@/components/DineInForm";
+import TakeAwayForm from "@/components/TakeAwayForm";
 function Menu() {
   const dispatch = useDispatch<AppDispatch>();
   const [showFull, setShowFull] = useState<boolean>(false);
@@ -17,6 +18,7 @@ function Menu() {
     (state: RootState) => state.item
   );
   const [showOrder, setShowOrder] = useState(false);
+  const[showTakeAwayOrder,setShowTakeAwayOrder]=useState(false)
   const categoryCount = itemDetail?.reduce(
     (acc: Record<string, number>, item) => {
       acc[item.dishCategory] = (acc[item.dishCategory] || 0) + 1;
@@ -62,6 +64,10 @@ function Menu() {
   return (
     <>
       {showOrder && <DineInForm setShowOrder={setShowOrder} />}
+      {
+        showTakeAwayOrder && <TakeAwayForm setShowTakeAwayOrder={setShowTakeAwayOrder}/>
+      }
+      
 
       <div className="grid lg:grid-cols-7 ">
         <div className="col-span-5  ">
