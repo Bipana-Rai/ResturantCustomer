@@ -1,19 +1,14 @@
-import { MdEdit } from "react-icons/md";
-import { MdDelete } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../store/store";
+import AlertDialogUtils from "@/utils/AlertDialogUtils";
 import { useEffect, useState } from "react";
-import {
-  editBookingDetail,
-  getBookingDetail,
-  getTable,
-} from "../features/itemSlice";
-import { MdDateRange } from "react-icons/md";
+import { FaPhoneAlt, FaUser } from "react-icons/fa";
 import { IoMdTime } from "react-icons/io";
-import { MdOutlineMail } from "react-icons/md";
-import { FaPhoneAlt } from "react-icons/fa";
-import { FaUser } from "react-icons/fa";
-import { BookedData } from "../features/itemSlice";
+import { MdDateRange, MdEdit, MdOutlineMail } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getBookingDetail,
+  getTable
+} from "../features/itemSlice";
+import { AppDispatch, RootState } from "../store/store";
 import EditBookingForm from "./EditBookingForm";
 
 function MyBooking() {
@@ -21,19 +16,16 @@ function MyBooking() {
   const [id, setId] = useState<string>("");
   const [showEditBookingForm, setShowEditBookingForm] = useState(false);
   const { bookingDetail } = useSelector((state: RootState) => state.item);
+  const[status,setStatus]=useState("")
   useEffect(() => {
     dispatch(getBookingDetail());
     dispatch(getTable());
-  }, [dispatch, setShowEditBookingForm, showEditBookingForm]);
+  }, [dispatch, setShowEditBookingForm, showEditBookingForm,status]);
   const handleEdit = (id: string) => {
     setId(id);
     setShowEditBookingForm(true);
   };
-  const handleCancel = (e: BookedData) => {
-    // dispatch(deleteBooking(e._id))
-
-    dispatch(editBookingDetail({ data: e, status: "cancelled", id: e._id }));
-  };
+ 
   return (
     <>
       {" "}
@@ -67,8 +59,8 @@ function MyBooking() {
                     {e.members} members
                   </button>
                 </div>
-                <div className="text-green-700 font-semibold bg-green-200 px-4 py-1 rounded-md">
-                  Confirmed
+                <div className={`${e.status==="booked"?"text-green-700 bg-green-200":"text-red-500 bg-red-200"} font-semibold  px-8 text-sm py-1 rounded-md`}>
+                 {e.status}
                 </div>
               </div>
               <div className="md:flex items-center justify-between pe-15">
@@ -101,7 +93,8 @@ function MyBooking() {
                   )}
                 </div>
               </div>
-              <div className="flex py-3 md:px-7 md:justify-end gap-8">
+              {
+                e.status==="booked" &&    <div className="flex py-3 md:px-7 md:justify-end gap-8">
                 <div
                   className="flex justify-center items-center gap-1 w-30 bg-cyan-200 text-blue-600 py-1 rounded-lg cursor-pointer  "
                   onClick={() => handleEdit(e._id)}
@@ -112,20 +105,17 @@ function MyBooking() {
                   </div>
                   <p className="font-semibold">Edit</p>
                 </div>
-                <div
-                  className="flex justify-center cursor-pointer items-center gap-2 w-45 py-1 rounded-lg  bg-red-200 text-red-500"
-                  onClick={() => handleCancel(e)}
-                >
-                  <div>
-                    <MdDelete />
-                  </div>
-                  <p className="font-semibold">Cancel Booking</p>
-                </div>
+          
+                     <AlertDialogUtils setStatus={setStatus} data={e}/>
+                
               </div>
+              }
+           
             </div>
           ))}
         </div>
       </div>
+
     </>
   );
 }
