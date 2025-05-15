@@ -179,6 +179,11 @@ export interface cartItems {
   added: boolean;
   quantity: number;
 }
+export interface orderData{
+    tableNumber:string,
+    cartItems:cartItems,
+    totalAmount:number
+}
 export interface dishItem {
   _id: string;
   dishName: string;

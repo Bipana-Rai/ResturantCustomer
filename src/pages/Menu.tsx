@@ -1,11 +1,12 @@
+import PopoverDemo from "@/components/Popover";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Card from "../components/Card";
-import { AppDispatch, RootState } from "../store/store";
-import { useEffect, useRef, useState } from "react";
-import { getCartItem, getCategory, getItems } from "../features/itemSlice";
-import Category from "../components/Category";
-import { GiConfirmed } from "react-icons/gi";
 import CartCard from "../components/CartCard";
+import Category from "../components/Category";
+import { getCartItem, getCategory, getItems } from "../features/itemSlice";
+import { AppDispatch, RootState } from "../store/store";
+import DineInForm from "@/components/DineInForm";
 function Menu() {
   const dispatch = useDispatch<AppDispatch>();
   const [showFull, setShowFull] = useState<boolean>(false);
@@ -15,6 +16,7 @@ function Menu() {
   const { itemDetail, categoryDetail, cartData } = useSelector(
     (state: RootState) => state.item
   );
+  const [showOrder, setShowOrder] = useState(false);
   const categoryCount = itemDetail?.reduce(
     (acc: Record<string, number>, item) => {
       acc[item.dishCategory] = (acc[item.dishCategory] || 0) + 1;
@@ -59,6 +61,8 @@ function Menu() {
 
   return (
     <>
+      {showOrder && <DineInForm setShowOrder={setShowOrder} />}
+
       <div className="grid lg:grid-cols-7 ">
         <div className="col-span-5  ">
           <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4 ">
@@ -102,11 +106,11 @@ function Menu() {
           </div>
         </div>
         {/* second */}
-        <div className="col-span-2 sticky top-14 mt-10 h-[93vh]  bg-gray-200 pt-3  px-2 w-full  ">
-          <p className="font-bold text-lg text-center my-2">Cart Item</p>
+        <div className="col-span-2 sticky top-14 mt-1 h-[93vh]  bg-gray-200 pt-3  px-2 w-full  ">
+          <p className="font-bold text-lg text-center mb-1">Cart Item</p>
           <div
             // ref={cartContainerRef}
-            className=" h-[69vh] bg-white scrollbar-hidden px-2   overflow-y-auto  "
+            className=" h-[65vh] bg-white scrollbar-hidden px-2   overflow-y-auto  "
           >
             {cartData.length > 0 ? (
               cartData.map((item) => (
@@ -120,14 +124,11 @@ function Menu() {
               <p className="text-center text-gray-500">No items in cart</p>
             )}
           </div>
-          <div className="flex justify-between items-center pe-3">
+          <div className="flex flex-col gap-3 pe-3">
             <p className="px-4 py-2 font-bold text-lg ">
               Grand Total: ${grandTotal.toFixed(2)}
             </p>
-            <button className="flex items-center gap-2 text-md px-5 py-1 rounded-md  border-1 border-black  ">
-              Order
-              <GiConfirmed />
-            </button>
+            <PopoverDemo setShowOrder={setShowOrder}   />
           </div>
         </div>
       </div>
