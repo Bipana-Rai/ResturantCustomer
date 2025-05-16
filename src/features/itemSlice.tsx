@@ -169,6 +169,25 @@ export const deleteBooking = createAsyncThunk(
     }
   }
 );
+export const addDineInOrder = createAsyncThunk(
+  "addDineInOrder",
+  async ({data }:{data:orderData}, { rejectWithValue }) => {
+    console.log("slice",data)
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/addDineIn",
+        {
+          ...data,
+        }
+      );
+
+      return res.data;
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
 
 export interface cartItems {
   _id: string;
@@ -181,7 +200,7 @@ export interface cartItems {
 }
 export interface orderData{
     tableNumber:string,
-    cartItems:cartItems,
+    cartItems:cartItems[],
     totalAmount:number
 }
 export interface orderTakeAwayData{

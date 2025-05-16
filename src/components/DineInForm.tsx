@@ -1,14 +1,14 @@
-import { getCartItem, getTable } from "@/features/itemSlice";
+import { addDineInOrder, getCartItem, getTable } from "@/features/itemSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { orderData } from "@/features/itemSlice";
 import { cartItems } from "@/features/itemSlice";
-interface menuProps{
-    setShowOrder:(showOrder:boolean)=>void
+interface menuProps {
+  setShowOrder: (showOrder: boolean) => void;
 }
-function DineInForm({setShowOrder}:menuProps) {
+function DineInForm({ setShowOrder }: menuProps) {
   const {
     register,
     handleSubmit,
@@ -21,7 +21,7 @@ function DineInForm({setShowOrder}:menuProps) {
   const filterTableData = tableDetail.filter(
     (data) => data.tableStatus === "available"
   );
- 
+
   useEffect(() => {
     dispatch(getCartItem());
     dispatch(getTable());
@@ -29,36 +29,48 @@ function DineInForm({setShowOrder}:menuProps) {
   useEffect(() => {
     console.log(tableDetail);
   }, []);
-  const onSubmit = (data:orderData) => {
+  const grandTotal = cartData.reduce(
+    (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
+    0
+  );
+  const onSubmit = (data: orderData) => {
     const orderData = {
       tableNumber: data.tableNumber,
       cartItems: cartData,
-      totalAmount: cartData.reduce(
-        (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,0
-      ),
+      totalAmount: grandTotal,
     };
-    console.log(orderData)
-    setShowOrder(false)
+    dispatch(addDineInOrder({ data: orderData }));
+    console.log(orderData);
+    setShowOrder(false);
   };
   return (
     <>
       <div className="fixed flex items-center justify-center h-[100vh] w-[100vw] backdrop-blur-[2px] bg-[#00000070] z-30 top-0 left-0">
-        <div className="anime px-5 rounded-md bg-white w-[400px]  ">
-          <p className="text-xl py-3 font-semibold px-5">Ordered Items</p>
-          <div className=" flex flex-col gap-2">
+        <div className="anime px-9 rounded-md bg-white w-[450px]  ">
+          <p className="text-xl py-3 font-semibold px-5  ">Ordered Items</p>
+          <div className=" flex flex-col gap-2 border-b-1 border-dashed border-gray-300 pb-3">
+            
             {cartData?.map((item) => (
               <div className="flex justify-between px-5">
-                <p>{item.dishName}</p>
-                <p>$ {item.dishPrice * item.quantity}</p>
+                <p className="text-gray-600 ">
+                  {item.quantity}x {item.dishName}
+                </p>
+                <p className="font-semibold">
+                  $ {item.dishPrice * item.quantity}
+                </p>
               </div>
             ))}
+          </div>
+          <div className="flex px-5  py-3 border-b-1 border-dashed   justify-between border-gray-300">
+            <p className="font-semibold text-md">Total Payable</p>
+            <p className="font-semibold">${grandTotal}</p>
           </div>
           <form
             action=""
             className="flex  flex-col   gap-4 pt-5 pb-7 py-3"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <div>
+            <div className="py-2">
               <select
                 id=""
                 defaultValue=""
@@ -77,18 +89,19 @@ function DineInForm({setShowOrder}:menuProps) {
               {errors.tableNumber && <span>Please select table</span>}
             </div>
             <div className="flex  justify-around">
-                 <button
-              className=" border-2 border-black px-4  py-1 text-sm  rounded-md"
-              type="submit"
-           onClick={()=>setShowOrder(false)} >
-              Cancel Order
-            </button>
-            <button
-              className="bg-black text-gray-100 px-4 py-1 text-sm  rounded-md"
-              type="submit"
-            >
-              Confirm Order
-            </button>
+              <button
+                className=" border-2 border-black px-4  py-1 text-sm  rounded-md"
+                type="submit"
+                onClick={() => setShowOrder(false)}
+              >
+                Cancel Order
+              </button>
+              <button
+                className="bg-black text-gray-100 px-4 py-1 text-sm  rounded-md"
+                type="submit"
+              >
+                Confirm Order
+              </button>
             </div>
           </form>
         </div>

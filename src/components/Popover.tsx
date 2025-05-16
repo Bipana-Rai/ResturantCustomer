@@ -24,7 +24,7 @@ function PopoverDemo({ setShowOrder, setShowTakeAwayOrder }: menuProps) {
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="cursor-pointer">
+        <Button variant="outline" className="cursor-pointer bg-green-600 text-gray-200">
           Place Order
         </Button>
       </PopoverTrigger>
