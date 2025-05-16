@@ -202,6 +202,7 @@ export interface orderData{
     tableNumber:string,
     cartItems:cartItems[],
     totalAmount:number
+    status:string
 }
 export interface orderTakeAwayData{
     cartItem:cartItems,

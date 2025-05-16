@@ -38,6 +38,7 @@ function DineInForm({ setShowOrder }: menuProps) {
       tableNumber: data.tableNumber,
       cartItems: cartData,
       totalAmount: grandTotal,
+      status:"dine In"
     };
     dispatch(addDineInOrder({ data: orderData }));
     console.log(orderData);
