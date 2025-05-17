@@ -188,6 +188,21 @@ export const addDineInOrder = createAsyncThunk(
     }
   }
 );
+export const deleteAfterOrder = createAsyncThunk(
+  "deleteAfterOrder",
+  async (__, { rejectWithValue }) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:5000/api/deleteCartOrder"`
+      );
+      return res.data;
+      // setCount(0)
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
 
 export interface cartItems {
   _id: string;

@@ -18,7 +18,7 @@ function Menu() {
     (state: RootState) => state.item
   );
   const [showOrder, setShowOrder] = useState(false);
-  const[showTakeAwayOrder,setShowTakeAwayOrder]=useState(false)
+  const [showTakeAwayOrder, setShowTakeAwayOrder] = useState(false);
   const categoryCount = itemDetail?.reduce(
     (acc: Record<string, number>, item) => {
       acc[item.dishCategory] = (acc[item.dishCategory] || 0) + 1;
@@ -64,10 +64,9 @@ function Menu() {
   return (
     <>
       {showOrder && <DineInForm setShowOrder={setShowOrder} />}
-      {
-        showTakeAwayOrder && <TakeAwayForm setShowTakeAwayOrder={setShowTakeAwayOrder}/>
-      }
-      
+      {showTakeAwayOrder && (
+        <TakeAwayForm setShowTakeAwayOrder={setShowTakeAwayOrder} />
+      )}
 
       <div className="grid lg:grid-cols-7 ">
         <div className="col-span-5  ">
@@ -130,12 +129,17 @@ function Menu() {
               <p className="text-center text-gray-500">No items in cart</p>
             )}
           </div>
-          <div className="flex flex-col gap-3 pe-3">
-            <p className="px-4 py-2 font-bold text-lg ">
-              Grand Total: ${grandTotal.toFixed(2)}
-            </p>
-            <PopoverDemo setShowOrder={setShowOrder} setShowTakeAwayOrder={setShowTakeAwayOrder}  />
-          </div>
+          {cartData.length > 0 && (
+            <div className="flex flex-col gap-3 pe-3">
+              <p className="px-4 py-2 font-bold text-lg ">
+                Grand Total: ${grandTotal.toFixed(2)}
+              </p>
+              <PopoverDemo
+                setShowOrder={setShowOrder}
+                setShowTakeAwayOrder={setShowTakeAwayOrder}
+              />
+            </div>
+          )}
         </div>
       </div>
     </>

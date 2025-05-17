@@ -1,10 +1,11 @@
-import { addDineInOrder, getCartItem, getTable } from "@/features/itemSlice";
+import { addDineInOrder, deleteAfterOrder, getCartItem, getTable } from "@/features/itemSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { orderData } from "@/features/itemSlice";
 import { cartItems } from "@/features/itemSlice";
+import { toast } from "react-hot-toast";
 interface menuProps {
   setShowOrder: (showOrder: boolean) => void;
 }
@@ -28,6 +29,7 @@ function DineInForm({ setShowOrder }: menuProps) {
   }, [dispatch]);
   useEffect(() => {
     console.log(tableDetail);
+    
   }, []);
   const grandTotal = cartData.reduce(
     (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
@@ -43,7 +45,11 @@ function DineInForm({ setShowOrder }: menuProps) {
     dispatch(addDineInOrder({ data: orderData }));
     console.log(orderData);
     setShowOrder(false);
+     toast.success("Order items sucessfully")
+     dispatch(deleteAfterOrder())
+   
   };
+   
   return (
     <>
       <div className="fixed flex items-center justify-center h-[100vh] w-[100vw] backdrop-blur-[2px] bg-[#00000070] z-30 top-0 left-0">
