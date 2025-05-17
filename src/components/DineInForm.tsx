@@ -27,10 +27,6 @@ function DineInForm({ setShowOrder }: menuProps) {
     dispatch(getCartItem());
     dispatch(getTable());
   }, [dispatch]);
-  useEffect(() => {
-    console.log(tableDetail);
-    
-  }, []);
   const grandTotal = cartData.reduce(
     (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
     0
@@ -40,10 +36,10 @@ function DineInForm({ setShowOrder }: menuProps) {
       tableNumber: data.tableNumber,
       cartItems: cartData,
       totalAmount: grandTotal,
-      status:"dine In"
+      status:"dine In",
+      foodStatus:"waiting"
     };
     dispatch(addDineInOrder({ data: orderData }));
-    console.log(orderData);
     setShowOrder(false);
      toast.success("Order items sucessfully")
      dispatch(deleteAfterOrder())

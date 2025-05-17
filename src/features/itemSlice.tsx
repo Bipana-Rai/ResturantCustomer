@@ -193,7 +193,7 @@ export const deleteAfterOrder = createAsyncThunk(
   async (__, { rejectWithValue }) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/deleteCartOrder"`
+        `http://localhost:5000/api/deleteCartOrder`
       );
       return res.data;
       // setCount(0)
@@ -217,7 +217,8 @@ export interface orderData{
     tableNumber:string,
     cartItems:cartItems[],
     totalAmount:number
-    status:string
+    status:string,
+    foodStatus:string
 }
 export interface orderTakeAwayData{
     cartItem:cartItems,
@@ -363,7 +364,7 @@ const itemSlice = createSlice({
         const { id,tableStatus } = action.payload;
         state.tableDetail = state.tableDetail.map((e) =>
           e._id === id ? { ...e, tableStatus} : e
-        );console.log(state.tableDetail)
+        );
       })
       .addCase(editTableStatus.rejected, (state, action) => {
         state.loading = false;

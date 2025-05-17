@@ -11,7 +11,6 @@ interface TableCardProps {
 function EditBookingForm({ setShowEditBookingForm, id }: TableCardProps) {
   const { bookingDetail } = useSelector((state: RootState) => state.item);
   const filterData = bookingDetail.find((e) => e._id === id);
-  console.log(filterData);
   const dispatch = useDispatch<AppDispatch>();
   const {
     register,
@@ -25,7 +24,7 @@ function EditBookingForm({ setShowEditBookingForm, id }: TableCardProps) {
 
   const onSubmit = (data: BookedData) => {
     const transformedData = { ...data };
-    console.log(transformedData)
+    
     dispatch(editBookingDetail({id,data:transformedData,status:"booked"}))
     setShowEditBookingForm(false);
 
