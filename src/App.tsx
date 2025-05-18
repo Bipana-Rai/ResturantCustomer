@@ -7,6 +7,7 @@ import Menu from "./pages/Menu";
 import MainLayout from "./outlet/MainLayout";
 import Authentication from "./pages/Authentication";
 
+
 function App() {
   return (
     <>
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Menu />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/myBooking" element={<MyBooking />} />
+          
         </Route>
       </Routes>
 
