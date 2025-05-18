@@ -87,13 +87,16 @@ export const getTable = createAsyncThunk(
 );
 export const addBookingData = createAsyncThunk(
   "addBookingData",
-  async ({data,status }:{data:BookedData,status:string}, { rejectWithValue }) => {
+  async (
+    { data, status }: { data: BookedData; status: string },
+    { rejectWithValue }
+  ) => {
     try {
       const res = await axios.post(
         "http://localhost:5000/api/addBookingDetail",
         {
           ...data,
-          status:status
+          status: status,
         }
       );
 
@@ -118,14 +121,14 @@ export const getBookingDetail = createAsyncThunk(
 );
 export const editTableStatus = createAsyncThunk(
   "editTableStatus",
-  async ({ id, data }: { id?:string; data: string} , { rejectWithValue }) => {
+  async ({ id, data }: { id?: string; data: string }, { rejectWithValue }) => {
     console.log("status", id, data);
     try {
       const response = await axios.put(
         `http://localhost:5000/api/updateStatus/${id}`,
         { tableStatus: data }
       );
-      return { id, tableStatus: data , data:response.data };
+      return { id, tableStatus: data, data: response.data };
     } catch (error) {
       const err = error as AppAxiosError;
       return rejectWithValue(err.response?.data || err.message);
@@ -135,16 +138,16 @@ export const editTableStatus = createAsyncThunk(
 export const editBookingDetail = createAsyncThunk(
   "editBookingDetail",
   async (
-    { id, data,status }: { id: string; data: BookedData ,status:string},
+    { id, data, status }: { id: string; data: BookedData; status: string },
     { rejectWithValue }
   ) => {
-    console.log(id,data,status)
+    console.log(id, data, status);
     try {
       const res = await axios.put(
         `http://localhost:5000/api/editBookingDetail/${id}`,
         {
           ...data,
-          status:status
+          status: status,
         }
       );
 
@@ -162,7 +165,7 @@ export const deleteBooking = createAsyncThunk(
       const res = await axios.delete(
         `http://localhost:5000/api/deleteBooking/${id}`
       );
-      return {id,data:res.data};
+      return { id, data: res.data };
     } catch (error) {
       const err = error as AppAxiosError;
       return rejectWithValue(err.response?.data || err.message);
@@ -171,15 +174,12 @@ export const deleteBooking = createAsyncThunk(
 );
 export const addDineInOrder = createAsyncThunk(
   "addDineInOrder",
-  async ({data }:{data:orderData}, { rejectWithValue }) => {
-    console.log("slice",data)
+  async ({ data }: { data: orderData }, { rejectWithValue }) => {
+    console.log("slice", data);
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/addDineIn",
-        {
-          ...data,
-        }
-      );
+      const res = await axios.post("http://localhost:5000/api/addDineIn", {
+        ...data,
+      });
 
       return res.data;
     } catch (error) {
@@ -205,15 +205,26 @@ export const deleteAfterOrder = createAsyncThunk(
 );
 export const addSignupdata = createAsyncThunk(
   "addSignupdata",
-  async ({data }:{data:signupData}, { rejectWithValue }) => {
+  async ({ data }: { data: signupData }, { rejectWithValue }) => {
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/addsignupData",
-        {
-          ...data,
-        
-        }
-      );
+      const res = await axios.post("http://localhost:5000/api/addsignupData", {
+        ...data,
+      });
+
+      return res.data;
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+export const loginData = createAsyncThunk(
+  "loginData",
+  async ({ data }: { data: formdata }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/loginData", {
+        ...data,
+      });
 
       return res.data;
     } catch (error) {
@@ -223,13 +234,16 @@ export const addSignupdata = createAsyncThunk(
   }
 );
 
-export interface signupData{
-    email:string
-    password:string
-    firstName:string
-    lastName:string
-    phone:string
-
+export interface signupData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+}
+export interface formdata {
+  email: string;
+  password: string;
 }
 export interface cartItems {
   _id: string;
@@ -240,17 +254,17 @@ export interface cartItems {
   added: boolean;
   quantity: number;
 }
-export interface orderData{
-    tableNumber:string,
-    cartItems:cartItems[],
-    totalAmount:number
-    status:string,
-    foodStatus:string
+export interface orderData {
+  tableNumber: string;
+  cartItems: cartItems[];
+  totalAmount: number;
+  status: string;
+  foodStatus: string;
 }
-export interface orderTakeAwayData{
-    cartItem:cartItems,
-        name:string,
-        number:string
+export interface orderTakeAwayData {
+  cartItem: cartItems;
+  name: string;
+  number: string;
 }
 export interface dishItem {
   _id: string;
@@ -278,7 +292,7 @@ export interface BookedData {
   phNo: string;
   tableNumber: string;
   createdAt: string;
-  status:string,
+  status: string;
 }
 interface category {
   _id: string;
@@ -388,9 +402,9 @@ const itemSlice = createSlice({
       })
       .addCase(editTableStatus.fulfilled, (state, action) => {
         state.loading = false;
-        const { id,tableStatus } = action.payload;
+        const { id, tableStatus } = action.payload;
         state.tableDetail = state.tableDetail.map((e) =>
-          e._id === id ? { ...e, tableStatus} : e
+          e._id === id ? { ...e, tableStatus } : e
         );
       })
       .addCase(editTableStatus.rejected, (state, action) => {
@@ -422,19 +436,18 @@ const itemSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-       .addCase(deleteBooking.pending, (state) => {
+      .addCase(deleteBooking.pending, (state) => {
         state.loading = false;
       })
       .addCase(deleteBooking.fulfilled, (state, action) => {
         state.loading = false;
         const { id } = action.payload;
-        state.bookingDetail = state.bookingDetail.filter((e)=>e._id !==id)
+        state.bookingDetail = state.bookingDetail.filter((e) => e._id !== id);
       })
       .addCase(deleteBooking.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });
-      
   },
 });
 export default itemSlice.reducer;
