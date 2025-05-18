@@ -203,7 +203,34 @@ export const deleteAfterOrder = createAsyncThunk(
     }
   }
 );
+export const addSignupdata = createAsyncThunk(
+  "addSignupdata",
+  async ({data }:{data:signupData}, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/addsignupData",
+        {
+          ...data,
+        
+        }
+      );
 
+      return res.data;
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+export interface signupData{
+    email:string
+    password:string
+    firstName:string
+    lastName:string
+    phone:string
+
+}
 export interface cartItems {
   _id: string;
   dishName: string;

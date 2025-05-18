@@ -26,10 +26,10 @@ function Authentication() {
           >
             <Welcome showLogin={showLogin} />
           </div>
-          <div className="col-span-2 w-full bg-white ">
+          <div className="col-span-2  flex items-center justify-center w-full bg-white ">
             <Register setShowLogin={setShowLogin} showLogin={showLogin} />
           </div>
-          <div className="col-span-2 relative flex items-center justify-center bg-white">
+          <div className="col-span-2  flex items-center justify-center bg-white">
             <Login setShowLogin={setShowLogin} showLogin={showLogin} />
           </div>
         </div>
