@@ -4,7 +4,7 @@ import { MdPermContactCalendar } from "react-icons/md";
 const sidebarContent=[{
     icon:<BiSolidFoodMenu />,
     title:"menu",
-    path:"/"
+    path:"/menu"
 },{
     icon:<TbBrandBooking />,
     title:"Booking",

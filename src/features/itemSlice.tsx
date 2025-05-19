@@ -328,7 +328,7 @@ interface CategoryState {
   cartData: cartItems[];
   tableDetail: TableData[];
   bookingDetail: BookedData[];
-  user:null;
+  user: null;
 }
 const initialState: CategoryState = {
   loading: false,
@@ -470,7 +470,6 @@ const itemSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-
       .addCase(authorizeUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;

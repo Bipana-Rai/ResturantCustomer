@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "./store/store";
 import { useEffect } from "react";
 import { authorizeUser } from "./features/itemSlice";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 function App() {
@@ -20,12 +21,14 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/register" element={<Authentication/>} />
+        <Route path="/" element={<Authentication/>} />
         <Route element={<MainLayout />}>
-          <Route path="/" element={<Menu />} />
+        {/*prevent user to access without login*/}
+        <Route element={<ProtectedRoute/>}> 
+          <Route path="/menu" element={<Menu />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/myBooking" element={<MyBooking />} />
-          
+          </Route>
         </Route>
       </Routes>
 

@@ -25,7 +25,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
       await dispatch(loginData({ data })).unwrap();
       toast.success("LogIn successfully");
        window.setTimeout(() => {
-        navigate("/");
+        navigate("/menu");
       }, 1000);
     } catch (error) {
       const err = error as AppAxiosError;
