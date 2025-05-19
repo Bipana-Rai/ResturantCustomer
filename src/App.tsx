@@ -6,9 +6,17 @@ import Booking from "./pages/Booking";
 import Menu from "./pages/Menu";
 import MainLayout from "./outlet/MainLayout";
 import Authentication from "./pages/Authentication";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "./store/store";
+import { useEffect } from "react";
+import { authorizeUser } from "./features/itemSlice";
 
 
 function App() {
+  const dispatch=useDispatch<AppDispatch>()
+  useEffect(()=>{
+    dispatch(authorizeUser())
+  },[dispatch])
   return (
     <>
       <Routes>

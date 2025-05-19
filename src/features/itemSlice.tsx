@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
+axios.defaults.withCredentials = true; //axios lae default ma rakheko so that yesle every request ma cookie send garxa
 export type AppAxiosError = AxiosError<{ message: string }>;
 
 export const getItems = createAsyncThunk(
@@ -202,6 +203,7 @@ export const deleteAfterOrder = createAsyncThunk(
     }
   }
 );
+
 export const signupDetail = createAsyncThunk(
   "signupDetail",
   async (data: { data: signupData }, { rejectWithValue }) => {
@@ -224,10 +226,14 @@ export const loginData = createAsyncThunk(
   "loginData",
   async ({ data }: { data: formdata }, { rejectWithValue }) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/loginData", {
-        ...data,
-      });
-      // console.log("token",res.data)
+      const res = await axios.post(
+        "http://localhost:5000/api/loginData",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("token", res.data);
       return res.data;
     } catch (error) {
       const err = error as AppAxiosError;
@@ -236,6 +242,19 @@ export const loginData = createAsyncThunk(
   }
 );
 
+export const authorizeUser = createAsyncThunk(
+  "authorizeUser",
+  async (__, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/verify");
+      console.log("data", response.data);
+      return response.data;
+    } catch (error) {
+      const err = error as AppAxiosError;
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
 export interface signupData {
   email: string;
   password: string;
@@ -309,6 +328,7 @@ interface CategoryState {
   cartData: cartItems[];
   tableDetail: TableData[];
   bookingDetail: BookedData[];
+  user:null;
 }
 const initialState: CategoryState = {
   loading: false,
@@ -318,6 +338,7 @@ const initialState: CategoryState = {
   cartData: [],
   tableDetail: [],
   bookingDetail: [],
+  user: null,
 };
 
 const itemSlice = createSlice({
@@ -448,6 +469,11 @@ const itemSlice = createSlice({
       .addCase(deleteBooking.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+      })
+
+      .addCase(authorizeUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
       });
   },
 });
