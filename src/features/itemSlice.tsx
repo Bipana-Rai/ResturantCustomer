@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
+import toast from "react-hot-toast";
 type AppAxiosError = AxiosError<{ message: string }>;
 
 export const getItems = createAsyncThunk(
@@ -203,14 +204,15 @@ export const deleteAfterOrder = createAsyncThunk(
     }
   }
 );
-export const addSignupdata = createAsyncThunk(
-  "addSignupdata",
-  async ({ data }: { data: signupData }, { rejectWithValue }) => {
+export const signupDetail = createAsyncThunk(
+  "signupDetail",
+  async (data:{data:signupData} ,{ rejectWithValue }) => {
     try {
-      const res = await axios.post("http://localhost:5000/api/addsignupData", {
-        ...data,
-      });
-
+      const res = await axios.post(
+        `http://localhost:5000/api/signupData`,
+        data
+      );
+      toast.success("Register Successfully")
       return res.data;
     } catch (error) {
       const err = error as AppAxiosError;

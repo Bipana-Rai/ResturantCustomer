@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { addSignupdata, signupData } from "@/features/itemSlice";
+import {  signupData, signupDetail } from "@/features/itemSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 
@@ -13,7 +13,7 @@ function Register({ setShowLogin, showLogin }: authenticationProps) {
   const dispatch=useDispatch<AppDispatch>()
   const onSubmit=(data:signupData)=>{
     const transformData=data
-    dispatch(addSignupdata({data:transformData}))
+    dispatch(signupDetail({data:transformData}))
     console.log(transformData)
   }
   return (
