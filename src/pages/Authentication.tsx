@@ -14,35 +14,27 @@ function Authentication() {
           className="absolute   h-full w-full  blur-md"
         />
 
-        <div className="rounded-md overflow-hidden relative lg:w-[800px] lg:h-[450px] ">
+        <div className="rounded-md overflow-hidden lg:relative lg:w-[800px] lg:h-[450px]  h-[450px] w-[350px]  ">
           <div
             className={`w-[400px] z-30 h-full lg:absolute hidden lg:block transition-all duration-500 ease-in-out`}
             style={{
-             
               transform: showLogin ? "translateX(0)" : "translateX(100%)",
-              zIndex:40
-             
+              zIndex: 40,
             }}
           >
             <Welcome setShowLogin={setShowLogin} showLogin={showLogin} />
           </div>
           <div
-            className={`lg:absolute lg:h-full lg:w-[400px] h-[450px] w-[350px]   flex items-center  justify-center transition-all duration-500 ease-in-out  bg-white`} 
-            style={{
-              
-              transform: showLogin ? "translateX(100%)" : "translateX(0%) ",
-              zIndex: showLogin ? 10 : 30,
-            }}
+            className={`absolute lg:h-full rounded-md lg:rounded-none lg:w-[400px] h-[450px] w-[350px] flex items-center  justify-center lg:transition-all lg:duration-500 ease-in-out  bg-white   ${
+              showLogin ? "lg:translate-x-full z-10" : "lg:translate-x-0 z-30"
+            }`}
           >
             <Register setShowLogin={setShowLogin} showLogin={showLogin} />
           </div>
           <div
-           className={`lg:absolute lg:h-full lg:w-[400px] h-[450px] w-[350px] flex items-center justify-center transition-all duration-500 ease-in-out  bg-white`} 
-            style={{
-             
-              transform: showLogin ? "translateX(100%)" : "translateX(0%)",
-                zIndex: showLogin ? 30 : 10,
-            }}
+            className={`absolute lg:h-full rounded-md lg:rounded-none lg:w-[400px] h-[450px] w-[350px] flex items-center  justify-center lg:transition-all lg:duration-500 ease-in-out  bg-white  ${
+              showLogin ? "lg:translate-x-full z-30" : "lg:translate-x-0 z-10"
+            }`}
           >
             <Login setShowLogin={setShowLogin} showLogin={showLogin} />
           </div>

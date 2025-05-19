@@ -175,7 +175,6 @@ export const deleteBooking = createAsyncThunk(
 export const addDineInOrder = createAsyncThunk(
   "addDineInOrder",
   async ({ data }: { data: orderData }, { rejectWithValue }) => {
-    
     try {
       const res = await axios.post("http://localhost:5000/api/addDineIn", {
         ...data,
@@ -205,16 +204,15 @@ export const deleteAfterOrder = createAsyncThunk(
 );
 export const signupDetail = createAsyncThunk(
   "signupDetail",
-  async (data:{data:signupData} ,{ rejectWithValue }) => {
-  
-    const finaldata=data.data
-      console.log("slice",finaldata);
+  async (data: { data: signupData }, { rejectWithValue }) => {
+    const finaldata = data.data;
+    console.log("slice", finaldata);
     try {
       const res = await axios.post(
         `http://localhost:5000/api/signupData`,
         finaldata
       );
-      
+
       return res.data;
     } catch (error) {
       const err = error as AppAxiosError;
@@ -229,7 +227,7 @@ export const loginData = createAsyncThunk(
       const res = await axios.post("http://localhost:5000/api/loginData", {
         ...data,
       });
-
+      // console.log("token",res.data)
       return res.data;
     } catch (error) {
       const err = error as AppAxiosError;
@@ -241,8 +239,7 @@ export const loginData = createAsyncThunk(
 export interface signupData {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   phone: string;
 }
 export interface formdata {
