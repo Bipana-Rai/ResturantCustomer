@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import toast from "react-hot-toast";
-type AppAxiosError = AxiosError<{ message: string }>;
+export type AppAxiosError = AxiosError<{ message: string }>;
 
 export const getItems = createAsyncThunk(
   "getItems",
@@ -176,7 +175,7 @@ export const deleteBooking = createAsyncThunk(
 export const addDineInOrder = createAsyncThunk(
   "addDineInOrder",
   async ({ data }: { data: orderData }, { rejectWithValue }) => {
-    console.log("slice", data);
+    
     try {
       const res = await axios.post("http://localhost:5000/api/addDineIn", {
         ...data,
@@ -207,12 +206,15 @@ export const deleteAfterOrder = createAsyncThunk(
 export const signupDetail = createAsyncThunk(
   "signupDetail",
   async (data:{data:signupData} ,{ rejectWithValue }) => {
+  
+    const finaldata=data.data
+      console.log("slice",finaldata);
     try {
       const res = await axios.post(
         `http://localhost:5000/api/signupData`,
-        data
+        finaldata
       );
-      toast.success("Register Successfully")
+      
       return res.data;
     } catch (error) {
       const err = error as AppAxiosError;

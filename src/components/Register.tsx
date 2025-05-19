@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
-import {  signupData, signupDetail } from "@/features/itemSlice";
+import { signupData, signupDetail } from "@/features/itemSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
+import toast from "react-hot-toast";
+import { AppAxiosError } from "@/features/itemSlice";
 
 interface authenticationProps {
   showLogin: boolean;
@@ -10,12 +12,18 @@ interface authenticationProps {
 
 function Register({ setShowLogin, showLogin }: authenticationProps) {
   const { register, handleSubmit } = useForm<signupData>();
-  const dispatch=useDispatch<AppDispatch>()
-  const onSubmit=(data:signupData)=>{
-    const transformData=data
-    dispatch(signupDetail({data:transformData}))
-    console.log(transformData)
-  }
+  const dispatch = useDispatch<AppDispatch>();
+  const onSubmit = async (data: signupData) => {
+    try {
+      
+       await dispatch(signupDetail({ data})).unwrap();
+      toast.success("Registered Successfully");
+    } catch (error) {
+       const err = error as AppAxiosError;
+      const errorMessage = err?.message || "Registration Failed";
+      toast.error(errorMessage);
+    }
+  };
   return (
     <>
       <div className="px-4 w-100">
