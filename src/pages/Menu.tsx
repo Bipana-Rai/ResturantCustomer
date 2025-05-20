@@ -54,12 +54,6 @@ function Menu() {
       }
     }
   }, [cartData.length]);
-  // const handleAddToCart = () => {
-  //   dispatch(getCartItem());
-  // };
-  // useEffect(() => {
-  //   handleAddToCart();
-  // }, []);
 
   useEffect(()=>{
     dispatch(getCartItem());

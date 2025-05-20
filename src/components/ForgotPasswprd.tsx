@@ -2,22 +2,26 @@ import { IoMdMail } from "react-icons/io";
 import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
-
+import { SubmitHandler, useForm } from "react-hook-form";
+import axios from "axios";
+type ForgotPasswordForm = {
+  email: string;
+};
 function ForgotPasswprd() {
   const navigate = useNavigate();
-  const {register,handleSubmit}=useForm()
-  const onSubmit=()=>{
-
-  }
+  const { register, handleSubmit } = useForm<ForgotPasswordForm>();
+  const onSubmit:SubmitHandler<ForgotPasswordForm> = async (data) => {
+    try {
+      await axios.post("http://localhost:5000/api/auth/forgot-password", data);
+    } catch (error) {
+      console.log(error);
+      alert("Failed to send reset link.");
+    }
+  };
   return (
     <>
       <div className="h-[100vh] w-[100vw] relative flex items-center justify-center">
-        <img
-          src="/bg.jpg"
-          alt=""
-          className="fixed  h-full w-full  blur-md"
-        />
+        <img src="/bg.jpg" alt="" className="fixed  h-full w-full  blur-md" />
         <motion.div
           className="w-[450px] px-8 bg-white z-30 py-2 rounded-md"
           initial={{ opacity: 0, y: -20 }}
@@ -38,7 +42,11 @@ function ForgotPasswprd() {
               <label htmlFor="" className="font-semibold text-gray-800">
                 E-mail address
               </label>
-              <input type="email" className="border-1 border-gray-500 py-1 px-3" />
+              <input
+                type="email"
+                className="border-1 border-gray-500 py-1 px-3"
+                {...register("email", { required: true })}
+              />
             </div>
             <div className="flex justify-between py-5">
               <button
@@ -52,8 +60,7 @@ function ForgotPasswprd() {
               <button
                 className="flex items-center bg-cyan-600 text-gray-100 w-30 gap-2 rounded-md justify-center py-2 cursor-pointer"
                 type="submit"
-                onClick={()=>navigate("/resetpassword")}
-                {...register("email",{required:true})}
+                // onClick={()=>navigate("/resetpassword")}
               >
                 {" "}
                 send link <IoMdMail />

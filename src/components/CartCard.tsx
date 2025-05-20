@@ -6,7 +6,7 @@ import { TiDelete } from "react-icons/ti";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { deleteItemFromcart } from "../features/itemSlice";
+import { deleteItemFromcart, getCartItem } from "../features/itemSlice";
 interface cartItems {
   _id: string;
   dishName: string;
@@ -43,7 +43,9 @@ function CartCard({ item, onPriceChange }: CartCardProps) {
         {
           quantity: quantity,
         }
+       
       );
+       
       if (res.status === 200) {
         console.log("Quantity updated in backend:", res.data.data);
       }
@@ -51,8 +53,9 @@ function CartCard({ item, onPriceChange }: CartCardProps) {
       console.error("Error updating quantity:", error);
     }
   };
-  const deleteCartItem=(id:string)=>{
-   dispatch(deleteItemFromcart(id))
+  const deleteCartItem=async(id:string)=>{
+   await dispatch(deleteItemFromcart(id))
+    dispatch(getCartItem())
    setCount(0)
   }
   useEffect(() => {

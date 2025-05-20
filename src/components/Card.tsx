@@ -2,6 +2,7 @@ import {
   addedItemToCart,
   deleteItemFromcart,
   dishItem,
+  getCartItem,
 } from "../features/itemSlice";
 import URL from "../utils/Url";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,12 +19,13 @@ function Card({ data }: CardProps) {
   const isAdded = cartData?.some(
     (cartItem) => cartItem._id === data._id && cartItem.added
   );
-  const handleClick = () => {
+  const handleClick =async () => {
     if (isAdded) {
-      dispatch(deleteItemFromcart(data._id));
+     await dispatch(deleteItemFromcart(data._id));
     } else {
-      dispatch(addedItemToCart(data));
+     await dispatch(addedItemToCart(data));
     }
+     dispatch(getCartItem())
   };
 
   return (

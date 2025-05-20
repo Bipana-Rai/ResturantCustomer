@@ -25,7 +25,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Authentication/>} />
         <Route path="/recoverypassword" element={<ForgotPasswprd/>}/>
-        <Route path="/resetpassword" element={<ResetPassword/>}/>
+        <Route path="/reset-password/:id/:token" element={<ResetPassword/>}/>
         <Route element={<MainLayout />}>
         {/*prevent user to access without login*/}
         <Route element={<ProtectedRoute/>}> 

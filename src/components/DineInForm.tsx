@@ -31,7 +31,7 @@ function DineInForm({ setShowOrder }: menuProps) {
     (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
     0
   );
-  const onSubmit = (data: orderData) => {
+  const onSubmit = async(data: orderData) => {
     const orderData = {
       tableNumber: data.tableNumber,
       cartItems: cartData,
@@ -39,10 +39,11 @@ function DineInForm({ setShowOrder }: menuProps) {
       status:"dine In",
       foodStatus:"waiting"
     };
-    dispatch(addDineInOrder({ data: orderData }));
+   await dispatch(addDineInOrder({ data: orderData }));
     setShowOrder(false);
      toast.success("Order items sucessfully")
-     dispatch(deleteAfterOrder())
+   await  dispatch(deleteAfterOrder())
+   dispatch(getCartItem())
    
   };
    
