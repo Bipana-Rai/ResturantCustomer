@@ -344,7 +344,11 @@ const initialState: CategoryState = {
 const itemSlice = createSlice({
   name: "item",
   initialState,
-  reducers: {},
+  reducers: {
+    logoutUser:(state)=>{
+      state.user=null;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getItems.pending, (state) => {
@@ -470,10 +474,14 @@ const itemSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+       .addCase(authorizeUser.pending, (state) => {
+        state.loading = false;
+      })
       .addCase(authorizeUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       });
   },
 });
+export const {logoutUser}=itemSlice.actions
 export default itemSlice.reducer;

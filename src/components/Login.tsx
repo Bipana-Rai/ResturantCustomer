@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { AppAxiosError } from "@/features/itemSlice";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { useRef, useState } from "react";
+import {  useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
 interface authenticationProps {
