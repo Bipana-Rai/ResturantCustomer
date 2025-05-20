@@ -11,6 +11,8 @@ import { AppDispatch } from "./store/store";
 import { useEffect } from "react";
 import { authorizeUser } from "./features/itemSlice";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ForgotPasswprd from "./components/ForgotPasswprd";
+import ResetPassword from "./components/ResetPassword";
 
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Authentication/>} />
+        <Route path="/recoverypassword" element={<ForgotPasswprd/>}/>
+        <Route path="/resetpassword" element={<ResetPassword/>}/>
         <Route element={<MainLayout />}>
         {/*prevent user to access without login*/}
         <Route element={<ProtectedRoute/>}> 

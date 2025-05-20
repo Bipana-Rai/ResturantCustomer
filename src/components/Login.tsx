@@ -8,7 +8,7 @@ import { AppAxiosError } from "@/features/itemSlice";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface authenticationProps {
   showLogin: boolean;
@@ -81,9 +81,9 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
               Password
             </label>
           </div>
-          <a href="" className=" text-cyan-600 ">
+          <Link to="/recoverypassword" className=" text-cyan-600 ">
             Forgot password?
-          </a>
+          </Link>
           <button className="bg-blue-500 w-full rounded-sm py-2 mt-4 text-gray-200">
             Login
           </button>

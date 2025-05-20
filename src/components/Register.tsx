@@ -17,6 +17,7 @@ function Register({ setShowLogin, showLogin }: authenticationProps) {
     try {
       await dispatch(signupDetail({ data })).unwrap();
       toast.success("Registered Successfully");
+      setShowLogin(true)
     } catch (error) {
       const err = error as AppAxiosError;
       const errorMessage = err?.message || "Registration Failed";
