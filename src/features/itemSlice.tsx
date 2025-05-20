@@ -346,6 +346,7 @@ const itemSlice = createSlice({
   initialState,
   reducers: {
     logoutUser:(state)=>{
+      state.loading=false
       state.user=null;
     }
   },
