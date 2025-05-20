@@ -3,9 +3,11 @@ import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 
 function ProtectedRoute() {
-  const { user,loading } = useSelector((state: RootState) => state.item);
+  const { user } = useSelector((state: RootState) => state.item);
   console.log("----", user);
-  if(loading){return <p>loading...</p>}
+ if (user === undefined) {
+    return null; // or a loading spinner
+  }
 
   return user ? <Outlet /> : <Navigate to="/" replace />;
 }

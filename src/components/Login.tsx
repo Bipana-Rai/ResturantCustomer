@@ -1,4 +1,4 @@
-import { loginData } from "@/features/itemSlice";
+import { authorizeUser, loginData } from "@/features/itemSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,8 +7,8 @@ import toast from "react-hot-toast";
 import { AppAxiosError } from "@/features/itemSlice";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import {  useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 interface authenticationProps {
   showLogin: boolean;
@@ -21,22 +21,23 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.item);
   const [showPassword, setShowPassword] = useState(false);
-  if (user) return <Navigate to={"/menu"} replace />;
+  useEffect(() => {
+    if (user) {
+      navigate("/menu", { replace: true });
+    }
+  }, [user, navigate]);
   const onSubmit = async (data: formdata) => {
     try {
       await dispatch(loginData({ data })).unwrap();
+      dispatch(authorizeUser())
       toast.success("LogIn successfully");
-      window.setTimeout(() => {
-        navigate("/menu", {
-          replace: true,
-        });
-      }, 1000);
     } catch (error) {
       const err = error as AppAxiosError;
       const errorMessage = err?.message || "Login Failed";
       toast.error(errorMessage);
     }
   };
+  
   return (
     <>
       <title>Login</title>
