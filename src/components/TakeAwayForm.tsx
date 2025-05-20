@@ -28,15 +28,15 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
   };
   useEffect(() => {
     dispatch(getCartItem());
-  }, [dispatch]);
+  }, []);
   const grandTotal = cartData.reduce(
     (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
     0
   );
-  const handleOrder=()=>{
-    setShowForm(true)
-    setShowOrder(false)
-  }
+  const handleOrder = () => {
+    setShowForm(true);
+    setShowOrder(false);
+  };
   return (
     <>
       <div className="fixed flex items-center justify-center h-[100vh] w-[100vw] backdrop-blur-[2px] bg-[#00000070] z-30 top-0 left-0">
@@ -57,80 +57,82 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
                   </div>
                 ))}
               </div>
-                  <div className="flex px-5  py-3 border-b-1 border-dashed   justify-between border-gray-300">
-            <p className="font-semibold text-md">Total Payable</p>
-            <p className="font-semibold">${grandTotal}</p>
-          </div>
-          <div className="flex py-5 justify-around">
-            <button
-              className="px-5 text-sm py-2 cursor-pointer border-1 border-black rounded-md "
-              onClick={() => setShowTakeAwayOrder(false)}
-            >
-              Cancel order
-            </button>
-            <button className="px-5 text-sm py-2  bg-black rounded-md text-gray-100 cursor-pointer " onClick={handleOrder}>
-              Place order
-            </button>
-          </div>
+              <div className="flex px-5  py-3 border-b-1 border-dashed   justify-between border-gray-300">
+                <p className="font-semibold text-md">Total Payable</p>
+                <p className="font-semibold">${grandTotal}</p>
+              </div>
+              <div className="flex py-5 justify-around">
+                <button
+                  className="px-5 text-sm py-2 cursor-pointer border-1 border-black rounded-md "
+                  onClick={() => setShowTakeAwayOrder(false)}
+                >
+                  Cancel order
+                </button>
+                <button
+                  className="px-5 text-sm py-2  bg-black rounded-md text-gray-100 cursor-pointer "
+                  onClick={handleOrder}
+                >
+                  Place order
+                </button>
+              </div>
             </>
           )}
 
-      
           {showForm && (
             <>
-            <form
-              action=""
-              className="flex  flex-col gap-3  pb-7 py-3"
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <p className="text-xl font-semibold text-center">Order Payment</p>
-              <div className="flex flex-col gap-1 ">
-                <label htmlFor="">Full Name</label>
-                <input
-                  type="text"
-                  className=" border-1 px-2 rounded-md py-1 text-sm border-gray-400"
-                  placeholder="Enter a name.."
-                  {...register("name", { required: "name is required" })}
-                />
-                {errors.name && <span>Name is required</span>}
-              </div>
-              <div className="flex flex-col gap-1 ">
-                <label htmlFor="">Phone Number</label>
-                <input
-                  type="tel"
-                  className=" border-1 px-2 rounded-md py-1 text-sm border-gray-400"
-                  placeholder="Enter a phone number.."
-                  {...register("number", { required: "number is required" })}
-                />
-                {errors.number && <span>number is required</span>}
-              </div>
-               <div className="border-t-1 border-gray-400 mt-4 ">
-                <p className="text-center py-3">Payment Method</p>
-                <div className="flex justify-around">
-                 <img src="./esewa.png" alt=""  className=" w-25"/>
-                <img src="./khalti.png" alt="" className=" w-25" />
+              <form
+                action=""
+                className="flex  flex-col gap-3  pb-7 py-3"
+                onSubmit={handleSubmit(onSubmit)}
+              >
+                <p className="text-xl font-semibold text-center">
+                  Order Payment
+                </p>
+                <div className="flex flex-col gap-1 ">
+                  <label htmlFor="">Full Name</label>
+                  <input
+                    type="text"
+                    className=" border-1 px-2 rounded-md py-1 text-sm border-gray-400"
+                    placeholder="Enter a name.."
+                    {...register("name", { required: "name is required" })}
+                  />
+                  {errors.name && <span>Name is required</span>}
                 </div>
-              </div>
+                <div className="flex flex-col gap-1 ">
+                  <label htmlFor="">Phone Number</label>
+                  <input
+                    type="tel"
+                    className=" border-1 px-2 rounded-md py-1 text-sm border-gray-400"
+                    placeholder="Enter a phone number.."
+                    {...register("number", { required: "number is required" })}
+                  />
+                  {errors.number && <span>number is required</span>}
+                </div>
+                <div className="border-t-1 border-gray-400 mt-4 ">
+                  <p className="text-center py-3">Payment Method</p>
+                  <div className="flex justify-around">
+                    <img src="./esewa.png" alt="" className=" w-25" />
+                    <img src="./khalti.png" alt="" className=" w-25" />
+                  </div>
+                </div>
 
-              <div className="flex  justify-around pt-3">
-                <button
-                  className=" border-2 border-red-300 px-4  py-1 text-sm text-red-600  rounded-md"
-                  type="submit"
-                  onClick={() => setShowTakeAwayOrder(false)}
-                >
-                  Cancel Order
-                </button>
-                <button
-                  className="bg-green-500 text-gray-100 px-4 py-1 text-sm  rounded-md"
-                  type="submit"
-                >
-                  Confirm order
-                </button>
-              </div>
-             
-            </form>
+                <div className="flex  justify-around pt-3">
+                  <button
+                    className=" border-2 border-red-300 px-4  py-1 text-sm text-red-600  rounded-md"
+                    type="submit"
+                    onClick={() => setShowTakeAwayOrder(false)}
+                  >
+                    Cancel Order
+                  </button>
+                  <button
+                    className="bg-green-500 text-gray-100 px-4 py-1 text-sm  rounded-md"
+                    type="submit"
+                  >
+                    Confirm order
+                  </button>
+                </div>
+              </form>
             </>
-           
           )}
         </div>
       </div>

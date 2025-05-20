@@ -248,7 +248,7 @@ export const authorizeUser = createAsyncThunk(
     try {
       const response = await axios.get("http://localhost:5000/api/verify");
       console.log("data", response.data);
-      return response.data;
+      return response.data.user;
     } catch (error) {
       const err = error as AppAxiosError;
       return rejectWithValue(err.response?.data || err.message);

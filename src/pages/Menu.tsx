@@ -54,20 +54,24 @@ function Menu() {
       }
     }
   }, [cartData.length]);
-  const handleAddToCart = () => {
-    dispatch(getCartItem());
-  };
-  useEffect(() => {
-    handleAddToCart();
-  }, [cartData]);
+  // const handleAddToCart = () => {
+  //   dispatch(getCartItem());
+  // };
+  // useEffect(() => {
+  //   handleAddToCart();
+  // }, []);
 
+  useEffect(()=>{
+    dispatch(getCartItem());
+  },[dispatch])
   return (
     <>
       {showOrder && <DineInForm setShowOrder={setShowOrder} />}
       {showTakeAwayOrder && (
         <TakeAwayForm setShowTakeAwayOrder={setShowTakeAwayOrder} />
       )}
-
+      <title>Menu page</title>
+      <link rel="icon" href="/food.png" />
       <div className="grid lg:grid-cols-7 ">
         <div className="col-span-5  ">
           <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4 ">

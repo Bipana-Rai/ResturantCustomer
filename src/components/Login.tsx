@@ -1,14 +1,14 @@
 import { loginData } from "@/features/itemSlice";
-import { AppDispatch } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { formdata } from "@/features/itemSlice";
 import toast from "react-hot-toast";
 import { AppAxiosError } from "@/features/itemSlice";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 interface authenticationProps {
   showLogin: boolean;
@@ -19,13 +19,17 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
   const { register, handleSubmit } = useForm<formdata>();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.item);
   const [showPassword, setShowPassword] = useState(false);
+  if (user) return <Navigate to={"/menu"} replace />;
   const onSubmit = async (data: formdata) => {
     try {
       await dispatch(loginData({ data })).unwrap();
       toast.success("LogIn successfully");
-       window.setTimeout(() => {
-        navigate("/menu");
+      window.setTimeout(() => {
+        navigate("/menu", {
+          replace: true,
+        });
       }, 1000);
     } catch (error) {
       const err = error as AppAxiosError;
@@ -35,6 +39,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
   };
   return (
     <>
+      <title>Login</title>
       <div className=" px-5 w-full   ">
         <p className="text-2xl font-bold text-center pb-4 ">LOGIN</p>
 
