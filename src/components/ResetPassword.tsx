@@ -10,11 +10,11 @@ function ResetPassword() {
         <img
           src="/bg.jpg"
           alt=""
-          className="absolute   h-full w-full  blur-md"
+          className="fixed  h-full w-full  blur-md"
         />
         <motion.div
           className="w-[450px] px-8 bg-white z-30 py-2 rounded-md"
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >

@@ -2,20 +2,25 @@ import { IoMdMail } from "react-icons/io";
 import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useForm } from "react-hook-form";
 
 function ForgotPasswprd() {
   const navigate = useNavigate();
+  const {register,handleSubmit}=useForm()
+  const onSubmit=()=>{
+
+  }
   return (
     <>
       <div className="h-[100vh] w-[100vw] relative flex items-center justify-center">
         <img
           src="/bg.jpg"
           alt=""
-          className="absolute   h-full w-full  blur-md"
+          className="fixed  h-full w-full  blur-md"
         />
         <motion.div
           className="w-[450px] px-8 bg-white z-30 py-2 rounded-md"
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
@@ -28,7 +33,7 @@ function ForgotPasswprd() {
             Please enter your e-mail address in the form.If we find an account
             then we will send an email with link to reset your password.
           </p>
-          <form action="">
+          <form action="" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-2">
               <label htmlFor="" className="font-semibold text-gray-800">
                 E-mail address
@@ -48,6 +53,7 @@ function ForgotPasswprd() {
                 className="flex items-center bg-cyan-600 text-gray-100 w-30 gap-2 rounded-md justify-center py-2 cursor-pointer"
                 type="submit"
                 onClick={()=>navigate("/resetpassword")}
+                {...register("email",{required:true})}
               >
                 {" "}
                 send link <IoMdMail />
