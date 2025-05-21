@@ -16,7 +16,7 @@ interface authenticationProps {
 }
 
 function Login({ setShowLogin, showLogin }: authenticationProps) {
-  const { register, handleSubmit } = useForm<formdata>();
+  const { register, handleSubmit,reset } = useForm<formdata>();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { user } = useSelector((state: RootState) => state.item);
@@ -37,7 +37,10 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
       toast.error(errorMessage);
     }
   };
-  
+  const handleSignup=()=>{
+    setShowLogin(!showLogin)
+    reset()
+  }
   return (
     <>
       <title>Login</title>
@@ -48,14 +51,14 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
           <div className="relative z-0 w-full mb-5 group">
             <input
               type="email"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+              className="block py-2.5   px-2 w-full text-sm text-gray-900 bg-transparent border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
               required
               {...register("email")}
             />
             <label
               htmlFor="floating_email"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-focus:z-10 bg-white peer-placeholder-shown:scale-100 px-3 mx-1 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 peer-placeholder-shown:-z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-focus:z-10 bg-white peer-placeholder-shown:scale-100 px-3 mx-1 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Email address
             </label>
@@ -63,7 +66,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
           <div className="relative items-center pe-3 flex z-0 w-full mb-1 text-gray-900 bg-transparent  border-2 border-gray-300 ">
             <input
               type={showPassword ? "text" : "password"}
-              className="block py-2.5 px-0 w-full text-sm appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer group "
+              className="block py-2.5 px-2 w-full text-sm appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer group "
               placeholder=" "
               required
               {...register("password")}
@@ -82,7 +85,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
 
             <label
               htmlFor="floating_password"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 mx-1 px-3 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 bg-white peer-focus:z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 mx-1 px-3 top-3 peer-placeholder-shown:-z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 bg-white peer-focus:z-10 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Password
             </label>
@@ -98,7 +101,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
           Don't have an account?{" "}
           <span
             className="text-cyan-600 cursor-pointer"
-            onClick={() => setShowLogin(!showLogin)}
+            onClick={handleSignup}
           >
             Signup
           </span>{" "}

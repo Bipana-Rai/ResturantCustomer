@@ -15,7 +15,7 @@ function Authentication() {
         />
 
         <div 
-         className="rounded-md overflow-hidden lg:relative lg:w-[800px] bg-white lg:h-[450px] md:w-[450px]  h-[450px] w-[350px]  ">
+         className="rounded-md overflow-hidden lg:relative lg:w-[800px] bg-white lg:h-[450px] md:w-[450px]  h-[400px] w-[350px]  ">
           <div
             className={`w-[400px] z-30 h-full lg:absolute hidden lg:block transition-all duration-500 ease-in-out`}
             style={{
