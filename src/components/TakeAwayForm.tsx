@@ -46,12 +46,12 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
   return (
     <>
       <div className="fixed flex items-center justify-center h-[100vh] w-[100vw] backdrop-blur-[2px] bg-[#00000070] z-30 top-0 left-0">
-        <div className="anime px-10 rounded-md bg-white w-[500px]  ">
+        <div className="anime px-10 rounded-md bg-white h-[400px] w-[500px]  ">
           {showOrder && (
             <>
               {" "}
               <p className="text-xl py-3 font-semibold px-5  ">Ordered Items</p>
-              <div className=" flex flex-col gap-2 border-b-1 border-dashed border-gray-300 pb-3">
+              <div className=" flex flex-col gap-2 border-b-1 border-dashed border-gray-300 h-[200px] overflow-y-auto scrollbar-hidden pb-3">
                 {cartData?.map((item) => (
                   <div className="flex justify-between px-5">
                     <p className="text-gray-600 ">

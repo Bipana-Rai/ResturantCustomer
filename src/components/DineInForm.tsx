@@ -1,4 +1,9 @@
-import { addDineInOrder, deleteAfterOrder, getCartItem, getTable } from "@/features/itemSlice";
+import {
+  addDineInOrder,
+  deleteAfterOrder,
+  getCartItem,
+  getTable,
+} from "@/features/itemSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -31,29 +36,27 @@ function DineInForm({ setShowOrder }: menuProps) {
     (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
     0
   );
-  const onSubmit = async(data: orderData) => {
+  const onSubmit = async (data: orderData) => {
     const orderData = {
       tableNumber: data.tableNumber,
       cartItems: cartData,
       totalAmount: grandTotal,
-      status:"dine In",
-      foodStatus:"waiting"
+      status: "dine In",
+      foodStatus: "waiting",
     };
-   await dispatch(addDineInOrder({ data: orderData }));
+    await dispatch(addDineInOrder({ data: orderData }));
     setShowOrder(false);
-     toast.success("Order items sucessfully")
-   await  dispatch(deleteAfterOrder())
-   dispatch(getCartItem())
-   
+    toast.success("Order items sucessfully");
+    await dispatch(deleteAfterOrder());
+    dispatch(getCartItem());
   };
-   
+
   return (
     <>
-      <div className="fixed flex items-center justify-center h-[100vh] w-[100vw] backdrop-blur-[2px] bg-[#00000070] z-30 top-0 left-0">
-        <div className="anime px-9 rounded-md bg-white w-[450px]  ">
+      <div className="fixed flex items-center justify-center h-[100vh]  w-[100vw] backdrop-blur-[2px] bg-[#00000070] z-50 top-0 left-0">
+        <div className="anime px-9 rounded-md bg-white h-[400px]  w-[450px]  ">
           <p className="text-xl py-3 font-semibold px-5  ">Ordered Items</p>
-          <div className=" flex flex-col gap-2 border-b-1 border-dashed border-gray-300 pb-3">
-            
+          <div className=" flex flex-col gap-2 border-b-1 h-[160px] scrollbar-hidden  overflow-y-auto border-dashed border-gray-300 pb-3">
             {cartData?.map((item) => (
               <div className="flex justify-between px-5">
                 <p className="text-gray-600 ">

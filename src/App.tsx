@@ -13,25 +13,26 @@ import { authorizeUser } from "./features/itemSlice";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ForgotPasswprd from "./components/ForgotPasswprd";
 import ResetPassword from "./components/ResetPassword";
-
+import Cart from "./components/Cart";
 
 function App() {
-  const dispatch=useDispatch<AppDispatch>()
-  useEffect(()=>{
-    dispatch(authorizeUser())
-  },[dispatch])
+  const dispatch = useDispatch<AppDispatch>();
+  useEffect(() => {
+    dispatch(authorizeUser());
+  }, [dispatch]);
   return (
     <>
       <Routes>
-        <Route path="/" element={<Authentication/>} />
-        <Route path="/recoverypassword" element={<ForgotPasswprd/>}/>
-        <Route path="/reset-password/:id/:token" element={<ResetPassword/>}/>
+        <Route path="/" element={<Authentication />} />
+        <Route path="/recoverypassword" element={<ForgotPasswprd />} />
+        <Route path="/reset-password/:id/:token" element={<ResetPassword />} />
         <Route element={<MainLayout />}>
-        {/*prevent user to access without login*/}
-        <Route element={<ProtectedRoute/>}> 
-          <Route path="/menu" element={<Menu />} />
-          <Route path="/booking" element={<Booking />} />
-          <Route path="/myBooking" element={<MyBooking />} />
+          {/*prevent user to access without login*/}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/menu" element={<Menu />} />
+            <Route path="/booking" element={<Booking />} />
+            <Route path="/myBooking" element={<MyBooking />} />
           </Route>
         </Route>
       </Routes>

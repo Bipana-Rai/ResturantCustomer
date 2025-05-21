@@ -18,7 +18,7 @@ function Category({ data,setCategory,categoryCount }: categoryProps) {
 
   return (
     <>
-      <div className="h-14 flex md:w-[180px] w-[150px] cursor-pointer rounded-sm gap-1 items-center px-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]  bg-white " onClick={()=>setCategory(data.category)}>
+      <div className="h-14 flex md:w-[180px] w-[150px] cursor-pointer rounded-sm gap-1 items-center px-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]   bg-white " onClick={()=>setCategory(data.category)}>
         <div className="h-full flex  rounded-md items-center md:w-14 w-9 ">
           <img src={`http://localhost:5000/uploads/${data.image}`} alt="" />
         </div>
