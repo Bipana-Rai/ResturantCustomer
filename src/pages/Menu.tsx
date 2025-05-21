@@ -8,17 +8,23 @@ import { getCartItem, getCategory, getItems } from "../features/itemSlice";
 import { AppDispatch, RootState } from "../store/store";
 import DineInForm from "@/components/DineInForm";
 import TakeAwayForm from "@/components/TakeAwayForm";
+import useIsSmallScreen from "@/customHook/useIsSmallScreen";
 function Menu() {
   const dispatch = useDispatch<AppDispatch>();
   const [showFull, setShowFull] = useState<boolean>(false);
   const [itemTotals, setItemTotals] = useState<Record<string, number>>({});
   const cartContainerRef = useRef<HTMLDivElement>(null);
   const [category, setCategory] = useState("all");
+
   const { itemDetail, categoryDetail, cartData } = useSelector(
     (state: RootState) => state.item
   );
   const [showOrder, setShowOrder] = useState(false);
   const [showTakeAwayOrder, setShowTakeAwayOrder] = useState(false);
+  const isSmallScreen = useIsSmallScreen();
+  const slicedCategory = showFull
+    ? categoryDetail
+    : categoryDetail.slice(0, isSmallScreen ? 3 : 6);
   const categoryCount = itemDetail?.reduce(
     (acc: Record<string, number>, item) => {
       acc[item.dishCategory] = (acc[item.dishCategory] || 0) + 1;
@@ -55,9 +61,9 @@ function Menu() {
     }
   }, [cartData.length]);
 
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(getCartItem());
-  },[dispatch])
+  }, [dispatch]);
   return (
     <>
       {showOrder && <DineInForm setShowOrder={setShowOrder} />}
@@ -66,14 +72,14 @@ function Menu() {
       )}
       <title>Menu page</title>
       <link rel="icon" href="/food.png" />
-      <div className="grid lg:grid-cols-7 ">
+      <div className="lg:grid lg:grid-cols-7 ">
         <div className="col-span-5  ">
-          <div className="sticky top-13 py-5 ps-10 z-20  bg-[#f3f3f3] flex flex-wrap gap-4 ">
+          <div className="sticky top-13 py-5 md:ps-10 ps-3 z-20  bg-[#f3f3f3] flex flex-wrap md:gap-4  gap-4 ">
             <div
-              className="h-14 cursor-pointer flex w-[180px] rounded-sm gap-1 items-center px-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]  bg-white "
+              className="h-14 cursor-pointer flex md:w-[180px] w-[150px] rounded-sm gap-1 items-center px-2 shadow-[0_3px_10px_rgb(0,0,0,0.2)]  bg-white "
               onClick={() => setCategory("all")}
             >
-              <div className="h-12 flex  rounded-md items-center w-12 ">
+              <div className="h-12 flex  rounded-md items-center md:w-12 w-9 ">
                 <img src="./food.png" alt="" />
               </div>
               <div className="text-sm">
@@ -83,7 +89,7 @@ function Menu() {
                 </p>
               </div>
             </div>
-            {(showFull ? categoryDetail : categoryDetail.slice(0, 6))?.map(
+            {slicedCategory.map(
               (e) => (
                 <Category
                   data={e}
@@ -97,8 +103,8 @@ function Menu() {
               {showFull ? "see less..." : "see more..."}
             </button>
           </div>
-          <div className=" pt-14 ps-10">
-            <p className="text-3xl font-semibold text-gray-600 py-3 ">
+          <div className=" md:pt-14 md:ps-10 px-2 pt-10">
+            <p className="md:text-3xl font-semibold text-gray-600 py-3 ">
               Lunch Menu
             </p>
             <div className="flex flex-wrap gap-4  ">
@@ -109,7 +115,8 @@ function Menu() {
           </div>
         </div>
         {/* second */}
-        <div className="col-span-2 sticky top-14 mt-1 h-[93vh]  bg-gray-200 pt-3  px-2 w-full  ">
+        
+        <div className="lg:col-span-2 sticky top-14 mt-1 h-[93vh]  bg-gray-200 pt-3  px-2 w-full  ">
           <p className="font-bold text-lg text-center mb-1">Cart Item</p>
           <div
             // ref={cartContainerRef}

@@ -30,9 +30,9 @@ function Card({ data }: CardProps) {
 
   return (
     <>
-      <div className="h-[120px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex flex-col border-2 justify-between w-[250px]  border-white bg-white py-1 rounded-xl px-2 hover:border-cyan-400 cursor-pointer ">
-        <div className="flex">
-          <div className=" bg-gray-200 h-17 w-16 items-center flex ">
+      <div className="md:h-[120px] shadow-[0_3px_10px_rgb(0,0,0,0.2)] flex flex-col border-2 justify-between md:w-[250px] w-[160px]   border-white bg-white py-1 rounded-xl px-2 hover:border-cyan-400 cursor-pointer ">
+        <div className="md:flex">
+          <div className=" bg-gray-200 md:h-17 md:w-16  w-full h-14 items-center flex justify-center ">
             <img
               className="object-cover h-full   "
               src={`${URL}${data.dishImage}`}
@@ -40,15 +40,15 @@ function Card({ data }: CardProps) {
             />
           </div>
           <div className="ps-3 py-2 leading-4  w-full">
-            <p className="font-bold  ">{data.dishName}</p>
+            <p className="font-bold   ">{data.dishName}</p>
             <p className="text-sm text-gray-500 ">{data.dishCategory}</p>
             <div className="leading-4 text-sm font-semibold pt-1 ">
               {data.dishDiscription || "fresh and juicy"}
             </div>
           </div>
         </div>
-        <div className="flex justify-between items-center px-3">
-          <p className="font-bold  text-xl">${data.dishPrice}</p>
+        <div className="md:flex justify-between items-center px-3">
+          <p className="font-bold  md:text-xl">${data.dishPrice}</p>
 
           <div
             className={`${isAdded ? "bg-green-700" : "bg-cyan-600"} 

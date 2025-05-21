@@ -7,7 +7,7 @@ function MainLayout() {
     <>
       <Navbar />
       <Sidebar />
-      <div className="ml-18">
+      <div className="md:ml-18">
         <Outlet />
       </div>
     </>

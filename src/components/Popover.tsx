@@ -24,7 +24,7 @@ function PopoverDemo({ setShowOrder, setShowTakeAwayOrder }: menuProps) {
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="cursor-pointer bg-green-600 text-gray-200">
+        <Button  variant={null}  className="cursor-pointer bg-green-600 focus:bg-green-500 text-gray-200">
           Place Order
         </Button>
       </PopoverTrigger>
@@ -35,7 +35,8 @@ function PopoverDemo({ setShowOrder, setShowTakeAwayOrder }: menuProps) {
 
         <div className="flex justify-around">
           <Button
-            className="border-2 border-gray-500 bg-white text-black"
+           variant={null} 
+            className="border-2 cursor-pointer border-gray-500 bg-white text-black"
             onClick={handleDineIn}
           >
             Dine In

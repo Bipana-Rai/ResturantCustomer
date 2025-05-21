@@ -91,7 +91,7 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
                 className="flex  flex-col gap-3  pb-7 py-3"
                 onSubmit={handleSubmit(onSubmit)}
               >
-                <p className="text-xl font-semibold text-center">
+                <p className="text-xl  font-semibold text-center">
                   Order Payment
                 </p>
                 <Box
@@ -179,14 +179,14 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
 
                 <div className="flex  justify-around pt-3">
                   <button
-                    className=" border-2 border-red-300 px-4  py-1 text-sm text-red-600  rounded-md"
+                    className=" border-2 border-gray-500 px-4  py-1 text-sm cursor-pointer text-gray-600  rounded-md"
                     type="submit"
                     onClick={() => setShowTakeAwayOrder(false)}
                   >
                     Cancel Order
                   </button>
                   <button
-                    className="bg-green-500 text-gray-100 px-4 py-1 text-sm  rounded-md"
+                    className="bg-green-500 cursor-pointer text-gray-100 px-4 py-1 text-sm  rounded-md"
                     type="submit"
                   >
                     Confirm order

@@ -9,6 +9,7 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Loader from "@/utils/Loader";
 
 interface authenticationProps {
   showLogin: boolean;
@@ -19,6 +20,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
   const { register, handleSubmit,reset } = useForm<formdata>();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const[loading,setLoading]=useState(false)
   const { user } = useSelector((state: RootState) => state.item);
   const [showPassword, setShowPassword] = useState(false);
   useEffect(() => {
@@ -27,6 +29,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
     }
   }, [user, navigate]);
   const onSubmit = async (data: formdata) => {
+    setLoading(true)
     try {
       await dispatch(loginData({ data })).unwrap();
       dispatch(authorizeUser())
@@ -36,6 +39,9 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
       const errorMessage = err?.message || "Login Failed";
       toast.error(errorMessage);
     }
+    finally{
+      setLoading(false)
+    }
   };
   const handleSignup=()=>{
     setShowLogin(!showLogin)
@@ -43,6 +49,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
   }
   return (
     <>
+    {loading && <Loader/>}
       <title>Login</title>
       <div className=" px-5 w-full   ">
         <p className="text-2xl font-bold text-center pb-4 ">LOGIN</p>
