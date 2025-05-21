@@ -1,25 +1,47 @@
 import { IoMdMail } from "react-icons/io";
 import { IoMdArrowBack } from "react-icons/io";
+import { MdError } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import Loader from "@/utils/Loader";
+import { AppAxiosError } from "@/features/itemSlice";
+
 type ForgotPasswordForm = {
   email: string;
 };
 function ForgotPasswprd() {
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<ForgotPasswordForm>();
-  const onSubmit:SubmitHandler<ForgotPasswordForm> = async (data) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ForgotPasswordForm>();
+  const [loading, setLoading] = useState(false);
+  const onSubmit: SubmitHandler<ForgotPasswordForm> = async (data) => {
+    setLoading(true);
     try {
       await axios.post("http://localhost:5000/api/auth/forgot-password", data);
+      toast.success("link send successfully to your eamil..");
     } catch (error) {
+      const err = error as AppAxiosError;
+      const message =
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to send reset link.";
+      toast.error(message);
       console.log(error);
-      alert("Failed to send reset link.");
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <>
+      {loading && <Loader />}
+
       <div className="h-[100vh] w-[100vw] relative flex items-center justify-center">
         <img src="/bg.jpg" alt="" className="fixed  h-full w-full  blur-md" />
         <motion.div
@@ -38,15 +60,23 @@ function ForgotPasswprd() {
             then we will send an email with link to reset your password.
           </p>
           <form action="" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col gap-2">
-              <label htmlFor="" className="font-semibold text-gray-800">
+            <div className="flex flex-col ">
+              <label htmlFor="" className="font-semibold text-gray-800 pb-3">
                 E-mail address
               </label>
               <input
                 type="email"
-                className="border-1 border-gray-500 py-1 px-3"
-                {...register("email", { required: true })}
+                className=" py-1 px-3
+                    border border-gray-500"
+                {...register("email", { required: "email is required" })}
+                {...register("email", { required: "email is required" })}
               />
+              {errors.email && (
+                <p className="text-sm flex items-center gap-1 text-red-600 font-semibold">
+                  <MdError />
+                  {errors.email.message}
+                </p>
+              )}
             </div>
             <div className="flex justify-between py-5">
               <button

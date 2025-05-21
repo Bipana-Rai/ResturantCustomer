@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { IoMdMail } from "react-icons/io";
 import { IoMdArrowBack } from "react-icons/io";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
+import toast from "react-hot-toast";
 type ResetPasswordForm = {
   password: string;
 };
@@ -15,8 +15,10 @@ function ResetPassword() {
     try {
       const res = await axios.post(
         `http://localhost:5000/api/reset-password/${id}/${token}`,
-        { password:data.password}
+        { password: data.password }
       );
+      toast.success("Reset password successfully");
+      navigate("/");
       console.log(res.data);
     } catch (error) {
       console.error(error);
@@ -37,8 +39,8 @@ function ResetPassword() {
           </p>
         </div>
         <p className="text-sm text-gray-500 pb-3">
-          Please enter your e-mail address in the form.If we find an account
-          then we will send an email with link to reset your password.
+          Please enter your new password below. Make sure it’s strong and
+          secure. Once you submit, your password will be updated immediately.
         </p>
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-2">
@@ -48,8 +50,9 @@ function ResetPassword() {
             <input
               type="password"
               className="border-1 border-gray-500 py-1 px-3"
-              {...(register("password", { required: true }))}
+              {...register("password", { required: true })}
             />
+            
           </div>
           <div className="flex justify-between py-5">
             <button
@@ -65,7 +68,7 @@ function ResetPassword() {
               type="submit"
             >
               {" "}
-              send link <IoMdMail />
+              Update
             </button>
           </div>
         </form>
