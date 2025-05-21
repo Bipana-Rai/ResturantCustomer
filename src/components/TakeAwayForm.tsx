@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { orderTakeAwayData } from "@/features/itemSlice";
+
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import { MdError } from "react-icons/md";
+
 interface menuProps {
   setShowTakeAwayOrder: (showTakeAway: boolean) => void;
 }
@@ -88,26 +94,81 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
                 <p className="text-xl font-semibold text-center">
                   Order Payment
                 </p>
-                <div className="flex flex-col gap-1 ">
-                  <label htmlFor="">Full Name</label>
-                  <input
-                    type="text"
-                    className=" border-1 px-2 rounded-md py-1 text-sm border-gray-400"
-                    placeholder="Enter a name.."
-                    {...register("name", { required: "name is required" })}
-                  />
-                  {errors.name && <span>Name is required</span>}
-                </div>
-                <div className="flex flex-col gap-1 ">
-                  <label htmlFor="">Phone Number</label>
-                  <input
+                <Box
+                  component="form"
+                  sx={{
+                    "& > :not(style)": { width: "full" },
+                  }}
+                  noValidate
+                  autoComplete="off"
+                >
+                  {" "}
+                  <div className="mb-7">
+                    <TextField
+                      id="outlined-basic"
+                      className="w-full "
+                      label="Full Name"
+                      variant="outlined"
+                      size="small"
+                      sx={{
+                        "& .MuiInputBase-input": {
+                          fontSize: "1rem",
+                        },
+                        "& .MuiInputLabel-root": {
+                          fontSize: "0.9rem",
+                        },
+                      }}
+                      {...register("name", {
+                        required: "Please enter your name.",
+                      })}
+                    />
+                  {errors.name && (
+                    <span className="text-sm mt-2 flex items-center gap-1 text-red-600 font-semibold">
+                      <MdError />
+                      {errors.name.message}
+                    </span>
+                  )}
+                  </div>
+                  <TextField
+                    id="outlined-basic"
+                    label="Phone Number"
+                    className="w-full  "
+                    size="small"
+                    variant="outlined"
                     type="tel"
-                    className=" border-1 px-2 rounded-md py-1 text-sm border-gray-400"
-                    placeholder="Enter a phone number.."
-                    {...register("number", { required: "number is required" })}
+                    sx={{
+                      "& .MuiInputBase-input": {
+                        fontSize: "1rem",
+                      },
+                      "& .MuiInputLabel-root": {
+                        fontSize: "0.9rem",
+                      },
+                    }}
+                    {...register("number", {
+                      required: "Please enter phone number.",
+                     validate:(value=>{
+                      if(value.length<10){
+                         return "Invalid number.";
+                      }
+                      if(value.length>10){
+                         return "The number should be exactly 10 digits.";
+                      }
+                      if(!/^98|97/.test(value)){
+                        return "Phone number must start with 98 or 97.";
+                      }
+                     })
+                    })}
                   />
-                  {errors.number && <span>number is required</span>}
-                </div>
+                  {!errors.name && errors.number && (
+                    <span className="text-sm mt-2 flex items-center gap-1 text-red-600 font-semibold">
+                      <MdError />
+                      {errors.number.message}
+                    </span>
+                  )}
+                </Box>
+
+                {/* payment */}
+
                 <div className="border-t-1 border-gray-400 mt-4 ">
                   <p className="text-center py-3">Payment Method</p>
                   <div className="flex justify-around">

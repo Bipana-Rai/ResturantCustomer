@@ -45,7 +45,7 @@ function ForgotPasswprd() {
       <div className="h-[100vh] w-[100vw] relative flex items-center justify-center">
         <img src="/bg.jpg" alt="" className="fixed  h-full w-full  blur-md" />
         <motion.div
-          className="w-[450px] px-8 bg-white z-30 py-2 rounded-md"
+          className="md:w-[450px] w-[340px] px-8 bg-white z-30 py-2 rounded-md"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
@@ -66,8 +66,10 @@ function ForgotPasswprd() {
               </label>
               <input
                 type="email"
-                className=" py-1 px-3
-                    border border-gray-500"
+                className={` py-1 px-3 outline-0
+                   ${
+                     errors.email ? "border-red-600" : "border-gray-500"
+                   } border `}
                 {...register("email", { required: "email is required" })}
                 {...register("email", { required: "email is required" })}
               />
