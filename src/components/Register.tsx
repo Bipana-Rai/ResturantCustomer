@@ -15,8 +15,10 @@ function Register({ setShowLogin, showLogin }: authenticationProps) {
   const dispatch = useDispatch<AppDispatch>();
  
   const onSubmit = async (data: signupData) => {
+    const formWithRole={...data,role:"customer"}
+    console.log("data",formWithRole)
     try {
-      await dispatch(signupDetail({ data })).unwrap();
+      await dispatch(signupDetail({ data:formWithRole })).unwrap();
       toast.success("Registered Successfully");
       setShowLogin(true);
     } catch (error) {

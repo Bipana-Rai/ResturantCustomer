@@ -123,7 +123,7 @@ export const getBookingDetail = createAsyncThunk(
 export const editTableStatus = createAsyncThunk(
   "editTableStatus",
   async ({ id, data }: { id?: string; data: string }, { rejectWithValue }) => {
-    console.log("status", id, data);
+  
     try {
       const response = await axios.put(
         `http://localhost:5000/api/updateStatus/${id}`,
@@ -247,7 +247,6 @@ export const authorizeUser = createAsyncThunk(
   async (__, { rejectWithValue }) => {
     try {
       const response = await axios.get("http://localhost:5000/api/verify");
-      console.log("data", response.data);
       return response.data.user;
     } catch (error) {
       const err = error as AppAxiosError;
@@ -260,6 +259,7 @@ export interface signupData {
   password: string;
   fullName: string;
   phone: string;
+  role:string;
 }
 export interface formdata {
   email: string;
@@ -319,6 +319,14 @@ interface category {
   category: string;
   image?: string;
 }
+interface userInfo{
+  _id:string,
+  email:string,
+  fullName:string,
+  phone:string,
+  role:string
+
+}
 
 interface CategoryState {
   loading: boolean;
@@ -328,7 +336,7 @@ interface CategoryState {
   cartData: cartItems[];
   tableDetail: TableData[];
   bookingDetail: BookedData[];
-  user: null;
+  user: userInfo | null;
 }
 const initialState: CategoryState = {
   loading: false,
@@ -475,9 +483,7 @@ const itemSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-       .addCase(authorizeUser.pending, (state) => {
-        state.loading = false;
-      })
+    
       .addCase(authorizeUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;

@@ -5,11 +5,13 @@ import { Navigate, Outlet } from "react-router-dom";
 function ProtectedRoute() {
   const { user } = useSelector((state: RootState) => state.item);
   console.log("----", user);
- if (user === undefined) {
+  if (user === undefined) {
     return null; // or a loading spinner
   }
 
-  return user ? <Outlet /> : <Navigate to="/" replace />;
+  if (user?.role === "customer") {
+    return user ? <Outlet /> : <Navigate to="/" replace />;
+  }
 }
 
 export default ProtectedRoute;

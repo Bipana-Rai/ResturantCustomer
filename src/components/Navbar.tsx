@@ -1,5 +1,5 @@
 import useIsSmallScreen from "@/customHook/useIsSmallScreen";
-import { getCartItem } from "@/features/itemSlice";
+import { authorizeUser, getCartItem } from "@/features/itemSlice";
 import { AppDispatch, RootState } from "@/store/store";
 import { useEffect } from "react";
 import { FaShoppingCart } from "react-icons/fa";
@@ -15,9 +15,11 @@ function Navbar({ isSidebarOpen, setIsSidebarOpen }: MainLayoutProps) {
   const navigate = useNavigate();
   const isSmallScreen = useIsSmallScreen();
   const location = useLocation();
-  const { cartData } = useSelector((state: RootState) => state.item);
+  const { cartData ,user} = useSelector((state: RootState) => state.item);
+
   useEffect(() => {
     dispatch(getCartItem());
+    dispatch(authorizeUser());
   }, [dispatch]);
   const handleCart = () => {
     navigate("/cart");
@@ -27,10 +29,11 @@ function Navbar({ isSidebarOpen, setIsSidebarOpen }: MainLayoutProps) {
       navigate("/menu");
     }
   }, [isSmallScreen, location.pathname, navigate]);
+  // console.log(user)
 
   return (
     <>
-      <div className="fixed  z-50  flex items-center justify-between px-3   h-15 bg-white w-[100vw]">
+      <div className="fixed  z-50  flex items-center justify-between lg:px-7 px-4   h-15 bg-white w-[100vw]">
         <div
           className=" text-xl px-3 cursor-pointer"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -52,7 +55,7 @@ function Navbar({ isSidebarOpen, setIsSidebarOpen }: MainLayoutProps) {
               <img src="" alt="" />
             </div>
             <div>
-              <p>Courtney henry</p>
+              <p>{user?.fullName}</p>
             </div>
           </div>
         </div>
