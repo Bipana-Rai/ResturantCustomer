@@ -32,7 +32,7 @@ function Logout({setLogout}:sidebarProps) {
       initial={{y:-20}}
       animate={{y:0}}
       transition={{duration:0.3,ease:"easeOut"}}
-       className="h-[300px] relative  w-[400px] flex flex-col    bg-white rounded-md px-8 justify-center items-center">
+       className="h-[300px] relative  md:w-[400px] w-[350px] flex flex-col    bg-white rounded-md px-8 justify-center items-center">
         <div className="text-5xl ">
            <IoMdLogOut />
         </div>

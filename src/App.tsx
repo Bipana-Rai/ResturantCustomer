@@ -1,27 +1,30 @@
+import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import Cart from "./components/Cart";
+import ForgotPasswprd from "./components/ForgotPasswprd";
 import MyBooking from "./components/MyBooking";
-import Booking from "./pages/Booking";
-import Menu from "./pages/Menu";
+import ProtectedRoute from "./components/ProtectedRoute";
+import ResetPassword from "./components/ResetPassword";
+import { authorizeUser } from "./features/itemSlice";
 import MainLayout from "./outlet/MainLayout";
 import Authentication from "./pages/Authentication";
-import { useDispatch } from "react-redux";
+import Booking from "./pages/Booking";
+import Menu from "./pages/Menu";
 import { AppDispatch } from "./store/store";
-import { useEffect } from "react";
-import { authorizeUser } from "./features/itemSlice";
-import ProtectedRoute from "./components/ProtectedRoute";
-import ForgotPasswprd from "./components/ForgotPasswprd";
-import ResetPassword from "./components/ResetPassword";
-import Cart from "./components/Cart";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
+    
+
   useEffect(() => {
     dispatch(authorizeUser());
   }, [dispatch]);
   return (
     <>
+  
       <Routes>
         <Route path="/" element={<Authentication />} />
         <Route path="/recoverypassword" element={<ForgotPasswprd />} />

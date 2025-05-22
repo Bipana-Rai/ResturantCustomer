@@ -54,7 +54,7 @@ function DineInForm({ setShowOrder }: menuProps) {
   return (
     <>
       <div className="fixed flex items-center justify-center h-[100vh]  w-[100vw] backdrop-blur-[2px] bg-[#00000070] z-50 top-0 left-0">
-        <div className="anime px-9 rounded-md bg-white h-[400px]  w-[450px]  ">
+        <div className="anime md:px-9 px-3 rounded-md bg-white h-[420px]  md:w-[450px] w-[350px]  ">
           <p className="text-xl py-3 font-semibold px-5  ">Ordered Items</p>
           <div className=" flex flex-col gap-2 border-b-1 h-[160px] scrollbar-hidden  overflow-y-auto border-dashed border-gray-300 pb-3">
             {cartData?.map((item) => (

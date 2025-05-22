@@ -46,7 +46,7 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
   return (
     <>
       <div className="fixed flex items-center justify-center h-[100vh] w-[100vw] backdrop-blur-[2px] bg-[#00000070] z-30 top-0 left-0">
-        <div className="anime px-10 rounded-md bg-white h-[400px] w-[500px]  ">
+        <div className="anime md:px-10 px-2 rounded-md bg-white h-[400px] md:w-[500px] w-[350px]  ">
           {showOrder && (
             <>
               {" "}

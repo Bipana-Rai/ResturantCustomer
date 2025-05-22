@@ -90,7 +90,7 @@ function Menu() {
             <p className="md:text-3xl font-semibold text-gray-600 py-3 ">
               Lunch Menu
             </p>
-            <div className="flex flex-wrap justify-center gap-4  ">
+            <div className="flex flex-wrap gap-4  ">
               {finalFilterData?.map((e, i) => (
                 <Card key={i} data={e} />
               ))}
