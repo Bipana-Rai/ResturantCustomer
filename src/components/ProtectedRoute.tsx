@@ -9,9 +9,7 @@ function ProtectedRoute() {
     return null; // or a loading spinner
   }
 
-  if (user?.role === "customer") {
-    return user ? <Outlet /> : <Navigate to="/" replace />;
-  }
+  return user ? <Outlet /> : <Navigate to="/" replace />;
 }
 
 export default ProtectedRoute;
