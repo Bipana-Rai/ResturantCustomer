@@ -16,7 +16,7 @@ function Register({ setShowLogin, showLogin }: authenticationProps) {
  
   const onSubmit = async (data: signupData) => {
     const formWithRole={...data,role:"customer"}
-    console.log("data",formWithRole)
+   
     try {
       await dispatch(signupDetail({ data:formWithRole })).unwrap();
       toast.success("Registered Successfully");

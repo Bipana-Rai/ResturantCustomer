@@ -8,6 +8,7 @@ import URL from "../utils/Url";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
 
+
 type CardProps = {
   data: dishItem;
 };
@@ -19,13 +20,13 @@ function Card({ data }: CardProps) {
   const isAdded = cartData?.some(
     (cartItem) => cartItem._id === data._id && cartItem.added
   );
-  const handleClick =async () => {
+  const handleClick = async () => {
     if (isAdded) {
-     await dispatch(deleteItemFromcart(data._id));
+      await dispatch(deleteItemFromcart(data._id));
     } else {
-     await dispatch(addedItemToCart(data));
+      await dispatch(addedItemToCart(data));
     }
-     dispatch(getCartItem())
+    dispatch(getCartItem());
   };
 
   return (
@@ -55,6 +56,7 @@ function Card({ data }: CardProps) {
             px-3 w-[100px] text-center py-1 text-gray-100 rounded-lg text-sm`}
             onClick={handleClick}
           >
+          
             <p>{`${isAdded ? "added" : "add to cart"}`}</p>
           </div>
         </div>

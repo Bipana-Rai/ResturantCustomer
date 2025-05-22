@@ -29,7 +29,7 @@ function Navbar({ isSidebarOpen, setIsSidebarOpen }: MainLayoutProps) {
       navigate("/menu");
     }
   }, [isSmallScreen, location.pathname, navigate]);
-  // console.log(user)
+ 
 
   return (
     <>

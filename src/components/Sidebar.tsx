@@ -2,12 +2,14 @@ import { motion } from "framer-motion";
 import { IoLogOut } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import sidebarContent from "../data/sidebarContent";
+import { useEffect, useRef } from "react";
 interface MainLayoutProps {
   setIsSidebarOpen: (isSidebarOpen: boolean) => void;
   setLogout: (logout: boolean) => void;
 }
 function Sidebar({ setIsSidebarOpen, setLogout }: MainLayoutProps) {
   const navigate = useNavigate();
+  const sidebarRef = useRef<HTMLDivElement>(null);
   const handleClick = (e: string) => {
     setIsSidebarOpen(false);
     navigate(e);
@@ -16,9 +18,22 @@ function Sidebar({ setIsSidebarOpen, setLogout }: MainLayoutProps) {
     setLogout(true);
     setIsSidebarOpen(false);
   };
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        setIsSidebarOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [setIsSidebarOpen]);
   return (
     <>
       <motion.div
+        ref={sidebarRef}
         initial={{ x: -100 }}
         animate={{ x: 0 }}
         exit={{ x: -100 }}

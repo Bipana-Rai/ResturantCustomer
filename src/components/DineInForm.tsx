@@ -1,5 +1,6 @@
 import {
   addDineInOrder,
+  authorizeUser,
   deleteAfterOrder,
   getCartItem,
   getTable,
@@ -21,7 +22,7 @@ function DineInForm({ setShowOrder }: menuProps) {
     formState: { errors },
   } = useForm<orderData>();
   const dispatch = useDispatch<AppDispatch>();
-  const { cartData, tableDetail } = useSelector(
+  const { cartData, tableDetail,user } = useSelector(
     (state: RootState) => state.item
   );
   const filterTableData = tableDetail.filter(
@@ -31,6 +32,7 @@ function DineInForm({ setShowOrder }: menuProps) {
   useEffect(() => {
     dispatch(getCartItem());
     dispatch(getTable());
+    dispatch(authorizeUser())
   }, [dispatch]);
   const grandTotal = cartData.reduce(
     (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
@@ -43,6 +45,7 @@ function DineInForm({ setShowOrder }: menuProps) {
       totalAmount: grandTotal,
       status: "dine In",
       foodStatus: "waiting",
+      user:user?.fullName
     };
     await dispatch(addDineInOrder({ data: orderData }));
     setShowOrder(false);
