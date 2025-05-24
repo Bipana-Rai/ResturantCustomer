@@ -246,7 +246,11 @@ export const authorizeUser = createAsyncThunk(
   "authorizeUser",
   async (__, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:5000/api/verify");
+      const response = await axios.get("http://localhost:5000/api/customer/verify");
+       if (response.data.user.role !== "customer") {
+        // Optionally reject if role mismatch
+        return rejectWithValue("Unauthorized user role for customer app");
+      }
       return response.data.user;
     } catch (error) {
       const err = error as AppAxiosError;

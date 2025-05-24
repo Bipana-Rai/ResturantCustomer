@@ -25,12 +25,16 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    if (user === null) return; // user not logged in, stay on login page
-    if (!user) return;
+     console.log("Current user:", user);
+   if (!user) {
+    navigate("/", { replace: true });
+    return;
+  }
     if (user?.role === "customer") {
       navigate("/menu", { replace: true });
-    } else if (user?.role === "admin") {
-      window.location.replace("http://localhost:5173/admin/dashboard");
+      return
+    } if (user?.role === "admin") {
+     return window.location.replace("http://localhost:5173/admin/dashboard");
     }
   }, [user, navigate]);
   const onSubmit = async (data: formdata) => {
