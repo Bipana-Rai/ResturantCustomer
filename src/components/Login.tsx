@@ -23,13 +23,13 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
   const[loading,setLoading]=useState(false)
   const { user } = useSelector((state: RootState) => state.item);
   const [showPassword, setShowPassword] = useState(false);
-  console.log(user?.role)
+ 
   useEffect(() => {
     if (user?.role==="customer") {
       navigate("/menu", { replace: true });
     }
-   else if(user?.role==="adim"){
-       navigate("/admin/dashboard", { replace: true });
+   else if(user?.role==="admi"){
+       window.location.replace("http://localhost:5173/admin/dashboard")
     }
   }, [user, navigate]);
   const onSubmit = async (data: formdata) => {
