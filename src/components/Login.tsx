@@ -1,5 +1,5 @@
 import { authorizeUser, loginData } from "@/features/itemSlice";
-import { AppDispatch, RootState } from "@/store/store";
+import { AppDispatch, persistor, RootState } from "@/store/store";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { formdata } from "@/features/itemSlice";
@@ -17,43 +17,44 @@ interface authenticationProps {
 }
 
 function Login({ setShowLogin, showLogin }: authenticationProps) {
-  const { register, handleSubmit,reset } = useForm<formdata>();
+  const { register, handleSubmit, reset } = useForm<formdata>();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const[loading,setLoading]=useState(false)
+  const [loading, setLoading] = useState(false);
   const { user } = useSelector((state: RootState) => state.item);
   const [showPassword, setShowPassword] = useState(false);
- 
+
   useEffect(() => {
-    if (user?.role==="customer") {
+    if (user === null) return; // user not logged in, stay on login page
+    if (!user) return;
+    if (user?.role === "customer") {
       navigate("/menu", { replace: true });
-    }
-   else if(user?.role==="admi"){
-       window.location.replace("http://localhost:5173/admin/dashboard")
+    } else if (user?.role === "admin") {
+      window.location.replace("http://localhost:5173/admin/dashboard");
     }
   }, [user, navigate]);
   const onSubmit = async (data: formdata) => {
-    setLoading(true)
+    setLoading(true);
     try {
+      await persistor.purge();
       await dispatch(loginData({ data })).unwrap();
-      dispatch(authorizeUser())
+      dispatch(authorizeUser());
       toast.success("LogIn successfully");
     } catch (error) {
       const err = error as AppAxiosError;
       const errorMessage = err?.message || "Login Failed";
       toast.error(errorMessage);
-    }
-    finally{
-      setLoading(false)
+    } finally {
+      setLoading(false);
     }
   };
-  const handleSignup=()=>{
-    setShowLogin(!showLogin)
-    reset()
-  }
+  const handleSignup = () => {
+    setShowLogin(!showLogin);
+    reset();
+  };
   return (
     <>
-    {loading && <Loader/>}
+      {loading && <Loader />}
       <title>Login</title>
       <div className=" px-5 w-full   ">
         <p className="text-2xl font-bold text-center pb-4 ">LOGIN</p>
@@ -110,10 +111,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
         </form>
         <p className="text-center pt-5">
           Don't have an account?{" "}
-          <span
-            className="text-cyan-600 cursor-pointer"
-            onClick={handleSignup}
-          >
+          <span className="text-cyan-600 cursor-pointer" onClick={handleSignup}>
             Signup
           </span>{" "}
         </p>

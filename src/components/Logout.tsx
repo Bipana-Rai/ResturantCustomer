@@ -1,5 +1,5 @@
 import { logoutUser } from "@/features/itemSlice";
-import { AppDispatch } from "@/store/store";
+import { AppDispatch, persistor } from "@/store/store";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +21,7 @@ function Logout({setLogout}:sidebarProps) {
         { withCredentials: true }
       );
       dispatch(logoutUser());
+      await persistor.purge()
       navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
