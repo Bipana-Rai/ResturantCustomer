@@ -123,7 +123,6 @@ export const getBookingDetail = createAsyncThunk(
 export const editTableStatus = createAsyncThunk(
   "editTableStatus",
   async ({ id, data }: { id?: string; data: string }, { rejectWithValue }) => {
-  
     try {
       const response = await axios.put(
         `http://localhost:5000/api/updateStatus/${id}`,
@@ -188,6 +187,7 @@ export const addDineInOrder = createAsyncThunk(
     }
   }
 );
+
 export const deleteAfterOrder = createAsyncThunk(
   "deleteAfterOrder",
   async (__, { rejectWithValue }) => {
@@ -246,8 +246,10 @@ export const authorizeUser = createAsyncThunk(
   "authorizeUser",
   async (__, { rejectWithValue }) => {
     try {
-      const response = await axios.get("http://localhost:5000/api/customer/verify");
-       if (response.data.user.role !== "customer") {
+      const response = await axios.get(
+        "http://localhost:5000/api/customer/verify"
+      );
+      if (response.data.user.role !== "customer") {
         // Optionally reject if role mismatch
         return rejectWithValue("Unauthorized user role for customer app");
       }
@@ -263,7 +265,7 @@ export interface signupData {
   password: string;
   fullName: string;
   phone: string;
-  role:string;
+  role: string;
 }
 export interface formdata {
   email: string;
@@ -284,12 +286,14 @@ export interface orderData {
   totalAmount: number;
   status: string;
   foodStatus: string;
-  user?:string
+  user?: string;
 }
 export interface orderTakeAwayData {
-  cartItem: cartItems;
+  cartItems: cartItems[];
   name: string;
   number: string;
+  status: string;
+  totalAmount: number;
 }
 export interface dishItem {
   _id: string;
@@ -324,13 +328,12 @@ interface category {
   category: string;
   image?: string;
 }
-interface userInfo{
-  _id:string,
-  email:string,
-  fullName:string,
-  phone:string,
-  role:string
-
+interface userInfo {
+  _id: string;
+  email: string;
+  fullName: string;
+  phone: string;
+  role: string;
 }
 
 interface CategoryState {
@@ -358,10 +361,10 @@ const itemSlice = createSlice({
   name: "item",
   initialState,
   reducers: {
-    logoutUser:(state)=>{
-      state.loading=false
-      state.user=null;
-    }
+    logoutUser: (state) => {
+      state.loading = false;
+      state.user = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -488,12 +491,12 @@ const itemSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-    
+
       .addCase(authorizeUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
       });
   },
 });
-export const {logoutUser}=itemSlice.actions
+export const { logoutUser } = itemSlice.actions;
 export default itemSlice.reducer;
