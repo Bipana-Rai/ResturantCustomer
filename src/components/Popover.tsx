@@ -28,7 +28,7 @@ function PopoverDemo({ setShowOrder, setShowTakeAwayOrder }: menuProps) {
           Place Order
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-83 h-30 flex flex-col justify-between ">
+      <PopoverContent className="w-full h-30 flex flex-col justify-between ">
         <h4 className="font-medium text-center leading-5">
           How would you like to receive your order ?
         </h4>
@@ -36,13 +36,13 @@ function PopoverDemo({ setShowOrder, setShowTakeAwayOrder }: menuProps) {
         <div className="flex justify-around">
           <Button
            variant={null} 
-            className="border-2 cursor-pointer border-gray-500 bg-white text-black"
+            className="border-2 cursor-pointer  border-gray-500 bg-white text-black"
             onClick={handleDineIn}
           >
             Dine In
           </Button>
 
-          <Button onClick={handleTakeAway}>Take Away</Button>
+          <Button className="cursor-pointer" onClick={handleTakeAway}>Take Away</Button>
         </div>
       </PopoverContent>
     </Popover>
