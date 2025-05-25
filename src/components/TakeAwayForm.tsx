@@ -41,11 +41,12 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
         orderItem
       );
       const { orderId, amount } = response.data;
+      window.location.href = response.data.url; // redirect user to Esewa payment page
 
       //create form and redirest to esewa
       const form = document.createElement("form");
       form.method = "POST";
-      form.action = "https://uat.esewa.com.np/epay/main";
+      form.action = "https://rc.esewa.com.np/epay/main";
       const fields = {
         amt: amount,
         psc: 0,
@@ -57,16 +58,15 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
         su: `http://localhost:5000/api/esewa-success?oid=${orderId}`,
         fu: `http://localhost:5000/api/esewa-failure?oid=${orderId}`,
       };
-      for(const key in fields){
-        const input =document.createElement("input");
-       input.type="hidden";
-       input.name=key;
-       input.value=String(fields[key]);
-       form.appendChild(input)
-
+      for (const key in fields) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = String(fields[key]);
+        form.appendChild(input);
       }
       document.body.appendChild(form);
-      form.submit()
+      form.submit();
     } catch (error) {
       console.error("Order submission error:", error);
       alert("Something went wrong while placing the order.");
