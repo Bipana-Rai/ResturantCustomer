@@ -1,14 +1,16 @@
-import { getCartItem } from "@/features/itemSlice";
+import {
+  cartItems,
+  getCartItem,
+  orderTakeAwayData,
+} from "@/features/itemSlice";
 import { AppDispatch, RootState } from "@/store/store";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { orderTakeAwayData } from "@/features/itemSlice";
-
-import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { MdError } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 
 interface menuProps {
   setShowTakeAwayOrder: (showTakeAway: boolean) => void;
@@ -19,22 +21,60 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
   const [showOrder, setShowOrder] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const { cartData } = useSelector((state: RootState) => state.item);
-
+  console.log("cartttt", cartData);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<orderTakeAwayData>();
-  const onSubmit = (data: orderTakeAwayData) => {
+  const onSubmit = async (data: orderTakeAwayData) => {
     const orderItem = {
-      cartItem: cartData,
+      cartItems: cartData,
       name: data.name,
       number: data.number,
+      totalAmount: grandTotal,
+      status: "takeAway",
     };
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/takeaway",
+        orderItem
+      );
+      const { orderId, amount } = response.data;
+
+      //create form and redirest to esewa
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "https://uat.esewa.com.np/epay/main";
+      const fields = {
+        amt: amount,
+        psc: 0,
+        pdc: 0,
+        txAmt: 0,
+        tAmt: amount,
+        pid: orderId,
+        scd: "EPAYTEST", // Use your merchant code in production
+        su: `http://localhost:5000/api/esewa-success?oid=${orderId}`,
+        fu: `http://localhost:5000/api/esewa-failure?oid=${orderId}`,
+      };
+      for(const key in fields){
+        const input =document.createElement("input");
+       input.type="hidden";
+       input.name=key;
+       input.value=String(fields[key]);
+       form.appendChild(input)
+
+      }
+      document.body.appendChild(form);
+      form.submit()
+    } catch (error) {
+      console.error("Order submission error:", error);
+      alert("Something went wrong while placing the order.");
+    }
   };
   useEffect(() => {
     dispatch(getCartItem());
-  }, []);
+  }, [dispatch]);
   const grandTotal = cartData.reduce(
     (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
     0
@@ -122,12 +162,12 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
                         required: "Please enter your name.",
                       })}
                     />
-                  {errors.name && (
-                    <span className="text-sm mt-2 flex items-center gap-1 text-red-600 font-semibold">
-                      <MdError />
-                      {errors.name.message}
-                    </span>
-                  )}
+                    {errors.name && (
+                      <span className="text-sm mt-2 flex items-center gap-1 text-red-600 font-semibold">
+                        <MdError />
+                        {errors.name.message}
+                      </span>
+                    )}
                   </div>
                   <TextField
                     id="outlined-basic"
@@ -146,17 +186,17 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
                     }}
                     {...register("number", {
                       required: "Please enter phone number.",
-                     validate:(value=>{
-                      if(value.length<10){
-                         return "Invalid number.";
-                      }
-                      if(value.length>10){
-                         return "The number should be exactly 10 digits.";
-                      }
-                      if(!/^98|97/.test(value)){
-                        return "Phone number must start with 98 or 97.";
-                      }
-                     })
+                      validate: (value) => {
+                        if (value.length < 10) {
+                          return "Invalid number.";
+                        }
+                        if (value.length > 10) {
+                          return "The number should be exactly 10 digits.";
+                        }
+                        if (!/^98|97/.test(value)) {
+                          return "Phone number must start with 98 or 97.";
+                        }
+                      },
                     })}
                   />
                   {!errors.name && errors.number && (
