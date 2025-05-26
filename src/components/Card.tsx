@@ -17,23 +17,23 @@ type CardProps = {
 function Card({ data }: CardProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { cartData, user } = useSelector((state: RootState) => state.item);
-
+ 
   const isAdded = cartData.some(
     (e) => e.dishName === data.dishName && e.userId === user?._id
   );
 
   const handleClick = async () => {
+    console.log("data",data)
     if (isAdded) {
       await dispatch(deleteItemFromcart(data._id));
     } else {
       await dispatch(addedItemToCart({ data, userId: user?._id }));
     }
     dispatch(getCartItem({ userId: user?._id }));
-   
   };
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(authorizeUser());
-  },[dispatch])
+  }, [dispatch]);
 
   return (
     <>

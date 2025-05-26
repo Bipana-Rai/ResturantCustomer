@@ -38,7 +38,7 @@ export const addedItemToCart = createAsyncThunk(
       });
 
       if (res.status === 200) {
-        return { ...data, added: true, quantity: 1 };
+        return { ...data,userId, quantity: 1 };
       }
     } catch (error) {
       const err = error as AppAxiosError;
@@ -397,19 +397,7 @@ const itemSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(addedItemToCart.pending, (state) => {
-        state.loading = false;
-      })
-      .addCase(addedItemToCart.fulfilled, (state, action) => {
-        state.loading = false;
-        if (action.payload) {
-          state.cartData.push(action.payload);
-        }
-      })
-      .addCase(addedItemToCart.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      })
+    
       .addCase(getCartItem.pending, (state) => {
         state.loading = false;
       })
