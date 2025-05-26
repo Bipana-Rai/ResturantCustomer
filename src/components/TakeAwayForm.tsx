@@ -1,5 +1,6 @@
 import {
   cartItems,
+  deleteAfterOrder,
   getCartItem,
   orderTakeAwayData,
 } from "@/features/itemSlice";
@@ -34,6 +35,7 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
       number: data.number,
       totalAmount: grandTotal,
       status: "takeAway",
+      takeAwayStatus:"pending"
     };
     try {
       const response = await axios.post(
@@ -62,11 +64,12 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
         const input = document.createElement("input");
         input.type = "hidden";
         input.name = key;
-        input.value = String(fields[key]);
+        input.value = String(fields[key as keyof typeof fields]);
         form.appendChild(input);
       }
       document.body.appendChild(form);
       form.submit();
+      await dispatch(deleteAfterOrder());
     } catch (error) {
       console.error("Order submission error:", error);
       alert("Something went wrong while placing the order.");
