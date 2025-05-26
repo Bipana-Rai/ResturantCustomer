@@ -1,4 +1,5 @@
 import {
+  authorizeUser,
   cartItems,
   deleteAfterOrder,
   getCartItem,
@@ -21,7 +22,7 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
   const dispatch = useDispatch<AppDispatch>();
   const [showOrder, setShowOrder] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const { cartData } = useSelector((state: RootState) => state.item);
+  const { cartData,user } = useSelector((state: RootState) => state.item);
   console.log("cartttt", cartData);
   const {
     register,
@@ -69,14 +70,15 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
       }
       document.body.appendChild(form);
       form.submit();
-      await dispatch(deleteAfterOrder());
+      await dispatch(deleteAfterOrder({userId:user?._id}));
     } catch (error) {
       console.error("Order submission error:", error);
       alert("Something went wrong while placing the order.");
     }
   };
   useEffect(() => {
-    dispatch(getCartItem());
+    dispatch(getCartItem({userId:user?._id}));
+    dispatch(authorizeUser())
   }, [dispatch]);
   const grandTotal = cartData.reduce(
     (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
