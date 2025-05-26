@@ -30,10 +30,10 @@ function DineInForm({ setShowOrder }: menuProps) {
   );
 
   useEffect(() => {
-    dispatch(getCartItem());
+    dispatch(getCartItem({userId:user?._id}));
     dispatch(getTable());
     dispatch(authorizeUser())
-  }, [dispatch]);
+  }, [dispatch,user]);
   const grandTotal = cartData.reduce(
     (acc: number, item: cartItems) => acc + item.dishPrice * item.quantity,
     0
@@ -50,8 +50,8 @@ function DineInForm({ setShowOrder }: menuProps) {
     await dispatch(addDineInOrder({ data: orderData }));
     setShowOrder(false);
     toast.success("Order items sucessfully");
-    await dispatch(deleteAfterOrder());
-    dispatch(getCartItem());
+    await dispatch(deleteAfterOrder({userId:user?._id}));
+    dispatch(getCartItem({userId:user?._id}));
   };
 
   return (

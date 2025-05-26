@@ -4,18 +4,18 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Card from "../components/Card";
 import Category from "../components/Category";
-import { getCartItem, getCategory, getItems } from "../features/itemSlice";
+import { authorizeUser, getCartItem, getCategory, getItems } from "../features/itemSlice";
 import { AppDispatch, RootState } from "../store/store";
 function Menu() {
   const dispatch = useDispatch<AppDispatch>();
   const [showFull, setShowFull] = useState<boolean>(false);
-
   const cartContainerRef = useRef<HTMLDivElement>(null);
   const [category, setCategory] = useState("all");
 
-  const { itemDetail, categoryDetail, cartData } = useSelector(
+  const { itemDetail, categoryDetail, cartData,user } = useSelector(
     (state: RootState) => state.item
   );
+  
 
   const isSmallScreen = useIsSmallScreen();
   const slicedCategory = showFull
@@ -39,6 +39,7 @@ function Menu() {
   useEffect(() => {
     dispatch(getItems());
     dispatch(getCategory());
+    dispatch(authorizeUser())
   }, [dispatch]);
 
   useEffect(() => {
@@ -51,8 +52,8 @@ function Menu() {
   }, [cartData.length]);
 
   useEffect(() => {
-    dispatch(getCartItem());
-  }, [dispatch]);
+    dispatch(getCartItem({userId:user?._id}));
+  }, [dispatch,user]);
   return (
     <>
       <title>Menu page</title>

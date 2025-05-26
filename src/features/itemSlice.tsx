@@ -29,12 +29,12 @@ export const getCategory = createAsyncThunk(
 );
 export const addedItemToCart = createAsyncThunk(
   "addedItemToCart",
-  async (data: dishItem, { rejectWithValue }) => {
+  async ({ data, userId }: AddToCartPayload, { rejectWithValue }) => {
     try {
       const res = await axios.post("http://localhost:5000/api/cart", {
         ...data,
-        added: true,
         quantity: 1,
+        userId: userId,
       });
 
       if (res.status === 200) {
@@ -48,9 +48,11 @@ export const addedItemToCart = createAsyncThunk(
 );
 export const getCartItem = createAsyncThunk(
   "getCartItem",
-  async (_, { rejectWithValue }) => {
+  async ({ userId }: { userId?: string }, { rejectWithValue }) => {
     try {
-      const res = await axios.get("http://localhost:5000/api/getCart");
+      const res = await axios.get(
+        `http://localhost:5000/api/getCart/${userId}`
+      );
       return res.data;
     } catch (error) {
       const err = error as AppAxiosError;
@@ -190,10 +192,10 @@ export const addDineInOrder = createAsyncThunk(
 
 export const deleteAfterOrder = createAsyncThunk(
   "deleteAfterOrder",
-  async (__, { rejectWithValue }) => {
+  async ({ userId }: { userId?: string }, { rejectWithValue }) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/deleteCartOrder`
+        `http://localhost:5000/api/deleteCartOrder/${userId}`
       );
       return res.data;
       // setCount(0)
@@ -260,6 +262,10 @@ export const authorizeUser = createAsyncThunk(
     }
   }
 );
+type AddToCartPayload = {
+  data: dishItem; // your dish item type
+  userId?: string;
+};
 export interface signupData {
   email: string;
   password: string;
@@ -279,6 +285,7 @@ export interface cartItems {
   dishImage?: string;
   added: boolean;
   quantity: number;
+  userId?: string;
 }
 export interface orderData {
   tableNumber: string;
@@ -328,8 +335,8 @@ interface category {
   category: string;
   image?: string;
 }
-interface userInfo {
-  _id: string;
+export interface userInfo {
+  _id?: string;
   email: string;
   fullName: string;
   phone: string;

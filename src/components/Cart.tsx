@@ -6,13 +6,13 @@ import DineInForm from "./DineInForm";
 import TakeAwayForm from "./TakeAwayForm";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { getCartItem } from "@/features/itemSlice";
+import { authorizeUser, getCartItem } from "@/features/itemSlice";
 
 function Cart() {
   const [itemTotals, setItemTotals] = useState<Record<string, number>>({});
   const [showOrder, setShowOrder] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const { cartData } = useSelector((state: RootState) => state.item);
+  const { cartData,user } = useSelector((state: RootState) => state.item);
   const [showTakeAwayOrder, setShowTakeAwayOrder] = useState(false);
   const handlePriceChange = (id: string, total: number) => {
     setItemTotals((prev) => ({ ...prev, [id]: total }));
@@ -22,7 +22,8 @@ function Cart() {
     0
   );
   useEffect(() => {
-    dispatch(getCartItem());
+    dispatch(getCartItem({userId:user?._id}));
+    dispatch(authorizeUser())
   }, [dispatch]);
 
   return (
@@ -38,6 +39,7 @@ function Cart() {
             cartData.map((item) => (
               <CartCard
                 item={item}
+                userId={user?._id}
                 onPriceChange={handlePriceChange}
                 key={item._id}
               />

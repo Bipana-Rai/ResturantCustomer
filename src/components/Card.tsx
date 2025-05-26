@@ -1,5 +1,6 @@
 import {
   addedItemToCart,
+  authorizeUser,
   deleteItemFromcart,
   dishItem,
   getCartItem,
@@ -7,7 +8,7 @@ import {
 import URL from "../utils/Url";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store/store";
-
+import { useEffect } from "react";
 
 type CardProps = {
   data: dishItem;
@@ -15,19 +16,24 @@ type CardProps = {
 
 function Card({ data }: CardProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const { cartData } = useSelector((state: RootState) => state.item);
+  const { cartData, user } = useSelector((state: RootState) => state.item);
 
-  const isAdded = cartData?.some(
-    (cartItem) => cartItem._id === data._id && cartItem.added
+  const isAdded = cartData.some(
+    (e) => e.dishName === data.dishName && e.userId === user?._id
   );
+
   const handleClick = async () => {
     if (isAdded) {
       await dispatch(deleteItemFromcart(data._id));
     } else {
-      await dispatch(addedItemToCart(data));
+      await dispatch(addedItemToCart({ data, userId: user?._id }));
     }
-    dispatch(getCartItem());
+    dispatch(getCartItem({ userId: user?._id }));
+   
   };
+  useEffect(()=>{
+    dispatch(authorizeUser());
+  },[dispatch])
 
   return (
     <>
@@ -56,7 +62,6 @@ function Card({ data }: CardProps) {
             px-3 w-[100px] text-center py-1 text-gray-100 rounded-lg text-sm`}
             onClick={handleClick}
           >
-          
             <p>{`${isAdded ? "added" : "add to cart"}`}</p>
           </div>
         </div>

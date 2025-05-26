@@ -7,6 +7,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
 import { deleteItemFromcart, getCartItem } from "../features/itemSlice";
+
 interface cartItems {
   _id: string;
   dishName: string;
@@ -18,9 +19,10 @@ interface cartItems {
 interface CartCardProps {
   item: cartItems;
   onPriceChange: (id: string, total: number) => void;
+  userId?:string
 }
 
-function CartCard({ item, onPriceChange }: CartCardProps) {
+function CartCard({ item, onPriceChange,userId }: CartCardProps) {
   const dispatch=useDispatch<AppDispatch>()
   const [count, setCount] = useState(item.quantity || 1);
 
@@ -55,7 +57,7 @@ function CartCard({ item, onPriceChange }: CartCardProps) {
   };
   const deleteCartItem=async(id:string)=>{
    await dispatch(deleteItemFromcart(id))
-    dispatch(getCartItem())
+    dispatch(getCartItem({userId:userId}));
    setCount(0)
   }
   useEffect(() => {
