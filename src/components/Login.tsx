@@ -9,32 +9,31 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Loader from "@/utils/Loader";
+
 
 interface authenticationProps {
   showLogin: boolean;
   setShowLogin: (showLogin: boolean) => void;
+  setLoading:(loading:boolean)=>void
 }
 
-function Login({ setShowLogin, showLogin }: authenticationProps) {
+function Login({ setShowLogin, showLogin,setLoading }: authenticationProps) {
   const { register, handleSubmit, reset } = useForm<formdata>();
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  
   const { user } = useSelector((state: RootState) => state.item);
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-     console.log("Current user:", user);
-   if (!user) {
-    navigate("/", { replace: true });
-    return;
-  }
+    console.log("Current user:", user);
+    if (!user) {
+      navigate("/", { replace: true });
+      return;
+    }
     if (user?.role === "customer") {
       navigate("/menu", { replace: true });
-      return
-    } if (user?.role === "admin") {
-     return window.location.replace("http://localhost:5173/admin/dashboard");
+      return;
     }
   }, [user, navigate]);
   const onSubmit = async (data: formdata) => {
@@ -58,7 +57,7 @@ function Login({ setShowLogin, showLogin }: authenticationProps) {
   };
   return (
     <>
-      {loading && <Loader />}
+     
       <title>Login</title>
       <div className=" px-5 w-full   ">
         <p className="text-2xl font-bold text-center pb-4 ">LOGIN</p>
