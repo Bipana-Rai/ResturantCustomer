@@ -36,7 +36,8 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
       number: data.number,
       totalAmount: grandTotal,
       status: "takeAway",
-      takeAwayStatus:"pending"
+      takeAwayStatus:"pending",
+      foodStatus:"waiting"
     };
     try {
       const response = await axios.post(
