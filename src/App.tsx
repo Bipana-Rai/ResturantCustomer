@@ -9,31 +9,23 @@ import MainLayout from "./outlet/MainLayout";
 import Authentication from "./pages/Authentication";
 import Booking from "./pages/Booking";
 import Menu from "./pages/Menu";
-// import { AppDispatch } from "./store/store";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
-  // const dispatch = useDispatch<AppDispatch>();
-    
-
-  // useEffect(() => {
-  //   dispatch(authorizeUser());
-  // }, [dispatch]);
   return (
     <>
-  
       <Routes>
         <Route path="/" element={<Authentication />} />
         <Route path="/recoverypassword" element={<ForgotPasswprd />} />
         <Route path="/reset-password/:id/:token" element={<ResetPassword />} />
         <Route element={<MainLayout />}>
           {/*prevent user to access without login*/}
-          {/* <Route element={<ProtectedRoute />}> */}
+          <Route element={<ProtectedRoute />}>
             <Route path="/cart" element={<Cart />} />
             <Route path="/menu" element={<Menu />} />
             <Route path="/booking" element={<Booking />} />
             <Route path="/myBooking" element={<MyBooking />} />
           </Route>
-        {/* </Route> */}
+        </Route>
       </Routes>
 
       <Toaster />
