@@ -2,9 +2,10 @@ import Login from "@/components/Login";
 import Register from "@/components/Register";
 import Welcome from "@/components/Welcome";
 import { useState } from "react";
-
+import Loader from "@/utils/Loader";
 function Authentication() {
   const [showLogin, setShowLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
   return (
     <>
       <div className="h-[100vh] w-[100vw] flex justify-center items-center relative ">
@@ -13,9 +14,8 @@ function Authentication() {
           alt=""
           className="absolute   h-full w-full  blur-md"
         />
-
-        <div 
-         className="rounded-md overflow-hidden lg:relative lg:w-[800px] bg-white lg:h-[450px] md:w-[450px]  h-[400px] w-[350px]  ">
+        {loading && <Loader />}
+        <div className="rounded-md overflow-hidden lg:relative lg:w-[800px] bg-white lg:h-[450px] md:w-[450px]  h-[400px] w-[350px]  ">
           <div
             className={`w-[400px] z-30 h-full lg:absolute hidden lg:block transition-all duration-500 ease-in-out`}
             style={{
@@ -37,7 +37,7 @@ function Authentication() {
               showLogin ? "lg:translate-x-full z-30" : "lg:translate-x-0 z-10"
             }`}
           >
-            <Login setShowLogin={setShowLogin} showLogin={showLogin} />
+            <Login setShowLogin={setShowLogin} showLogin={showLogin} setLoading={setLoading}/>
           </div>
         </div>
       </div>
