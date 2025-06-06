@@ -30,7 +30,7 @@ function AlertDialogUtils({ data, setStatus }: MyBookingProps) {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          className="flex justify-center cursor-pointer items-center gap-2 w-45 py-1 rounded-lg  bg-red-200 text-red-500"
+          className="flex justify-center cursor-pointer items-center gap-2 w-45 py-1 rounded-lg  bg-red-600 text-gray-50"
           variant="outline"
         >
           cancel booking
