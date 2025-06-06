@@ -2,15 +2,15 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   addBookingData,
   BookedData,
   editTableStatus,
 } from "../features/itemSlice";
-import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store/store";
-import { showToast } from "@/utils/toastUril";
-import { useNavigate } from "react-router-dom";
 
 interface TableCardProps {
   number: string;
@@ -40,10 +40,12 @@ function BookingForm({
     dispatch(addBookingData({data:transformedData,status:"booked"}));
     dispatch(editTableStatus({ id, data: "booked" }));
     setShowBookingForm(false);
-      showToast("Booking Confirmed", "success", `Table ${data.tableNumber} reserved for ${data.fullName}`);
+    toast.success(`Booking Confirmed !!!
+    Table ${data.tableNumber} reserved for ${data.fullName}`);
       navigate("/myBooking")
 
   };
+   
    
      
   return (
