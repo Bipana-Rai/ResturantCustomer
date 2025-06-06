@@ -141,12 +141,10 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
                   Order Payment
                 </p>
                 <Box
-                  component="form"
                   sx={{
                     "& > :not(style)": { width: "full" },
                   }}
-                  noValidate
-                  autoComplete="off"
+                 
                 >
                   {" "}
                   <div className="mb-7">
