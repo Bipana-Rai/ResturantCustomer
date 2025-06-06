@@ -36,6 +36,7 @@ function Booking() {
 
   return (
     <>
+    <title>Booking page</title>
       <div className="pt-15 ps-10">
         <div className="flex justify-between items-center pe-20">
           <div className="py-4 flex gap-9">
