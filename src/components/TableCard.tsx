@@ -1,8 +1,8 @@
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { LiaChairSolid } from "react-icons/lia";
 import { TableData } from "../features/itemSlice";
 import BookingForm from "./BookingForm";
-import { useState } from "react";
-import { showToast } from "@/utils/toastUril";
 interface tableprops {
   data: TableData;
 }
@@ -27,7 +27,7 @@ function TableCard({ data }: tableprops) {
 
   const handleShow = () => {
     if (data.tableStatus === "booked") {
-      return showToast("Aready booked","error","Please ,select another table")
+      return toast.error("this table is already booked !!!")
     }
     setShowBookingForm(true);
   };
