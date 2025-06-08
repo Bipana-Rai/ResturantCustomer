@@ -38,23 +38,25 @@ function Sidebar({ setIsSidebarOpen, setLogout }: MainLayoutProps) {
         animate={{ x: 0 }}
         exit={{ x: -100 }}
         transition={{ duration: 0.5 }}
-        className="fixed   h-[100vh] w-[70px] z-30 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] pt-20 flex flex-col items-center gap-10"
+        className="fixed   h-[100vh] w-[70px] z-30 bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)] pt-20 flex flex-col  items-center gap-15"
       >
         {sidebarContent.map((e, i) => (
           <div
-            className="text-3xl text-gray-700 cursor-pointer flex justify-center h-10 items-center hover:text-cyan-700 w-full"
+            className="text-3xl text-gray-700 cursor-pointer flex flex-col justify-center h-10 items-center hover:text-cyan-700 w-full"
             title={e.title}
             key={i}
             onClick={() => handleClick(e.path)}
           >
             {e.icon}
+            <p className="text-sm">{e.name}</p>
           </div>
         ))}
         <div
-          className="text-3xl text-gray-700 cursor-pointer "
+          className="text-3xl text-gray-700  flex flex-col items-center cursor-pointer "
           onClick={handleLogOut}
         >
           <IoLogOut />
+          <p className="text-sm">logout</p>
         </div>
       </motion.div>
     </>
