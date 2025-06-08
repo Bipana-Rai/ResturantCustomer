@@ -6,7 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import Logout from "@/components/Logout";
 
 function MainLayout() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [logout, setLogout] = useState(false);
 
   return (
