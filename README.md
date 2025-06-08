@@ -1,54 +1,78 @@
-# React + TypeScript + Vite
+# RestaurantCustomer 🍽️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend application for a restaurant system that supports features like dish browsing, cart management, takeaway and dine-in orders, and payment integration. Built using **Next.js** and **Redux Toolkit**, this app provides a seamless customer interface for placing and managing orders.
 
-Currently, two official plugins are available:
+## 🚀 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🧾 View categories and dishes
+- 🛒 Add and remove items from the cart
+- 🧍 Customer login and registration
+- 🍽️ Book tables for dine-in
+- 🥡 Place takeaway orders
+- 💳 eSewa payment integration
+- 📦 Order history and order tracking
+- 🎨 Responsive UI for mobile and desktop
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend:** Next.js, React, Redux Toolkit, Axios, Tailwind CSS
+- **State Management:** Redux Toolkit
+- **Routing:** Next.js App Router
+- **Payment:** eSewa (Nepal)
+- **Date Picker:** MUI DateCalendar
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🧪 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+```bash
+git clone https://github.com/Bipana-Rai/ResturantCustomer.git
+cd ResturantCustomer
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Running the App
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+
+## 🔐 Environment Variables
+
+Create a `.env.local` file in the root directory with the following variables:
+
+```env
+NEXT_PUBLIC_BASE_URL=http://your-backend-api-url
+NEXT_PUBLIC_ESEWA_CLIENT_ID=your-esewa-client-id
+```
+
+## 📁 Project Structure
+
+```
+ResturantCustomer/
+│
+├── app/                   # Next.js app directory
+├── components/            # Reusable components
+├── redux/                 # Redux slices and store
+├── services/              # Axios API services
+├── utils/                 # Helper functions
+└── public/                # Static assets
+```
+
+## 📸 Screenshots
+
+_Add screenshots here if available._
+
+## 🧑‍💻 Author
+
+- **Bipana Rai** – [GitHub](https://github.com/Bipana-Rai)
+
+## 📝 License
+
+This project is licensed under the MIT License.

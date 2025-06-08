@@ -41,8 +41,15 @@ function Login({ setShowLogin, showLogin,setLoading }: authenticationProps) {
     try {
       await persistor.purge();
       await dispatch(loginData({ data })).unwrap();
-      dispatch(authorizeUser());
+         // Wait for authorizeUser to complete and return the user data
+    const authorized = await dispatch(authorizeUser()).unwrap();
+    if(authorized?.user==="customer"){
       toast.success("LogIn successfully");
+    }
+    else{
+      toast.error("access denied:not a customer")
+    }
+      
     } catch (error) {
       const err = error as AppAxiosError;
       const errorMessage = err?.message || "Login Failed";
