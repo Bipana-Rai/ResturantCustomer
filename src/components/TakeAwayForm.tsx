@@ -144,7 +144,7 @@ function TakeAwayForm({ setShowTakeAwayOrder }: menuProps) {
                   sx={{
                     "& > :not(style)": { width: "full" },
                   }}
-                 
+                  
                 >
                   {" "}
                   <div className="mb-7">
