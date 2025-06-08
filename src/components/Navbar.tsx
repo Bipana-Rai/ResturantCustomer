@@ -18,7 +18,7 @@ function Navbar({ isSidebarOpen, setIsSidebarOpen }: MainLayoutProps) {
   const { cartData ,user} = useSelector((state: RootState) => state.item);
 
   useEffect(() => {
-    dispatch(getCartItem());
+    dispatch(getCartItem({userId:user?._id}));
     dispatch(authorizeUser());
   }, [dispatch]);
   const handleCart = () => {
