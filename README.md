@@ -42,7 +42,6 @@ npm install
 npm run dev
 ```
 
-
 ## 🔐 Environment Variables
 
 Create a `.env.local` file in the root directory with the following variables:
@@ -67,7 +66,30 @@ ResturantCustomer/
 
 ## 📸 Screenshots
 
-_Add screenshots here if available._
+
+
+### 🏠Login
+![Login](https://github.com/Bipana-Rai/ResturantCustomer/blob/main/screenshot/Screenshot%202025-06-08%20193645.png)
+
+### 🏠 menu
+
+![menu](https://github.com/Bipana-Rai/ResturantCustomer/blob/main/screenshot/Screenshot%202025-06-08%20193435.png)
+
+### 🏠 ordered item receit
+
+![ordered item receit](https://github.com/Bipana-Rai/ResturantCustomer/blob/main/screenshot/Screenshot%202025-06-08%20193621.png)
+
+### 🏠 Payment Method
+
+![Payment Method](https://github.com/Bipana-Rai/ResturantCustomer/blob/main/screenshot/Screenshot%202025-06-08%20193844.png)
+
+### 🏠 Esewa integration
+
+![Esewa integration](https://github.com/Bipana-Rai/ResturantCustomer/blob/main/screenshot/Screenshot%202025-06-08%20193538.png)
+
+### 🏠 Table Booking
+
+![Table Booking](https://github.com/Bipana-Rai/ResturantCustomer/blob/main/screenshot/Screenshot%202025-06-08%20193502.png)
 
 ## 🧑‍💻 Author
 
